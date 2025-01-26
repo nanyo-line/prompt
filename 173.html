@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#173 財務分析プレゼンテーション用スクリプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#173 財務分析プレゼンテーション用スクリプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、地方自治体の財務担当者が、財務分析の結果を市長や議会といった意思決定者にわかりやすく説明するためのプレゼンテーションスクリプトを作成することです。<br>
+地方自治体の財務状況は複雑であり、専門的な知識がないと理解が難しい場合が多くあります。<br>
+意思決定者が今後の財政運営方針を検討する上で必要な情報をわかりやすく提供することを目指しています。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、地方自治体の財務担当者です。財務分析の結果を、市長や議会にわかりやすく説明するためのプレゼンテーションスクリプトを作成してください。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="5" placeholder="前提条件を入力してください">
+- タイトル: 財務分析プレゼンテーション スクリプト
+- 対象者: 市長、議会、幹部
+- 目的: 財務分析結果に基づいた、今後の財政運営方針の説明
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="7" placeholder="評価の基準を入力してください">
+- 明確性: 財務状況、課題、将来見通しが明確に説明されているか
+- わかりやすさ: 専門用語を避け、図表などを用いてわかりやすく説明されているか
+- 説得力: データに基づいた論理的な説明で、市長や議会を納得させられる内容か
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="7" placeholder="明確化の要件を入力してください">
+- 財務分析の対象となる地方自治体名、人口、産業構造などの基本情報
+- 財務分析の期間
+- 使用する資料: 地方財政状況調査表（決算統計）、行政キャッシュフロー計算書、財務報告書など
+- 注目すべき経済指標、財務指標
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="5" placeholder="リソースを入力してください">
+- 地方財政状況調査表（決算統計）
+- 行政キャッシュフロー計算書
+- 財務報告書
+- 経済指標、財務指標に関する資料
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="25" placeholder="実行指示を入力してください">
+- 上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、以下の内容を含む、「評価の基準」を満たすプレゼンテーションスクリプトを作成してください。
+1. はじめに
+ - プレゼンテーションの目的
+ - 財務分析の期間
+ - 使用する資料
+2. 財務状況分析
+ - 収支状況: 収入、支出の推移、主な財源と使途
+ - 債務状況: 借入金の残高、債務償還能力
+ - 資金繰り状況: 現金預金残高、資金不足の有無
+ - 注目すべき経済指標、財務指標の説明
+3. 課題と将来見通し
+ - 財務状況から見えてくる課題
+ - 人口減少、高齢化、経済状況などの外部環境変化の影響
+ - 今後の財政見通し
+4. 今後の財政運営方針
+ - 課題解決に向けた施策
+ - 収入確保、支出削減、効率化などの具体的な取り組み
+ - 持続可能な財政運営に向けた方向性
+
+- {プレゼンテーション内容}内に財務報告書や収益見通しについての説明を含めてください。
+- 重要な経済指標や{重要なポイント}を強調し、分かりやすく伝えることを意識してください。
+- {出力フォーマット}を参考にして出力してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="12" placeholder="ルールを入力してください">
+1. 透明性と説明責任の向上
+ - 財務状況をわかりやすく説明することで、住民に対する透明性を高め、行政に対する理解と信頼を深める。
+2. 合意形成の促進
+ - 市長や議会などの関係者と財務状況に関する共通認識を形成し、今後の財政運営方針についての合意形成を促進する。
+3. 持続可能な財政運営の実現
+ - 財務分析結果に基づいた現状認識と将来予測を共有することで、持続可能な財政運営に向けた取り組みを推進する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="4" placeholder="出力形式を入力してください">
+# 出力フォーマット
+
+## 財務分析プレゼンテーションスクリプト
+### 分析結果
+- [分析結果詳細]
+### プレゼンテーション内容
+1. 背景:
+- [関連情報]
+2. 方法論:
+- [分析方法]
+3. 結果:
+- [具体的なデータとその解釈]
+4. 結論:
+- [結論の要約]
+### 重要なポイント
+- [重要なポイント詳細]
+
+#スタイルとトーン =
+明確でプロフェッショナルなトーン
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>財務状況</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="財務状況を入力してください" class="variable-textarea" >
+- 地方財政状況調査表（決算統計）:
+- 行政キャッシュフロー計算書:
+- 財務報告書:
+- 経済指標、財務指標に関する資料:
+</textarea>
+<h3>重要なポイント</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="重要なポイントを入力してください" class="variable-textarea" >
+</textarea>
+<h3>プレゼンテーション内容</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="プレゼンテーション内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=173"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##財務状況=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##重要なポイント=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##プレゼンテーション内容=" + (formData.get('hensu3') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

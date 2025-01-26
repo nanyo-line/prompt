@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#166 プロジェクト進捗報告書作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#166 プロジェクト進捗報告書作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、プロジェクトマネージャーが上司やプロジェクトメンバーに提出する業務進捗報告書の作成をAIが効果的に支援することを目的としています。<br>
+報告書作成の効率化を図り、プロジェクトマネージャーの負担を軽減することをねらっています。<br>
+プロジェクトマネージャーは、より効率的かつ効果的に進捗報告書を作成し、プロジェクトの成功に貢献することが期待されます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- プロジェクトマネージャーの指示に基づき、プロジェクト進捗報告書の作成を支援する。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
+- タイトル: プロジェクト進捗報告書の作成
+- 依頼者条件: プロジェクトの進捗状況を正確に把握し、上司やプロジェクトメンバーに安心感を提供したいプロジェクトマネージャー。
+- 制作者条件: プロジェクト管理と報告書作成、AIコミュニケーションに精通している人
+- 目的と目標: AIを活用して、プロジェクトの進捗状況を明確かつ簡潔にまとめた報告書を作成すること
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 報告書の内容が正確で、関係者にとって理解しやすく、プロジェクトの意思決定に役立つ情報が含まれていること
+- 報告書が、上司やプロジェクトメンバーにとって理解しやすく、読みやすい。
+- 報告書のトーンが、前向きでプロフェッショナルである。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- プロジェクトの概要、目的、目標を明確に記述する
+- 現在の進捗状況を数値や具体的な成果を用いて示す
+- 発生している問題点やリスク、それらへの対策を具体的に記述する
+- 今後の予定とスケジュールを明確に示す
+- 報告書の読者（上司、プロジェクトメンバーなど）を想定し、適切な表現とトーンで記述する
+- 必要に応じて、ユーザーに確認を行いながら、情報不足を補完する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- プロジェクト計画書
+- タスク管理ツール
+- 過去の進捗報告書
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="19" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従ってSTEP1～STEP2をステップバイステップで実行し、「評価の基準」を満たした業務進捗報告書を作成してください。
+
+## STEP:
+1. プロジェクトの進捗状況を正確に評価し、上司やプロジェクトメンバーに明確かつ前向きな報告を行う。
+ - プロジェクトの進捗状況を分析し、現状の進捗率、遅延の有無、今後の予定などを自動的にまとめる。
+ - 報告書の内容の正確性と客観性を確保し、プロジェクト関係者間での認識のずれを防ぐ。
+2. 指定された情報に基づき、視覚的にわかりやすい形式で報告書を作成する。
+ - 報告書の形式として、表形式、箇条書き形式、文章形式など、複数の選択肢から選ぶ。
+ - ユーザーは、報告書の読者や内容に応じて、最適な形式を選択することができる。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="10" placeholder="ルールを入力してください">
+1. 進捗状況: 現在の進捗率を正確に示し、必要であればグラフや表を用いて視覚的に表現する。
+2. 遅延の有無: 遅延が発生している場合はその原因を簡潔に説明し、対策案を明示する。
+3. 次回の予定: スケジュール全体を見据えた上で、直近の予定を箇条書きで記載。
+4. 出力形式: 表形式や箇条書きを適切に活用し、情報を整理。重要なポイントは段落名を付けて区分する。
+5. トーン: 前向きでプロフェッショナルなトーンを維持しつつ、進捗に対する具体的なアクションを提案。
+</textarea>
+</div>
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="24" placeholder="出力形式を入力してください">
+- 選択した出力形式で、情報を整理して出力する。
+
+## 報告書のスタイル選択:
+ - 以下の出力形式から選択:
+   - 表形式
+   - 箇条書き形式
+   - 文章形式
+   - 報告書のトーン:
+     - 前向きでプロフェッショナルなトーンを維持し、具体的な行動提案を含める。
+     - 例: 「進捗は順調です。次のステップとして、○○を予定しています。」
+
+## 進捗報告書の作成:
+ - 上記の情報に基づき、進捗報告書を作成する。
+ - 報告書には、以下の項目を含める:
+   - プロジェクト名
+   - 報告日
+   - プロジェクト担当者
+   - 進捗状況
+   - 進捗率
+   - 達成できたこと
+   - 課題と対策
+   - 次回の予定
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>プロジェクト名</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="プロジェクト名を入力してください (例: 〇〇開発プロジェクト)" class="variable-textarea" >
+</textarea>
+<h3>進捗率</h3>
+<textarea name="hensu2" id="hensu2" rows="3" placeholder="進捗率を入力してください (例: 70%)" class="variable-textarea" >
+</textarea>
+<h3>遅延の有無</h3>
+<textarea name="hensu3" id="hensu3" rows="3" placeholder="遅延の有無を入力してください（遅延がある場合、その原因と対策案を具体的に入力）" class="variable-textarea" >
+</textarea>
+<h3>次のアクション</h3>
+<textarea name="hensu4" id="hensu4" rows="3" placeholder="次のアクションを入力してください（具体的な行動と期日を含めて入力）" class="variable-textarea" >
+</textarea>
+<h3>完了予定日</h3>
+<textarea name="hensu5" id="hensu5" rows="2" placeholder="完了予定日を入力してください" class="variable-textarea" >
+</textarea>
+<h3>報告書のスタイル</h3>
+<textarea name="hensu6" id="hensu6" rows="2" placeholder="報告書のスタイルを入力してください（例：表形式、箇条書き形式、文章形式など、複数の選択肢から選ぶ）" class="variable-textarea" >
+</textarea>
+</div>
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=166"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プロジェクト名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##進捗率=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##遅延の有無=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##次のアクション=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##完了予定日=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##報告書のスタイル=" + (formData.get('hensu6') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

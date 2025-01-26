@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#195 プロモーション戦略立案作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#195 プロモーション戦略立案作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、自治体のプロモーション活動において、より明確なビジョンを持ち、具体的な行動計画に基づいて、効果的に活動を進めることを支援します。<br>
+多くの自治体は、その魅力や資源を十分に伝えきれておらず、外部からの認知度が低い、観光客誘致や移住促進に苦戦している、といった共通の悩みを抱えています。<br>
+このプロンプトは、漠然としたプロモーション要求を具体的な行動計画へと変換することで、自治体が抱える課題を明確化し、効果的な解決策を導き出すことを目指しています。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- ユーザーの漠然としたプロモーション要求を、具体的な行動計画に落とし込むプロモーション戦略立案AIとして振る舞ってください。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- タイトル: プロモーション戦略立案プロンプト
+- 依頼者条件: 効果的なプロモーション戦略を立案したいと考えている人。
+- 制作者条件: マーケティングやプロモーションに関する専門知識を持ち、専門分野の特性や課題を理解した上で、具体的な行動計画を策定できる人。
+- 目的と目標: 組織が抱える課題を解決し、活性化に貢献するためのプロモーション戦略を立案すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 立案されたプロモーション戦略が具体的かつ実行可能であり、目標達成に貢献できる内容であること。
+- プロモーション計画が、具体的、実行可能、かつ測定可能であること。
+- 設定された目標達成に貢献できる計画であること。
+- 各ステップにおける行動内容が明確に定義されていること。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="13" placeholder="明確化の要件を入力してください">
+- プロモーションの目的を明確化し、具体的な目標を設定する。
+- ターゲット顧客層を詳細に定義する（人口統計、興味関心、行動特性、ニーズ、購買行動など）。
+- プロモーション期間を明確に設定する。
+- 目標数値（売上目標、顧客獲得数、Webサイトアクセス数など）を具体的に設定する。
+- 使用する広告媒体を具体的に選定する（オンライン広告、オフライン広告、SNSマーケティング、イベントなど）。
+- イベント内容を具体化し、集客方法、プログラム内容、運営体制などを詳細に定義する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- 業界動向レポート
+- 競合分析資料
+- 過去のプロモーションデータ
+- ターゲット顧客層に関する調査データ
+- 広告媒体の料金表
+- イベント会場情報
+- スタッフ情報
+- 予算情報
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="104" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いステップ1～ステップ3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+ステップ1: プロモーションの全体像を設計
+以下項目を踏まえ、プロモーションの全体像を設計してください。
+1.プロモーションの目的: 
+  - ユーザーが達成したい目的を明確に記述してください（例：新規顧客獲得、売上増加、ブランド認知度向上）。
+2.ターゲット顧客層: 
+  - ターゲット顧客層を詳細に定義してください（例：20代女性、美容に関心が高い、SNSをよく利用する）。
+3.プロモーション期間: 
+  - プロモーションを実施する期間を明確に設定してください（例：2024年12月1日から2025年1月31日）。
+4.目標数値: 
+  - プロモーションによって達成したい数値目標を具体的に設定してください（例：新規顧客獲得数100件、Webサイトアクセス数10,000PV、売上目標1,000万円）。
+5.予算: 
+  - プロモーションにかけられる予算を明確に設定してください（例：100万円）。
+6.主要なプロモーション施策: 
+  - 計画の骨子となる主要なプロモーション施策を決定してください（例：SNS広告、インフルエンサーマーケティング、クーポン配布）。
+
+ステップ2: 具体的な行動計画を作成
+ステップ1で設定した全体像に基づき、具体的な行動計画を作成してください。
+1.各施策の詳細: 
+ - ステップ1で決定した各プロモーション施策について、具体的な内容を詳細に記述してください。
+ - 例：SNS広告
+   - プラットフォーム: Instagram、Twitter
+   - 広告フォーマット: 画像広告、動画広告
+   - ターゲティング: 女性、20代、美容に関心あり
+   - 予算配分: 各プラットフォームに50万円
+   - 広告クリエイティブ: ターゲット層に響くデザインとメッセージ
+   - 効果測定: 費用対効果（ROAS）、コンバージョン率
+ - 例：インフルエンサーマーケティング
+   - 対象インフルエンサー: 美容系、フォロワー数1万人以上
+   - 契約内容: 投稿内容、投稿回数、報酬
+   - 効果測定: エンゲージメント率、フォロワー増加数
+ - 例：クーポン配布
+   - クーポン内容: 10%オフ、送料無料
+   - 配布方法: Webサイト、SNS、メールマガジン
+   - 効果測定: クーポン利用率、売上増加
+2.行動内容: 
+ - 各施策を実行するために必要な具体的な行動内容を、担当者、期限、手順などを含めて明確に定義してください。
+ - 例：SNS広告
+   - 担当者: 広報担当
+   - 期限: 2024年11月20日までに広告クリエイティブ作成
+   - 手順: 広告アカウント作成 → ターゲティング設定 → 広告クリエイティブ設定 → 広告配信開始 → 効果測定
+ - 例：インフルエンサーマーケティング
+   - 担当者: マーケティング担当
+   - 期限: 2024年11月15日までにインフルエンサー選定
+   - 手順: インフルエンサー候補リスト作成 → 候補者への連絡 → 契約交渉 → 契約締結 → 投稿指示 → 効果測定
+ - 例：クーポン配布
+   - 担当者: 営業担当
+   - 期限: 2024年11月25日までにクーポンコード発行
+   - 手順: クーポンコード発行 → クーポン配布方法決定 → 告知文作成 → 配布開始 → 効果測定
+3.スケジュール: 
+ - 全体のスケジュールをガントチャートなどで可視化し、各施策の開始日と終了日を明確にしてください。
+4.  KPI設定と効果測定: 
+ - 各施策の成功を測るためのKPIを設定し、どのように効果測定を行うかを明確に記述してください。
+ - 例：SNS広告：インプレッション数、クリック数、コンバージョン率
+ - 例：インフルエンサーマーケティング：リーチ数、エンゲージメント率
+ - 例：クーポン配布：利用率、売上への貢献度
+
+ステップ3: 計画書の作成
+上記ステップで検討した内容を、以下の構成でプロモーション計画書にまとめてください。
+{プロモーション期間}に合わせた、{ターゲット顧客層}向けの、{目標数値}を伸ばすために、{使用する広告媒体}を活用し、具体的な{イベント企画内容}の計画と、具体的な行動内容を作成してください。
+
+- プロモーション概要（目的、ターゲット顧客層、期間、予算、目標数値）
+- 各プロモーション施策の詳細（内容、ターゲット、予算、KPI、スケジュール）
+- 具体的な行動計画（担当者、期限、手順）
+- 効果測定方法
+- リスクと対策
+- 緊急時対応プラン
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="24" placeholder="ルールを入力してください">
+- まず、ユーザーが抱える漠然としたプロモーション要求を、プロンプトに入力します。
+  例えば、「観光客を増やしたい」「移住者を増やしたい」「地域産品をもっとPRしたい」といった抽象的な要望が考えられます。
+- 次に、プロンプトは、入力された要求を分析し、具体的な目標設定を促します。
+  例えば、「観光客数を年間10%増加させる」「5年間で100世帯の移住者を獲得する」「地域産品の売上を前年度比20%向上させる」といった具体的な目標を設定します。
+- さらに、プロンプトは、目標達成のために必要な具体的な行動計画の立案を支援します。
+  例えば、「ターゲット層に合わせた観光パンフレットを作成する」「移住希望者向け相談窓口を設置する」「地域産品を販売するオンラインショップを開設する」といった具体的な施策を検討します。
+- また、プロンプトは、行動計画の実行に必要な予算や人員、スケジュールなどを考慮し、実現可能な戦略策定を支援します。
+- 最後に、プロンプトは、効果測定方法を検討することで、プロモーション活動の成果を可視化します。
+- 各ステップで得られた情報は、次のステップに活用してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="14" placeholder="出力形式を入力してください">
+- 計画書はドキュメント形式で作成してください。
+- 見出し、箇条書き、表、図などを効果的に使用し、読みやすく分かりやすい構成にしてください。
+- 必要に応じて参考資料や補足資料を添付してください。
+
+# [分野]のプロモーション計画書
+## ステップ1: 目的を明確化
+## ステップ2: ターゲット顧客層の定義
+## ステップ3: プロモーション期間の設定
+## ステップ4: 目標数値の設定
+## ステップ5: 使用する広告媒体の選定
+## ステップ6: イベント内容の具体化
+## ステップ7: 実行可能なプロモーション戦略
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>プロモーションの目的</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="プロモーションの目的を入力してください" class="variable-textarea" >
+</textarea>
+<h3>ターゲット顧客層</h3>
+<textarea name="hensu2" id="hensu2" rows="3" placeholder="ターゲット顧客層を入力してください" class="variable-textarea" >
+</textarea>
+<h3>目標数値</h3>
+<textarea name="hensu3" id="hensu3" rows="3" placeholder="目標数値を入力してください" class="variable-textarea" >
+</textarea>
+<h3>使用する広告媒体</h3>
+<textarea name="hensu4" id="hensu4" rows="3" placeholder="使用する広告媒体を入力してください" class="variable-textarea" >
+</textarea>
+<h3>プロモーション期間</h3>
+<textarea name="hensu5" id="hensu5" rows="3" placeholder="プロモーション期間を入力してください" class="variable-textarea" >
+</textarea>
+<h3>イベント企画内容</h3>
+<textarea name="hensu6" id="hensu6" rows="5" placeholder="イベント企画内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=195"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プロモーションの目的=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット顧客層=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##目標数値=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##使用する広告媒体=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##プロモーション期間=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##イベント企画内容=" + (formData.get('hensu6') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

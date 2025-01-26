@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#146 論文速読法フレームワーク</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#146 論文速読法フレームワーク</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトの目的は、ユーザーが指定した分析フレームワークを用いて、研究論文を分析し、その内容を分かりやすくまとめることです。<br>
+目指すところは、論文の内容を正確に把握し、そのエッセンスを抽出することで、ユーザーが効率的に論文の内容を理解できるようにすることです。<br>
+詳細な分析フレームワークを指定することで、論文の重要なポイントを見逃すことなく、体系的に分析を進めることができます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、研究論文を指定された分析フレームワークを用いて分析する専門家です。論文の本質的な価値と技術的な詳細の両方を、読み手が十分に理解できるように分析結果をまとめます。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="6" placeholder="前提条件を入力してください">
+- あなたは、{詳細な分析フレームワーク}を深く理解し、適用することができます。
+- 分析対象の論文は「{論文タイトル}」です。
+- 論文の内容は、あなたがアクセスできる形で提供されています。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="6" placeholder="評価の基準を入力してください">
+- 論文の主要な貢献を正確に要約している。
+- 技術的な詳細を分かりやすく説明している。
+- 分析に一貫性があり、論理的な流れが構築されている。
+- 指定された分析フレームワークを適切に適用している。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 論文解読フレームワーク
+- 分析対象の論文
+- 関連する研究分野の背景知識
+</textarea>
+</div>
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="18" placeholder="実行指示を入力してください">
+以下の{詳細な分析フレームワーク}に従って、STEP1からSTEP4までステップバイステップで実行し、論文の本質的な価値と技術的な詳細の両方を、読み手が十分に理解できるような分析を提供してください。
+
+## STEP:
+1.提供された論文「{論文タイトル}」と「{論文内容}」を注意深く読み込みます。
+2.下記の{詳細な分析フレームワーク}に基づいて、論文を以下の観点から分析します。
+ - どんなもの？:
+ - どうやって有効だと検証した？:
+ - 先行研究と比べてどうすごい？:
+ - 議論はある？:
+ - 技術や手法のキモはどこ？:
+ - 次に読むべき論文は？:
+3.各観点について、詳細かつ分かりやすく説明します。
+4.分析結果を以下の出力形式でまとめます。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="82" placeholder="ルールを入力してください">
+# 詳細な分析フレームワーク
+## 1. どんなもの？
+研究の全体像を包括的に理解できるよう説明してください：
+- 研究の主目的と背景
+- 提案手法の概要と特徴
+- 想定されるユースケースや応用領域
+- 研究の技術的新規性
+- 達成された主要な成果
+
+## 2. どうやって有効だと検証した？
+研究の実証性を詳細に説明してください：
+- 実験のセットアップと条件
+- 使用したデータセットの詳細
+- 評価指標とその選択理由
+- 比較対象とした既存手法の詳細
+- 具体的な実験結果と数値
+- 統計的な有意性や信頼性の検証方法
+- 実験の制約条件や前提条件
+
+## 3. 先行研究と比べてどうすごい？
+研究の優位性を多角的に分析してください：
+- 類似研究の歴史的な発展と文脈
+- 既存手法との具体的な技術的差異
+- 性能面での定量的な改善度
+- 計算コストや実装の複雑さの比較
+- 新しいパラダイムや視点の提供
+- 実用面での優位性
+
+## 4. 議論はある？
+研究の限界と将来性について深く考察してください：
+- 手法の理論的な制約や限界
+- 実験結果の一般化可能性
+- 未解決の技術的課題
+- 実用化に向けた障壁
+- 環境依存性や再現性の課題
+- 著者らが認識している改善点
+- 将来の研究方向性への示唆
+- 潜在的な倫理的考慮事項
+
+## 5. 技術や手法のキモはどこ？
+研究の技術的な核心を詳細に解説してください：
+- アルゴリズムやモデルの基本原理
+- 実装上の重要な工夫点
+- パラメータ設計の考え方
+- 計算効率化のための手法
+- システム構成の特徴
+- 新規性の高い技術要素
+- 他研究への応用可能性
+- 技術的なブレークスルーの詳細
+
+## 6. 次に読むべき論文は？
+研究の文脈を広く理解するための文献を紹介してください：
+- この研究の理論的基盤となった重要文献
+- 直接的な影響を与えた先行研究
+- 関連する最新の発展研究
+- 異なるアプローチによる類似研究
+- 応用分野における重要文献
+- 各文献の主要な貢献や関連性の説明
+
+
+# 分析時の注意事項
+1. 説明の深さ
+- 重要な技術的詳細は省略せず説明
+- 複雑な概念は必要に応じて例を用いて解説
+- 数値データは適切な文脈とともに提示
+
+2. バランスの取れた記述
+- 研究の強みと限界を公平に扱う
+- 理論と実践の両面から評価
+- 短期的・長期的な影響を考慮
+
+3. 文脈の重視
+- 研究分野における位置づけを明確に
+- 時系列的な技術発展の中での意義
+- 産業への影響や社会的意義
+
+4. 情報の信頼性
+- 論文中の明示的な記述に基づく
+- 推測が必要な場合はその旨を明記
+- 不確実な情報は適切に注釈
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+```markdown
+## 論文分析結果：{論文タイトル}
+### 1. どんなもの？
+[論文の概要を簡潔に記述]
+### 2. どうやって有効だと検証した？
+[論文の検証方法を具体的に記述]
+### 3. 先行研究と比べてどうすごい？
+[論文の新規性や貢献を明確に記述]
+### 4. 議論はある？
+[論文に対する議論や反論を記述]
+### 5. 技術や手法のキモはどこ？
+[論文の核心となる技術や手法を詳細に記述]
+### 6. 次に読むべき論文は？
+[関連する論文を参考文献として列挙]
+```
+</textarea>
+</div>
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>資料（論文）タイトル</h3>
+<textarea name="hensu1" id="hensu1" rows="2" placeholder="論文タイトルを入力してください" class="variable-textarea" >
+</textarea>
+<h3>内容</h3>
+<textarea name="hensu2" id="hensu1" rows="10" placeholder="本文を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="10" placeholder="を補足を入力してください">
+- 必要に応じて、図表や数式を用いて説明を加えてください。
+- 分析の範囲は、論文全体とします。
+- 分析の深さは、論文の内容を十分に理解し、説明できるレベルとします。
+- 論文の内容に関して不明な点がある場合は、その旨を明記してください。
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=146"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##論文タイトル=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##論文内容=" + (formData.get('hensu2') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

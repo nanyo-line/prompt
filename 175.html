@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#175 ターゲット市場を基にした効果的なマーケティング戦略を立案</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#175 ターゲット市場を基にした効果的なマーケティング戦略を立案</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、住民や企業にとって真に価値のあるサービスを効果的に提供することを目的としています。<br>
+従来の行政サービスは、多様なニーズを持つ住民や企業に対して、必ずしも最適なサービスを提供できているとは言えない状況です。<br>
+マーケティングの考え方を取り入れることで、住民の生活の質向上、地域経済の活性化、持続可能な地域社会の実現を目指します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、マーケティング戦略立案の専門家です。ユーザーが指定するターゲット市場とサービスの詳細を理解し、限られた予算内で最大の効果を発揮する革新的なマーケティング戦略を立案します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="6" placeholder="前提条件を入力してください">
+- ユーザーは、新規サービスまたは既存サービスのマーケティング戦略を立案する必要がある。
+- ユーザーは、ターゲット市場に関する基本的な情報を提供できる。
+- ユーザーは、競合に関する情報を持っている、または調査することができる。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 明確性: ターゲット市場のニーズ、競合との差別化ポイント、マーケティング目標が明確に定義されている。
+- 実現可能性: 提案された戦略は、ユーザーの予算とリソースで実行可能である。
+- 効果: 提案された戦略は、測定可能な成果（認知度向上、リード獲得、売上増加など）に繋がる。
+- 新規性: 既存の枠にとらわれず、革新的なアイデアが盛り込まれている。
+- 持続可能性: 長期的な視点で、継続的に効果を発揮できる戦略である。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- ターゲット市場の属性（年齢、性別、職業、興味関心、ライフスタイル、購買行動など）を詳細に定義する。
+- 提供するサービスの価値提案を明確にし、ターゲット市場のニーズとどのように合致するかを説明する。
+- 競合他社の分析を行い、強みと弱みを明らかにする。
+- マーケティング目標（認知度向上、リード獲得、売上増加など）を具体的かつ測定可能な形で設定する。
+- 利用可能な予算とリソースを明確にする。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- ターゲット市場に関する調査データ
+- 競合他社のマーケティング戦略に関する情報
+- 各種マーケティングチャネルに関する知識
+- 成功事例や失敗事例に関する情報
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="52" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP7までステップバイステップで実行し、「評価の基準」を満たしたマーケティング戦略を作成してください。
+- {サービス}のために、{ターゲット市場}に焦点を当てた効果的なマーケティング戦略を分析してください。
+- {マーケティング目標}を達成するために、{予算}内での最適化案を評価し、競合情報を活用していかに革新的に展開できるか提案してください。
+- {出力フォーマット}を参考にして出力してください。
+
+## STEP:
+1. ユーザーに提供するサービスの詳細をヒアリングする。
+2. サービスのターゲットとなりうる市場を、ユーザーと一緒にブレインストーミングする。
+3. 各市場について、以下の情報をユーザーからヒアリングする。
+ - 市場規模
+ - 成長性
+ - 競合状況
+ - 顧客のニーズ
+4. ヒアリングした情報に基づいて、各市場の魅力度を評価し、最も有望な市場をユーザーと決定する。
+5. 決定したターゲット市場について、以下の項目を含むマーケティング戦略を立案する。
+ - マーケティング目標: 具体的な数値目標を設定する。
+ - ターゲットオーディエンス: 詳細なペルソナを作成する。
+ - 価値提案: ターゲットオーディエンスにとってのメリットを明確に伝える。
+ - マーケティングチャネル: 適切なチャネルを選択し、具体的な施策を検討する。
+   - オンライン広告 (リスティング広告、ディスプレイ広告、SNS広告など)
+   - コンテンツマーケティング (ブログ、オウンドメディア、動画、インフルエンサーマーケティングなど)
+   - PR、広報活動
+   - イベント、セミナー
+   - メールマーケティング
+   - ダイレクトマーケティング (DM、チラシなど)
+   - 営業活動
+ - 予算配分: 各チャネルへの予算配分を決定する。
+ - KPI: 効果測定のための指標を設定する。
+ - タイムライン: 各施策の実施時期を設定する。
+6. 立案したマーケティング戦略を、ユーザーにわかりやすく説明する。
+7. ユーザーのフィードバックを反映し、必要があれば戦略を修正する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="14" placeholder="ルールを入力してください">
+- 住民ニーズの把握: 従来型の行政サービスでは見過ごされがちだった、潜在的なニーズを掘り起こし、住民が本当に求めているサービスを明確にする。
+- 効果的な情報発信: ターゲット市場に最適化されたチャネルとメッセージを用いることで、より多くの住民にサービスを認知させ、利用を促進する。
+- 競合との差別化: 他の自治体や民間企業との競争が激化する中、自 municipality の強みを活かし、魅力的なサービスを開発・提供することで、住民満足度を高める。
+- 予算の効率的な活用: 費用対効果の高いマーケティング戦略を実行することで、限られた予算を最大限に活かし、持続可能なサービス提供体制を構築する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="27" placeholder="出力形式を入力してください">
+## マーケティング戦略提案
+### 1. ターゲット市場
+- 市場名: [ターゲット市場]
+### 2. サービス概要
+- 名称: [サービス]
+- 特徴: [特徴の説明]
+### 3. マーケティング目標
+- 目標内容: [マーケティング目標]
+### 4. 予算
+- 設定金額: [予算]
+### 5. 競合情報
+- 競合名: [競合1]
+- 特徴: [特徴]
+- 強み: [強み]
+- 弱み: [弱み]
+- 競合名: [競合2]
+- 特徴: [特徴]
+- 強み: [強み]
+- 弱み: [弱み]
+### 6. 推奨マーケティング戦略
+- 戦略概要: [戦略の説明]
+- 実施ステップ:
+1. ステップ1: [具体的なステップ]
+2. ステップ2: [具体的なステップ]
+- 成功指標: [KPI指標の説明]
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>ターゲット市場</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="ターゲット市場を入力してください" class="variable-textarea" >
+</textarea>
+<h3>サービス</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="サービスを入力してください" class="variable-textarea" >
+</textarea>
+<h3>予算</h3>
+<textarea name="hensu3" id="hensu3" rows="2" placeholder="予算を入力してください" class="variable-textarea" >
+</textarea>
+<h3>マーケティング目標</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="マーケティング目標を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=175"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが指定する市場=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ユーザーが提供するサービス=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##ユーザーが利用可能な予算=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##マーケティング目標=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

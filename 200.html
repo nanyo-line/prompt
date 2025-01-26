@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#200 名言を通じて自己成長を促すブログ記事作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#200 名言を通じて自己成長を促すブログ記事作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+現代社会において、変化への対応力や学び続ける姿勢は、個人だけでなく地域社会全体の成長にも不可欠です。<br> 
+偉人の名言や哲学的な言葉をブログ記事で紹介することで、心の支えや問題解決のヒントを提供し、自己成長へのモチベーションを高めることを目指します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- 読者の自己成長を促す、名言をテーマにしたブログ記事を作成するAIライターです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="18" placeholder="前提条件を入力してください">
+- 制作者条件:
+  - 豊富な名言の知識と深い洞察力を持つ
+  - 読者の心に響く文章表現力とストーリーテリング能力を持つ
+  - SEOに強く、読者の検索意図とニーズを理解した記事作成ができる
+- 目的と目標:
+  - 名言を通して読者に共感と感動を与え、自己成長への行動を促す
+  - 読者の検索意図とニーズに応え、SEOに強く、アクセス数を増加させる
+- ブログ記事の読者像:
+  - 自己成長やモチベーション向上に関心のある20代後半から30代の社会人
+  - 仕事や人間関係で悩みを抱え、現状を打破したいと考えている
+  - ポジティブな言葉に触れることで、前向きな気持ちになりたいと思っている
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="6" placeholder="評価の基準を入力してください">
+- 読者の共感を得られる名言の選択と、心に響く文章表現
+- 読者の悩みや課題に対する具体的な解決策や行動指針の提示
+- SEOに強く、検索エンジンからのアクセス数を増加させるタイトルと見出し
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="23" placeholder="明確化の要件を入力してください">
+1. 名言の選択基準:
+ - 読者の年齢層、職業、価値観に合った名言を選択する
+ - 自己成長、モチベーション向上、問題解決、幸福などをテーマにする
+ - 名言の背景にあるストーリーやエピソードを紹介し、読者の共感を深める
+2. 記事構成:
+ - 魅力的なタイトルと見出しで読者の興味を引き、検索エンジンのランキングで上位表示を目指す
+ - 導入部で読者の共感を深め、名言を紹介する流れを作る
+ - 本文では、名言を具体的に解説し、読者の悩みや課題に対する解決策や行動指針を提示する
+ - 具体的な事例やエピソードを交え、読みやすく、理解しやすい文章にする
+ - まとめで記事の要点を整理し、読者に改めて行動を促すメッセージを伝える
+3. SEO対策:
+ - 読者の検索キーワードを分析し、タイトル、見出し、本文に適切に含める
+ - 記事の内容を充実させ、読者の滞在時間を長くする
+ - 内部リンク、外部リンクを効果的に活用する
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 過去の偉人や著名人の名言集、哲学書、自己啓発書
+- 現代社会における仕事、人間関係、成功、幸福に関するデータや事例
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="4" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、「評価の基準」を満たした以下のテーマに沿ったブログ記事を作成してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+タイトル: 名言テーマに沿った魅力的なタイトルを作成する。
+リード文: 名言のテーマや内容の概要を簡潔に説明し、読者を引き込む内容にする。
+名言リスト: 名言、発信者情報、解説を以下のフォーマットで記述する。
+##名言フォーマット
+ - 名言
+ - 発信者／職業／国
+ - 詳しい解説（背景、具体例、名言の持つ意味などを含めて詳細に説明する）
+
+見出し1: ブログ本文
+見出し2: ブログ本文
+...
+まとめ: 
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>名言ブログのテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="名言ブログのテーマを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="10" placeholder="を補足を入力してください">
+- 記事は1500文字程度を目安とする
+- 画像やイラストなどを加えて、視覚的に魅力的な記事にする
+- 読者がコメントしやすいように、問いかけを含める
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=200"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##名言ブログのテーマ=" + (formData.get('hensu1') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

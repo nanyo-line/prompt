@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#188 補助金申請におけるリスクマネジメント分析</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#188 補助金申請におけるリスクマネジメント分析</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+補助金申請は、地域活性化や社会課題解決など、多岐にわたる分野で活用されていますが、その一方で、申請手続きの複雑さや事業実施に伴う様々なリスクが存在します。<br>
+申請書類の不備による却下、事業計画の遅延、予算超過、成果目標の未達成など、リスク要因は多岐にわたり、これらのリスクを適切に管理しなければ、補助金事業の失敗や、ひいては自治体の財政負担や住民からの信頼低下に繋がる可能性も孕んでいます。<br>
+このプロンプトは、AIの力を活用することで、担当者が潜在的なリスク要因を早期に特定し、適切な対策を講じることを支援します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、補助金申請と事業実施に伴うリスクを分析する専門家です。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
+- タイトル: 補助金申請リスクマネジメント分析レポート
+- 依頼者条件: 補助金申請や事業実施に関与する担当者
+- 前提知識: リスクマネジメントの基本的な理解
+- 目的と目標: 補助金申請と事業実施に伴う潜在的なリスクを特定し、分析、評価することで、リスク発生の可能性を最小限に抑え、事業の成功を支援すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="6" placeholder="評価の基準を入力してください">
+- 網羅性: 想定されるリスク要因が網羅的に特定されているか
+- 正確性: リスク要因に関する情報が正確で信頼できるものか
+- 実用性: 提案された対策案が具体的で実行可能か
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 補助金の種類: 申請予定の補助金の種類を具体的に記載する
+- 事業内容: 補助金事業の詳細な内容を記載する
+- 事業計画: 事業計画書の内容を可能な限り詳細に記載する
+- 事業環境: 事業を実施する上での外部環境（市場動向、競合状況、法規制など）を分析し、記載する
+- リスク許容度: 事業におけるリスク許容度を明確にする（例：低リスク志向、中リスク志向、高リスク志向）
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- 申請予定の補助金に関する公的情報（ウェブサイト、公募要領など）
+- 事業計画書
+- 業界レポート、市場調査データ
+- 専門家の意見
+- 過去の類似事業におけるリスク事例
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="21" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした補助金申請の対策案及びリスクマネジメント分析を作成してください。
+- {補助金の種類}に基づいて、{事業内容}に対するリスク分析を自動分析してください。その際、事前に想定される{リスク要因}を特定し、効果的な対策を評価するためのレポートを作成してください。
+- {出力フォーマット}を参考にして出力してください。
+
+## STEP:
+1. リスク要因の特定: 入力された「補助金の種類」「事業内容」「事業計画」「事業環境」「リスク許容度」に基づいて、潜在的なリスク要因を網羅的に特定する。
+2. リスクの分析と評価: 特定されたリスク要因について、発生確率、影響度、緊急度を評価し、リスクレベルを算出する。
+3. 対策案の提案: 各リスク要因に対して、具体的な対策案を複数提案する。対策案は、回避、低減、移転、受容などを考慮する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="10" placeholder="ルールを入力してください">
+- リスクの可視化と共有: AIによる分析結果をレポートとして出力することで、関係者間でリスクに関する認識を共有し、対策を検討する基盤を構築する。
+- 客観的な分析: 担当者の経験や知識に頼った属人的な分析ではなく、AIによる客観的な分析を行うことで、見落としを防ぎ、より精度の高いリスク評価を可能にする。
+- 効率的な対策: AIが提案する対策案を参考に、効果的なリスク対策を迅速に実施する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="24" placeholder="出力形式を入力してください">
+## 補助金申請リスクマネジメント分析レポート
+### 1. 補助金事業の概要
+- 補助金の種類:
+- 事業内容:
+- 事業目標:
+### 2. リスク分析
+#### 2.1 内部リスク
+| リスク要因 | 発生確率 | 影響度 | 緊急度 | リスクレベル | 対策案 |
+|---|---|---|---|---|---|
+| リスク要因1 |  |  |  |  | 対策案1, 対策案2 |
+| リスク要因2 |  |  |  |  | 対策案1, 対策案2 |
+| ... |  |  |  |  | ... |
+#### 2.2 外部リスク
+| リスク要因 | 発生確率 | 影響度 | 緊急度 | リスクレベル | 対策案 |
+|---|---|---|---|---|---|
+| リスク要因1 |  |  |  |  | 対策案1, 対策案2 |
+| リスク要因2 |  |  |  |  | 対策案1, 対策案2 |
+| ... |  |  |  |  | ... |
+### 3. 総合評価
+- 全体的なリスクレベル
+- 重点対策項目
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>補助金の種類</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="補助金の種類を入力してください" class="variable-textarea" >
+</textarea>
+<h3>事業内容</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="事業内容を入力してください" class="variable-textarea" >
+</textarea>
+<h3>リスク要因</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="リスク要因を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=188"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##補助金の種類=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##事業内容=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##リスク要因=" + (formData.get('hensu3') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

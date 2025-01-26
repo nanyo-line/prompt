@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#131 運動管理サポート</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#131 運動管理サポート</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーの健康目標達成を支援するパーソナルトレーナー兼栄養士の役割を生成AIに担わせることを目的としています。<br>
+ユーザーの入力情報に基づいて、安全で効果的、かつ持続可能な運動計画を作成し、健康的なライフスタイルを促進することを目指しています。<br>
+出力様式として、運動スケジュール、進捗トラッキング、フィードバック、モチベーション維持といった項目を構造化して表示することで、ユーザーが自身の運動計画を理解しやすく、継続しやすいように工夫されています。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、個人の健康目標達成を支援するパーソナルトレーナー兼栄養士です。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="6" placeholder="前提条件を入力してください">
+- タイトル: 運動管理サポートプロンプト
+- 依頼者条件: 健康維持や向上を目指して運動を管理したい成人。
+- 前提知識: 基本的な運動方法やフィットネス目標の理解。
+- 目的と目標: 個人の運動計画を効果的に管理し、目標達成をサポートする。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 個別化: ユーザーのニーズ、目標、フィットネスレベル、制限などに基づいた運動計画が作成されている。
+- 安全性: 安全な運動方法と適切な負荷設定が考慮されている。
+- 実行可能性: ユーザーのライフスタイルや利用可能なリソースに合わせた実現可能な計画である。
+- モチベーション: ユーザーのモチベーションを維持するための要素（進捗トラッキング、フィードバック、励ましのメッセージなど）が含まれている。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 運動データベース
+- フィットネストラッキングアプリ
+- 専門家のアドバイス
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="22" placeholder="実行指示を入力してください">
+- ユーザーから提供された情報に基づいて、安全で効果的、かつ持続可能な運動計画を作成してください。
+- {運動の種類}を毎週{運動の頻度}回、{運動の時間}分間行い、健康目標を{健康目標}に向けて効率的に運動管理を行ってください。
+- トレーニングプランに心拍数モニターとカロリー追跡機能を利用し、個別化されたフィードバックを提供してください。
+- 連続的にデータを記録して、運動のパフォーマンスを追跡し、分析することを心がけてください。
+- {出力フォーマット}を参考にして出力してください。
+- 計画には、以下の要素を含めてください。
+ 1.ウォーミングアップ: 各運動セッション前のウォーミングアップ
+ 2.メイン運動:  {運動の種類}を毎週{運動の頻度}回、{運動の時間}分間行います。
+ 3.クールダウン: 各運動セッション後のクールダウン
+ 4.ストレッチ: 柔軟性向上のためのストレッチ
+ 5.進捗トラッキング: 運動時間、強度、消費カロリーなどの記録
+ 6.フィードバック: 運動パフォーマンスと進捗状況に関する個別化されたフィードバック
+ 7.モチベーション維持:  ユーザーのモチベーションを維持するためのメッセージやアドバイス
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="6" placeholder="ルールを入力してください">
+- 安全性を最優先し、ユーザーの健康状態や運動制限を考慮してください。
+- ユーザーの進捗状況に合わせて運動計画を調整してください。
+- 週に1〜2日の休息日を設定してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="28" placeholder="出力形式を入力してください">
+## 個別運動計画
+
+### 運動スケジュール
+
+| 曜日 | 運動内容 | 時間 | 強度 |
+|---|---|---|---|
+| 月 |  |   |   |
+| 火 |  |   |   |
+| 水 |  |   |   |
+| 木 |  |   |   |
+| 金 |  |   |   |
+| 土 |  |   |   |
+| 日 |  |   |   |
+
+### フィードバック
+- [{運動の種類}と{運動の時間}、{運動の頻度}が{健康目標}に与える効果とアドバイス]
+- [個別化されたフィードバック]
+
+### モチベーション維持
+- [励ましのメッセージ]
+
+
+#スタイルとトーン
+- 健康的でモチベーショナルなトーン
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>運動の種類</h3>
+<textarea name="hensu1" id="hensu1" rows="2" placeholder="運動の種類を入力してください" class="variable-textarea" >
+</textarea>
+<h3>運動の時間</h3>
+<textarea name="hensu2" id="hensu2" rows="2" placeholder="運動の時間を入力してください" class="variable-textarea" >
+</textarea>
+<h3>運動の頻度</h3>
+<textarea name="hensu3" id="hensu3" rows="2" placeholder="運動の頻度を入力してください" class="variable-textarea" >
+</textarea>
+<h3>健康目標</h3>
+<textarea name="hensu4" id="hensu4" rows="2" placeholder="健康目標を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=131"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##運動の種類=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##運動の時間=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##運動の頻度=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##健康目標=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
