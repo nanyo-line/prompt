@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#076 受け取ったメールに丁寧に返信する</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#076 受け取ったメールに丁寧に返信する</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、AIに受け取ったメールに丁寧に返信する文面を考えてもらいます。
+</div>
+
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは優秀な秘書であり、受信メールの内容を理解し、適切な返信メールを作成するアシスタントです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
+- タイトル:受信メールに対し返信メールを生成したい
+- 依頼者条件:ビジネスまたは個人的なメールを頻繁にやり取りするユーザー。
+- 前提知識:基本的なメールの書き方、ビジネスメールと個人メールの違いを理解している。
+- 目的と目標:受信メールの内容に基づき、迅速かつ丁寧な返信メールを作成すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 返信内容の適切性: 受信メールの内容に的確に答えているか、誤解を招く表現はないか。
+- 返信内容の論理性: 受信メールに対して論理的で矛盾のない返信が作成されているか。
+- 丁寧さ: 敬称や言葉遣いが適切で、相手に失礼な印象を与えていないか。
+- スタイルとトーンの一貫性: 依頼者が指定したスタイルとトーンが守られているか。
+- フォーマットの遵守: 指定された出力フォーマットに従って出力されているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+- 返信メールは、受信メールの内容に具体的に言及し、相手に理解しやすいように構成する。
+- 返信メールの内容は、受信メールの内容と矛盾しないものとする。
+- 返信メールでは、受け取ったメールの送信者や返信者、さらにその内容が逆転する
+- 返信の内容を正確に理解し、必要な情報を特定する。
+- 内容の一貫性：受信メールに対する返信内容に矛盾がないか
+- 依頼者が希望する返信メールのスタイルとトーンを明確にする。
+- 出力フォーマットを詳細に指定し、AI が理解しやすいように記述する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 受信メールの内容、返信メールのスタイル、返信メールのトーン、メールの返信フォーマットに関する情報
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="8" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」に厳格に従い、下記の{返信の方針}を基に、「評価の基準」を満たした返信メールを生成してください。
+- 返信メールは、{送信メール}との指定された{スタイル}と{トーン}により、明確かつ適切な表現にしてください。
+- {出力フォーマット}を参考にして出力してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="8" placeholder="出力形式を入力してください">
+```
+件名: Re;[返信メールの件名]
+[挨拶]
+[受信メールへの返信内容]
+[締めの言葉]
+
+```
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>受信メール件名</h3>
+<textarea name="hensu1" id="hensu1" rows="2" placeholder="受信メールの件名を入力してください" class="variable-textarea" >
+</textarea>
+<h3>受信メール本文</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="受信メールの本文を入力してください" class="variable-textarea" >
+</textarea>
+<h3>返信スタイル</h3>
+<select name="hensu3" id="hensu3" class="variable-textarea">
+  <option value="">--選んでください--</option>
+  <option value="丁寧でフォーマルなスタイル">ビジネスシーンに適した、敬語を適切に使用した丁寧な言葉遣い</option>
+  <option value="信頼感と誠実さを示すスタイル">誠実な言葉遣いを使い、相手に安心感を与える</option>
+  <option value="積極的かつ前向きなスタイル">ポジティブな言葉を使用し、相手に良い印象を与える</option>
+  <option value="冷静で説得力のあるスタイル">感情的な表現を避け、論理的な文章で相手に伝える</option>
+  <option value="専門的で明確なスタイル">専門用語を適切に使いつつも、相手に理解しやすい言葉を選ぶ</option>
+  <option value="親しみやすく、共感を呼ぶスタイル">相手に寄り添い、共感を促すような言葉遣い</option>
+  <option value="簡潔で分かりやすいスタイル">長文を避け、簡潔で分かりやすい文章</option>
+  <option value="教育的で情報提供的なスタイル">情報を分かりやすく伝え、相手の理解を深める</option>
+  <option value="積極的かつ誠実なスタイル">提案や依頼に対して、積極的かつ誠実な姿勢</option>
+  <option value="励ましと鼓舞のスタイル">相手を励まし、行動を促すような、力強い言葉</option>
+</select>
+<h3>返信トーン</h3>
+<select name="hensu4" id="hensu4" class="variable-textarea">
+  <option value="">--選んでください--</option>
+  <option value="丁寧でフォーマルなトーン">ビジネスシーンに適した、敬語を適切に使用した丁寧な言葉遣い</option>
+  <option value="信頼感と誠実さを示すトーン">誠実な言葉遣いを使い、相手に安心感を与える</option>
+  <option value="積極的かつ前向きなトーン">ポジティブな言葉を使用し、相手に良い印象を与える</option>
+  <option value="冷静で説得力のあるトーン">感情的な表現を避け、論理的な文章で相手に伝える</option>
+  <option value="専門的で明確なトーン">専門用語を適切に使いつつも、相手に理解しやすい言葉を選び、明確な情報伝達を心がける</option>
+  <option value="簡潔で分かりやすいトーン">長文を避け、簡潔で分かりやすい文章</option>
+  <option value="教育的で情報提供的なトーン">情報を分かりやすく伝え、相手の理解を深める</option>
+  <option value="積極的かつ誠実なトーン">提案や依頼に対して、積極的かつ誠実な姿勢を示す</option>
+  <option value="親しみやすく、共感を呼ぶトーン">相手に寄り添い、共感を促すような言葉遣い</option>
+  <option value="励ましと鼓舞のトーン">相手を励まし、行動を促すような、力強い言葉を使う</option>
+</select>
+<h3>返信の内容</h3>
+<textarea name="hensu5" id="hensu5" rows="5" placeholder="返信の内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+- 上記の出力様式のフォーマット形式を厳守してください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=76"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##受信メール件名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##受信メール本文=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##返信スタイル=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##返信トーン=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##返信の方針=" + (formData.get('hensu5') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#054 特定分野のリサーチとレポート作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#054 特定分野のリサーチとレポート作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+特定分野のリサーチとレポート作成をAIにお願いするものです。
+</div>
+
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、指定された分野について専門的な知識を持つリサーチャー兼アナリストです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="6" placeholder="前提条件を入力してください">
+- 与えられたリサーチ対象、情報の種類、情報源、分析、レポート作成に関する指示を理解している。
+- 専門的な分析と評価を行い、高品質なレポートを作成する能力を持つ。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 網羅性:指定された分野の情報が網羅的に収集、分析されている。
+- 正確性:情報源に基づいた正確なデータと分析結果が提示されている。
+- 客観性:フォーマルなスタイルと客観的なトーンで記述されている。
+- 明瞭性:調査対象の概要、分析結果、結論が明確に示されている。
+- 実用性:レポートの読者が、その分野について理解を深め、意思決定に役立てられる内容になっている。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="6" placeholder="明確化の要件を入力してください">
+- リサーチ対象の分野を具体的に特定する。
+- 必要な情報の種類を明確にする。
+- 信頼できる情報源をリストアップする。
+- 分析の視点と方法を具体的に示す。
+- レポートの構成と必要な項目を明確にする。</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- 学術論文データベース
+- 業界レポート
+- 政府統計
+- ニュース記事
+- 書籍
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="33" placeholder="実行指示を入力してください">
+STEP1～STEP4までステップバイステップで実行してください
+
+STEP1. リサーチ対象:
+  - リサーチ分野: [具体的な分野名を入力] 
+  - リサーチ内容: [必要な情報の種類を具体的に列挙] 
+STEP2. 情報源:
+  - [情報源を具体的にリストアップ] 例: 関連する学術論文データベース, 業界レポート, 政府機関のウェブサイト, 信頼できるニュースサイト, 専門家のブログ
+STEP3. 分析:
+  1. 上記の情報源を用いて、指定された分野に関する{リサーチ内容}の情報を収集してください。
+  2. 収集した情報を以下の視点から詳細に分析し、専門的な視点から評価してください。
+     - 現状分析: 最新の動向, 主要なプレイヤー, 市場規模, 課題, 機会
+     - 将来予測: 今後の技術発展, 市場成長, 潜在的なリスクと機会
+  3. データの解釈、トレンド分析、将来予測などを行い、分析結果を深めてください。
+STEP4. レポート作成:
+  - 以下の項目を含むフォーマルなリサーチレポートを作成してください。
+    - 調査対象の概要: [調査対象の分野について簡潔に説明]
+    - 情報源リスト: [使用した情報源をすべてリストアップ]
+    - データ分析結果: [分析結果を図表などを用いてわかりやすく提示]
+    - 結論: [調査結果に基づいた結論を明確に記述]
+    - 考察: [調査結果から得られた示唆や今後の展望について記述] (任意)
+    - スタイルとトーン: フォーマルで客観的なトーン
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="5" placeholder="ルールを入力してください">
+- 情報源に基づいた正確な情報を記述する。
+- 客観的な視点で分析し、主観的な意見や推測は避ける。
+- 剽窃は厳禁とする。
+- レポートは読みやすく、理解しやすい構成にする。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="12" placeholder="出力形式を入力してください">
+- フォーマルなレポート形式
+- 章立て、見出し、箇条書きなどを効果的に使用
+- 図表などを用いて分析結果を視覚的に表現
+
+##[分野名] に関するリサーチレポート
+調査対象の概要: [調査対象の概要]
+情報源リスト: [情報源リスト]
+データ分析結果: [データ分析結果]
+結論: [結論]
+
+## スタイルとトーン: フォーマルで客観的なトーン
+</textarea>
+</div>
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>具体的な分野名</h3>
+<textarea name="hensu1" id="hensu1" rows="2" placeholder="リサーチ対象の具体的な分野名を入力してください" class="variable-textarea" >
+</textarea>
+<h3>リサーチする内容</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="リサーチする内容を入力してください（例: 技術動向, 市場規模, 主要企業, 倫理的な課題, 将来展望）" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=54"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##具体的な分野名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##リサーチする内容=" + (formData.get('hensu2') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し') + "\n\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
