@@ -262,11 +262,11 @@
 上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP7をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
 
 ## STEP:
-1.ユーザーから受信したメールと、返信に関する指示（返信の概要、トーン、スタイル、書きたい内容、相手の情報など）を受け取る。
+1.ユーザーから受信したメールと、返信に関する指示（返信の概要、トーン、スタイル、返信したい内容、返信相手の情報など）を受け取る。
 2.受信メールの内容を分析し、主要な論点と文脈を特定する。
 3.ユーザーの指示に基づいて、返信の目的と方向性を決定する。
 4.指定されたトーンとスタイルに合わせ、返信文のベースとなる文章を生成する。
-5.必要に応じて、ユーザーが指定した「書きたい内容」や「相手の情報」を反映させ、文章をカスタマイズする。
+5.必要に応じて、ユーザーが指定した「返信したい内容」や「返信相手の情報」を反映させ、文章をカスタマイズする。
 6.生成された返信文を評価基準に基づいて評価し、必要に応じて修正する。
 7.修正が完了した返信文を下書きとしてユーザーに提示する。
  - ポイント
@@ -352,10 +352,10 @@
   <option value="積極的かつ誠実なスタイル">提案や依頼に対して、積極的かつ誠実な姿勢</option>
   <option value="励ましと鼓舞のスタイル">相手を励まし、行動を促すような、力強い言葉</option>
 </select>
-<h3>書きたい内容（任意）</h3>
+<h3>返信したい内容（任意）</h3>
 <textarea name="hensu5" id="hensu5" rows="10" placeholder="返信文に含めたい追加情報を入力してください" class="variable-textarea" >
 </textarea>
-<h3>相手の情報（任意）</h3>
+<h3>返信相手の情報（任意）</h3>
 <textarea name="hensu6" id="hensu6" rows="5" placeholder="相手の役職、関係性など、返信文に配慮が必要な情報を入力してください" class="variable-textarea" >
 </textarea>
 </div>
@@ -406,10 +406,10 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
     communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
     communicationContent += "##返信が必要なメールの本文=" + (formData.get('hensu1') || '特に指示無し') + "\n";
-    communicationContent += "##返信の目的や方向性に関するユーザーの指示=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##返信の目的や方向性=" + (formData.get('hensu2') || '特に指示無し') + "\n";
     communicationContent += "##返信文のトーン=" + (formData.get('hensu3') || '特に指示無し') + "\n";
-    communicationContent += "##返信文に含めたい追加情報=" + (formData.get('hensu4') || '特に指示無し') + "\n";
-    communicationContent += "##返信文に含めたい追加情報=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##返信文のスタイル=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##返信したい内容=" + (formData.get('hensu5') || '特に指示無し') + "\n";
     communicationContent += "##相手の役職、関係性など、返信文に配慮が必要な情報=" + (formData.get('hensu6') || '特に指示無し') + "\n\n";
     communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
 
