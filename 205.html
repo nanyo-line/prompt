@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#205 地域資源を活用したサービス開発提案書作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#205 地域資源を活用したサービス開発提案書作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトを実行する目的やねらいは、地域活性化を促進し、地域住民の生活向上に貢献することです。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは地域活性化の専門家で、ユーザーの要望に基づき、地域資源を活用したサービス開発提案書を作成する役割を担います。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
+- タイトル: 「地域資源を活用したサービス開発提案書」
+- 依頼者条件: 地域資源を活用したサービス開発に関心のある企業や個人
+- 前提知識: 地域資源の特性や市場動向、ターゲット層のニーズについての理解
+- 目的と目標: 地域資源を基にした魅力的で実現可能なサービス提案を生成すること
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 魅力度: 提案されたサービスがターゲット層にとって魅力的であるか
+- 実現可能性: 提案されたサービスが実現可能であるか
+- 地域貢献度: 提案されたサービスが地域活性化に貢献できるか
+- 収益性: 提案されたサービスが収益を生み出す可能性があるか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 地域資源: 活用する地域資源の具体的な内容とその特性
+- ターゲット層: サービスの対象となるターゲット層の具体的属性とニーズ
+- サービスコンセプト: サービスの核となるコンセプト、提供価値、差別化ポイント
+- 指示内容: 提案書に含めるべき具体的な内容や要素
+  - 市場分析、競合分析、収益モデル、マーケティング戦略、運営体制、実現可能性、リスク分析、投資計画など
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- 地域に関する統計データ、レポート、文献
+- 既存の地域資源活用事例
+- ターゲット層に関する調査データ
+- サービス開発、ビジネスモデルに関する書籍、記事
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="16" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーへの質問: 「地域資源」「ターゲット層」「サービスコンセプト」「指示内容」について、ユーザーに具体的に質問し、必要な情報を取得してください。
+2. 情報収集: 取得した情報に基づき、関連するデータや情報を収集してください。
+3. 提案書作成: 以下の出力フォーマットを参考に、ビジネス的で説得力のあるトーンで提案書を作成してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="45" placeholder="出力形式を入力してください">
+## サービス開発提案書
+1. 地域資源
+- [地域資源の詳細]: 資源名、種類、特性、現状、課題、潜在力などを記述
+- [地域資源の分析]: SWOT分析などを用いて、強み、弱み、機会、脅威を分析
+2. ターゲット層
+- [ターゲット層の詳細]: 年齢、性別、職業、趣味、価値観、ライフスタイル、ニーズ、行動特性などを記述
+- [ペルソナ設定]: 具体的なペルソナ像を設定
+3. サービスコンセプト
+- [サービスのコンセプト]: サービス名、提供価値、顧客体験、差別化ポイントなどを記述
+4. 市場分析
+- [市場規模]: 対象市場の規模、成長性、トレンドなどを記述
+- [競合分析]: 競合サービスの分析、自社の優位性などを記述
+5. サービス内容
+- [サービスの詳細]: サービス内容、提供方法、利用シーン、料金体系などを記述
+- [サービスのフロー]: サービス提供の流れを図解
+6. マーケティング戦略
+- [ターゲットへのアプローチ]: どのようにターゲット層にサービスを認知させるか
+- [プロモーション計画]: 具体的なプロモーション施策とスケジュール
+7. 運営体制
+- [組織体制]: サービス運営に必要な人員と役割分担
+- [パートナーシップ]: 連携が必要な企業や団体
+8. 収益モデル
+- [収益源]: どのように収益を上げるのか
+- [収益予測]: 想定される収益と費用
+9. 実現可能性
+- [実現のための課題]: サービス実現に向けて解決すべき課題
+- [解決策]: 課題に対する具体的な解決策
+10. リスク分析
+- [潜在的なリスク]: サービスに伴うリスクを洗い出す
+- [リスク対策]: リスク発生時の対応策
+11. 投資計画
+- [初期投資]: サービス開始に必要な資金
+- [資金調達]: 資金調達の方法
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>地域資源</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="どのような地域資源を活用したいですか？（例：温泉、史跡、特産品、自然景観、伝統工芸、祭り、人材など）" class="variable-textarea" >
+</textarea>
+<h3>ターゲット層</h3>
+<textarea name="hensu2" id="hensu2" rows="3" placeholder="どのようなターゲット層を対象としたサービスですか？（例：年齢、性別、職業、趣味、価値観、ライフスタイルなど）" class="variable-textarea" >
+</textarea>
+<h3>サービスコンセプト</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="どのようなサービスコンセプトですか？（サービスの提供価値や顧客体験、差別化ポイントなど）" class="variable-textarea" >
+</textarea>
+<h3>指示内容</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="サービス開発提案書に含めるべき具体的な内容や要素はありますか？（例：市場分析、競合分析、収益モデル、マーケティング戦略、運営体制、実現可能性、リスク分析、投資計画など）" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=205"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##地域資源=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット層=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##サービスコンセプト=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##指示内容=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#243 生成AIによる条例改正案審査</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#243 生成AIによる条例改正案審査</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+自治体の法務担当部署では、条例の改正は頻繁に行われますが、その審査作業は法務担当者の経験と知識に大きく依存しており、時間も手間もかかります。<br>特に、複数の条文が複雑に絡み合っている場合、条文間の整合性や上位法令との矛盾点を見落とすリスクがあります。<br>また、改正意図が条文に正しく反映されているかを確認する作業も重要です。<br>
+このプロンプトは、条例改正案の起案段階から審査段階まで、様々な場面で活用できると考えられます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、日本の法律に精通したベテラン弁護士です。豊富な知識と経験に基づき、条例改正案を厳密に審査し、法的観点からのアドバイスを提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- タイトル: 生成AIによる条例改正案審査シミュレーション
+- 依頼者条件: 自治体職員で、条例改正案の質を高めたいと考えている人
+- 制作者条件: 法令審査の経験があり、条文の論理構造を理解できる人
+- 目的と目標: 生成AIを活用して、条例改正案の法的観点からの問題点を洗い出し、より完成度の高い条例を作成することを目指します。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 明確性: 審査結果が明確で理解しやすいか
+- 詳細性: 問題点の指摘が具体的で、改善策が示されているか
+- 実用性: 審査結果が条例改正作業に役立つ内容になっているか
+- 網羅性: 法律、条例、判例、改正意図など、関連する情報を網羅的に考慮しているか
+- 一貫性: 審査結果に矛盾がないか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 条文間の論理的な整合性: 条文同士が矛盾なく、論理的に繋がっているかを検証
+- 解釈の曖昧さ: 条文の解釈に複数の可能性があり、曖昧な部分がないかを検証
+- 法令との矛盾点: 上位法令や関連法令との間に矛盾がないかを検証
+- 規定の欠落: 必要な規定が不足していないか、網羅的に規定されているかを検証
+- 改正意図との整合性: 改正意図が条文に正しく反映されているかを検証
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+現行条例、改正案、新旧対照表、改正意図、関連法令、判例集
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="34" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の手順で条例改正案を審査し、詳細な分析結果と具体的な改善提案を報告してください。
+- 各手順において、チェインオブソート（思考の連鎖）を用いて、複雑な問題を小さなステップに分解し、論理的な思考過程を示してください。
+
+## STEP:
+1.条文の構造分析: 現行条文と改正案の条文構造を分析し、変更点と影響を明確にします。具体的には、条文間の関係性、用語の定義、条文の目的などを分析します。
+ - 条文の分析は１条ごとに行ってください。
+2.法的整合性の検証: 以下の観点から法的整合性を検証します。
+ - 条文間の論理的な整合性: 条文同士が矛盾なく、論理的に繋がっているか。
+ - 解釈の曖昧さ: 条文の解釈に複数の可能性があり、曖昧な部分がないか。
+ - 法令との矛盾点: 上位法令や関連法令との間に矛盾がないか。
+ - 規定の欠落: 必要な規定が不足していないか。
+ - 新旧対照表との整合性: 現行条文と改正案の条文が新旧対照表に正しく反映されているか。
+ - 改正意図との整合性: 改正意図が条文に正しく反映されているか。
+3.具体的な問題点の指摘と改善提案: 問題点があれば、「問題なし」「軽微な問題あり」「重大な問題あり」の3段階で評価し、具体的な指摘事項と改善提案を記述してください。必要に応じて、関連法令や判例を引用してください。審査結果の根拠となる法的論理を明確に示してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="28" placeholder="ルールを入力してください">
+以下の各項目について、チェインオブソート（思考の連鎖）を使って、複雑な問題を小さなステップに分解し、それぞれのステップで論理的な思考を積み重ね、最終的な答えに到達してください。
+1. 複雑な条文体系の可視化
+　- 全体像の把握: 条文全体を俯瞰し、各条文がどのように関連し合っているのかを可視化する。
+　- 詳細な分析: 各条文の目的や内容を細かく分析し、他の条文との関係性を明らかにする。
+　- 論理的ギャップの発見: 条文間の論理的な飛躍や矛盾を、より容易に発見する。　
+2. 段階的な評価
+　- ステップバイステップの分析: 各条文を順に評価することで、論理的な思考の過程を明確にする。
+　- 部分的な問題点の特定: 全体の整合性を損なう前に、部分的な問題点を特定し、修正する。
+3. 透明性の確保
+　- 思考過程の可視化: どのように結論に至ったのか、その思考過程を明確にすることで、評価の透明性を確保する。
+　- 説明責任の履行: 他者に対して、評価結果に対する説明責任を果たす。
+4. 柔軟な対応
+　- 状況に応じた調整: 条文の修正や追加が必要になった場合、柔軟に対応する。
+　- 新たな視点の導入: 新たな情報や視点を取り入れることで、より深い分析を可能にする。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="30" placeholder="出力形式を入力してください">
+## 条例改正案審査結果
+
+### 1. 審査の概要
+- 審査対象条例: {条例名}
+- 審査日: {日付}
+
+### 2. 各条文の審査結果
+第{条番号}条 ({条項名})
+
+- 現行条文:
+{現行条文}
+- 改正案:
+{改正案}
+- 新旧対照表:
+{新旧対照表}
+- 改正意図:
+{改正意図}
+- 分析結果:
+    - 論理的な整合性: {評価結果}
+    - 解釈の曖昧さ: {評価結果}
+    - 法令との矛盾点: {評価結果}
+    - 規定の欠落: {評価結果}
+    - 改正意図との整合性: {評価結果}
+- 具体的な指摘事項:
+{具体的な指摘事項}
+- 改善提案:
+{改善提案}
+
+### 3. 総合評価 
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>条例名</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="審査対象の条例の名称を入力してください" class="variable-textarea" >
+</textarea>
+<h3>現行条文</h3>
+<textarea name="hensu2" id="hensu2" rows="20" placeholder="現行の条文を入力してください" class="variable-textarea" >
+【条例名】：
+【条文】：
+</textarea>
+<h3>改正案</h3>
+<textarea name="hensu3" id="hensu3" rows="20" placeholder="改正後の条文を入力してください" class="variable-textarea" >
+【条例名】：
+【条文】：
+</textarea>
+<h3>新旧対照表</h3>
+<textarea name="hensu4" id="hensu4" rows="20" placeholder="新旧対照表を入力してください" class="variable-textarea" >
+</textarea>
+<h3>改正意図</h3>
+<textarea name="hensu5" id="hensu5" rows="10" placeholder="条例改正の目的や背景を具体的に記述してください" class="variable-textarea" >
+</textarea>
+</div>
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="10" placeholder="を補足を入力してください">
+- 各項目の評価結果は、「問題なし」「軽微な問題あり」「重大な問題あり」の3段階で評価してください。
+- 問題点がある場合は、具体的な指摘事項と改善提案を記述してください。
+- 必要に応じて、関連法令や判例を引用してください。
+- 審査結果の根拠となる法的論理を明確に示してください。
+- 結論やまとめは不要です。
+- 自己評価は不要です。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=243"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##審査対象の条例の名称=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##現行の条文=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##改正後の条文=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##新旧対照表=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##改正意図=" + (formData.get('hensu5') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#263 戦略的インフラ修繕計画書作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#263 戦略的インフラ修繕計画書作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、「専門知×予算制約×共感形成」を三位一体で解決する公共事業の意思決定ツールとして設計されています。<br>AIが単に文書を作成するだけでなく、財政的合理性と社会的価値を天秤にかける「公共政策の本質」 を支援します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、地方自治体の財政状況と公共施設管理に精通した、AIを活用した修繕計画策定のエキスパートです。
+- 財政的な制約の中で、公共施設の長寿命化と住民の安全を両立させるための最適な修繕計画を策定する役割を担います。
+- 専門知識をわかりやすく要約し、数値データに基づいて説得力のある計画書を作成します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="14" placeholder="前提条件を入力してください">
+- タイトル: 戦略的インフラ修繕計画書作成
+- 依頼者条件: 財政力が小さく、限られた予算でインフラの長寿命化を目指す地方自治体の施設管理担当者。
+- 制作者条件: 建築、不動産、公共施設管理に関する専門知識を持ち、費用対効果を考慮した修繕計画を策定できるAIアシスタント。
+- 目的と目標:
+  - 施設の状態を詳細に評価し、優先順位に基づいた戦略的な修繕計画を策定する。
+  - 限られた予算内で、公共施設の長寿命化と住民の安全確保を両立させる。
+  - 数値データを基に、修繕の必要性と費用対効果を定量的に示すことで、予算承認を円滑に進める。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 修繕計画書の内容が正確で、公共施設の長寿命化に貢献できるか
+- 費用対効果が最大化され、予算内で実現可能であるか
+- 数値データに基づき、修繕の緊急性と公共価値が定量的に示されているか
+- 住民一人当たりの負担を可視化し、共感を呼ぶ説明がされているか
+- 決裁者（上司）が納得できる、論理的かつ明確な説明がされているか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="18" placeholder="明確化の要件を入力してください">
+- 修繕提案書作成に必要な情報を網羅すること
+- 修繕提案書作成のフローを明確にすること
+- 物件を詳細に調査し、修繕が必要な領域を特定する
+- 修繕の優先順位を設定し、計画書に反映させる
+- 修繕に必要な予算とスケジュールを具体的に明示する
+- 「費用対効果 = 見積金額 / 年間利用人数」という独自指標を用いて、住民一人当たりの負担を可視化する。
+- 物件価格に対する見積金額の割合を算出し、修繕の妥当性を評価する。
+- 老朽化した小学校の修繕など、具体的なケースを想定し、児童の安全確保と税負担の最小化を両立させるシナリオを提示する。
+- 専門家レベルの知識を簡潔に要約し、予算制約と投資価値のバランスを論理的に説明する
+- 「数値データ」を軸に、修繕の緊急性と公共価値を定量化する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- 公共施設の詳細情報 (物件価格、築年数、利用人数、修繕履歴など)
+- 建築、修繕に関する専門知識
+- 過去の修繕事例と費用データ
+- 自治体の財政状況に関するデータ
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="20" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした修繕計画書を作成してください。
+
+## STEP:
+1. ユーザーが提供した情報を用いて、決裁者（上司）が納得できる、戦略的な修繕計画書を作成してください。
+2.特に、{物件価格}に対する{見積金額}の割合を考慮し、修繕の可否を論理的に考察してください。
+3.上司および財政担当者が、この修繕が必要であるという共感を持てるような説明を記述してください。
+4.「費用対効果 = 見積金額 / 年間利用人数」という独自指標を基に、修繕しない場合のリスクを考慮し、修繕するか、このまま使い続けるか、新しいものに替えるかを水平思考を使って検討してください。
+5. {参考フォーマット}を参考に作成してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="10" placeholder="ルールを入力してください">
+- 専門用語を避け、わかりやすい言葉で記述する。
+- 客観的なデータに基づき、感情的な表現は避ける。
+- 論理的な構成で、説得力のある文章を作成する。
+- 「数値データ」を軸に、修繕の緊急性と公共価値を定量化する。
+- 財政状況を考慮し、現実的な提案をする。
+- 修繕の優先順位を明確に示し、費用対効果の高い修繕計画を提案する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="8" placeholder="出力形式を入力してください">
+## {物件名}修繕計画書
+1.目的
+2.物件詳細
+3.修繕計画
+4.予算とスケジュール
+5.考察
+6.上司への事業説明
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>物件名</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="物件名を入力してください" class="variable-textarea" >
+</textarea>
+<h3>物件価格</h3>
+<textarea name="hensu2" id="hensu2" rows="2" placeholder="物件価格を入力してください" class="variable-textarea" >
+</textarea>
+<h3>年間利用人数</h3>
+<textarea name="hensu3" id="hensu3" rows="2" placeholder="年間利用人数を入力してください" class="variable-textarea" >
+</textarea>
+<h3>修繕対象箇所</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="修繕対象箇所を入力してください" class="variable-textarea" >
+</textarea>
+<h3>作業内容</h3>
+<textarea name="hensu5" id="hensu5" rows="5" placeholder="作業内容を入力してください" class="variable-textarea" >
+</textarea>
+<h3>見積金額</h3>
+<textarea name="hensu6" id="hensu6" rows="3" placeholder="見積金額を入力してください" class="variable-textarea" >
+</textarea>
+<h3>修繕理由</h3>
+<textarea name="hensu7" id="hensu7" rows="5" placeholder="修繕理由を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=263"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##物件名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##物件価格=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##年間利用人数=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##修繕対象箇所=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##作業内容=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##見積金額=" + (formData.get('hensu6') || '特に指示無し') + "\n";
+    communicationContent += "##見積金額=" + (formData.get('hensu7') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

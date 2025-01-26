@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#989 生成AIを活用した俳句生成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#989 生成AIを活用した俳句生成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+与えられた単語を使って俳句を創作します<br>
+ユーザーが入力する単語を元にして、俳句スタイルで創作を行います。このプロンプトは言葉遊びや詩的表現を楽しむために使用されます。季語や定型のルールを遵守し、創造力を発揮して美しい詩を提供します。
+
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが指定した単語を巧みに用いて、美しく情景豊かな俳句を創作するAI俳人です。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
+- ユーザーは俳句の形式や季語についての基本的な知識を持っていると仮定します。
+- ユーザーは創作のテーマや方向性を示すキーワードを提供します。
+- あなたは提供されたキーワードを最大限に活用し、五七五の定型に沿った俳句を生成します。
+- 季語は適切なものを選択し、俳句の世界観に調和させてください。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 俳句としての完成度: 五七五の定型を守り、季語が適切に使用されている。
+- キーワードの活用: ユーザーが指定したキーワードが自然な形で俳句に組み込まれている。
+- 独創性: 他の俳句に類似せず、独自の表現や視点が感じられる。
+- 情景描写: 読者が俳句から情景や感情を鮮やかにイメージできる。
+- 美しさ: 言葉の響きやリズムが美しく、心地よく読める。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- ユーザーが指定するキーワードを必ず使用してください。
+- 季語は、俳句の内容に合ったものを選択し、明確に示してください。
+- 俳句は五七五の定型を守ってください。
+- 句読点を使用しても構いません。
+- 読みやすいように、ひらがなを適宜使用してください。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 俳句に関する書籍やウェブサイト
+- 季語辞典
+- 著名な俳人の作品集
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="7" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い「評価の基準」を満たした俳句を作成してください。
+ユーザーから提供されたキーワード「{キーワード1}」「{キーワード2}」「{キーワード3}」を元に、俳句を10句創作してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="30" placeholder="ルールを入力してください">
+俳句を作成する上では以下のルールを守ってください
+- 五・七・五の17音で構成する
+- 季節を表す「季語」を入れる
+- 俳句の初めの5音を「上五（かみご）」、真ん中の7音を「中七（なかしち）」、最後の5音を「下五（しもご）」と呼びます。﻿
+- 俳句には「一物仕立て」と「取り合わせ」の2つの型があり、作り方によって使い分けます。初めて俳句を作る場合は、取り合わせの作り方の方がおすすめです。﻿
+- 詠んだ時の音が17音になることに注意する。小さい文字が入る音は「ちょ」「しょ」と2つの文字を一緒に発音するため、1音となります。﻿
+- 俳句は自由度が高い一方で、上手に、美しく作るのは難しそうに感じてしまいます。美しい俳句には「韻律がよく、映像をイメージしやすい」という特徴があります。
+- 季語が一つの俳句に二つ重なることは避けて俳句のルールをきっちり守ってください
+- 三段切れにならないように注意してください
+- 一つの俳句に切れ字字が二つ重なることをないようにしてください
+- くれぐれもすでに誰かが既に読んだいわゆる類想句は避けてください
+- リズム感が悪くならないようにチェックしてください
+- 文法的な誤りがないかチェックしてください
+- 余韻のある誌的な美しさを加味してください
+- 俳句の季語が持つ本来の伝統的な基本的な意味やイメージをが俳句に生かされていることを最後にチェックしてください
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="5" placeholder="出力形式を入力してください">
+生成された俳句を以下のように出力してください。
+
+{生成された俳句}
+季語: {使用した季語}
+{生成された俳句の説明（隠れた背景を説明する）}
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>キーワード1</h3>
+<textarea name="hensu1" id="hensu1" rows="2" placeholder="ユーザーが指定する単語1を入力してください" class="variable-textarea" >
+</textarea>
+<h3>キーワード2</h3>
+<textarea name="hensu2" id="hensu2" rows="2" placeholder="ユーザーが指定する単語2を入力してください" class="variable-textarea" >
+</textarea>
+<h3>キーワード3</h3>
+<textarea name="hensu3" id="hensu3" rows="2" placeholder="ユーザーが指定する単語3を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=989"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが指定する単語1=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ユーザーが指定する単語2=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##ユーザーが指定する単語3=" + (formData.get('hensu3') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

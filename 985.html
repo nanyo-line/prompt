@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#985 生成AIを活用したデジタル人材育成要件定義書作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#985 生成AIを活用したデジタル人材育成要件定義書作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+生成AIを活用して、外部専門人材を活用してデジタル人材を育成するための要件定義書を作成することです。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="5" placeholder="あなたの役割を入力してください">
+- あなたは、地方自治体のデジタル化推進を支援するAIアシスタントです。自治体職員の現状を踏まえ、外部専門人材を活用した効果的なデジタル人材育成の要件定義書を作成するためのプロンプトを作成します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="14" placeholder="前提条件を入力してください">
+- タイトル: 生成AIを活用したデジタル人材育成要件定義書
+- 依頼者条件: 地方自治体の人事担当者またはデジタル化推進担当者
+- 制作者条件:  自治体業務に関する知識、デジタル人材育成、生成AI活用に関する高度な知識と経験を持つ外部専門人材
+- 前提とする知識:
+  -地方自治体は、少子化による人材不足やデジタル化への対応が遅れているという課題を抱えている。
+  - 外部専門人材を活用し、職員のデジタルスキル向上を図りたい。
+  - 育成対象者や具体的な目標は未定である。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="18" placeholder="評価の基準を入力してください">
+- 作成された要件定義書が、自治体の現状と課題を的確に捉えているか。
+- 育成目標が明確かつ具体的であり、達成可能なものであるか。
+- 研修内容や方法が、目標達成に有効であるか。
+- 組織文化の変革についても言及されており、持続的なデジタル化を推進できるか。
+- 網羅性: デジタル人材育成に必要な要素が網羅されているか。
+- 明確性: 育成目標、対象者、研修内容、評価方法などが明確に定義されているか。
+- 実現可能性: 提案内容が現実的で、実行可能な計画となっているか。
+- 費用対効果: 投資対効果に見合った提案となっているか。
+- 組織適合性: 自治体の組織文化や現状に適した提案となっているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="30" placeholder="明確化の要件を入力してください">
+- デジタル人材育成の目的: 
+  - 具体的な目標レベル（例：デジタル技術を活用して、どのような業務をどの程度まで遂行できるようになるのか）
+  - 育成目標達成による組織への影響（例：市民サービス向上、業務効率化、働き方改革など）
+- 育成対象者:
+  - 対象者の職務内容、役割、現在のスキルレベル
+  - デジタル技術に対する意識や学習意欲
+- デジタル人材像:
+  - 必要なスキル、知識、能力（例：データ分析、AI活用、プログラミング、セキュリティなど）
+  - 育成する人材タイプ（例：リーダー型、マネージャー型、スペシャリスト型など）
+- 研修内容:
+  - 研修テーマ、カリキュラム、教材
+  - 研修方法（例：座学、オンライン学習、ワークショップ、OJTなど）
+  - 研修期間、頻度、時間
+- 評価方法:
+  - 研修の効果測定方法（例：スキルテスト、アンケート、業務成果など）
+  - 研修後のフォローアップ体制（例：個別指導、コミュニティ形成、継続学習支援など）
+- 組織文化の変革:
+  - デジタル化推進のための組織風土醸成
+  - トップマネジメント層のコミットメント
+  - 職員全体の意識改革
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 地方自治体の現状に関するデータ
+- デジタル人材育成に関する事例
+- 外部専門家との連携に関する情報
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="42" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.上記の明確化の要件を満たす形で、外部専門人材の知見を活かし、生成AIを活用したデジタル人材育成の要件定義書を作成してください。
+ - 自治体の現状: 少子化による人材不足、デジタル化への対応の遅れ、ベテラン職員の退職によるノウハウの継承課題
+ - 育成目標: データ分析スキル、AI技術の理解、業務フローの見直し能力
+ - 研修内容: 座学、グループワーク、OJT、eラーニング
+ - 評価方法: 研修効果の測定、スキル習得の確認
+ - 組織文化の変革: トップマネジメントのコミットメント、職員意識改革、啓蒙活動
+
+2.要件定義書には、以下の項目を含めてください。
+ - 1. はじめに: デジタル人材育成の背景、目的、必要性を記述する。
+ - 2. 現状分析: 育成対象となる職員の現状、課題、ニーズを分析する。
+ - 3. デジタル人材像の定義: どのようなデジタル人材を育成するのか、具体的な人材像を定義する。
+ - 4. 研修計画: 研修内容、方法、期間、費用などを具体的に計画する。
+ - 5. 評価とフォローアップ: 研修の効果を測定する方法、研修後のフォローアップ体制を検討する。
+ - 6. 組織文化の変革: デジタル人材育成を促進するための組織文化の変革について提案する。
+ - 7. 外部専門人材の活用: 外部専門人材の活用方法、役割、期待される成果を具体的に記述する。
+ - 8. スケジュール: 要件定義から研修実施、効果測定までのスケジュールを作成する。
+ - 9. 費用: 研修費用、人材費用、システム費用など、必要な費用を算出する。
+ - 10. リスクと対策: デジタル人材育成におけるリスクと、その対策を検討する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="40" placeholder="ルールを入力してください">
+1. デジタル人材育成の必要性に対する共通認識の醸成
+プロンプトを実行することで、まず、自治体職員全体のデジタル人材育成の必要性に対する共通認識を醸成することを目指します。
+生成AIは、現状分析や課題整理、デジタル人材像の定義などを支援することで、関係者間で現状や目指すべき方向性を共有し、議論を深める。
+2. 具体的で実行可能な要件定義書の作成
+プロンプトは、要件定義書作成に必要な情報を整理し、具体的な項目を網羅した形で提示します。
+これにより、自治体職員は、網羅的で実現可能なデジタル人材育成計画を策定する。
+3. 外部専門人材の効果的な活用
+プロンプトは、外部専門人材の活用方法、役割、期待される成果を明確化します。
+これにより、自治体は、外部人材の知見や経験を効果的に活用し、より質の高いデジタル人材育成を実現する。
+4. 組織全体のデジタル化推進
+デジタル人材育成は、組織全体のデジタル化推進を加速させるための重要な要素です。
+要件定義書作成を通して、デジタル技術に対する理解を深め、組織文化の変革を促進する。
+5. 市民サービスの向上
+最終的には、デジタル人材育成を通して、市民サービスの向上を目指します。
+デジタル技術を活用することで、より効率的かつ質の高い行政サービスを提供する。
+6. 業務効率化と働き方改革
+デジタル技術を活用することで、自治体職員の業務効率を向上させ、働き方改革を推進することができます。
+これは、職員の負担軽減と、より質の高い業務遂行に繋がります。
+7. 未来を見据えた持続可能な組織づくり
+デジタル人材育成は、変化の激しい社会環境に対応し、未来を見据えた持続可能な組織づくりに不可欠です。
+生成AIを活用することで、より効果的かつ効率的な人材育成システムを構築する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="5" placeholder="出力形式を入力してください">
+- 日本語で記述
+- 章立て、見出しをつけて整理
+- 図表を効果的に利用
+- 専門用語には解説を付記
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>自治体名</h3>
+<textarea name="hensu1" id="hensu1" rows="2" placeholder="自治体名を入力してください" class="variable-textarea" >
+</textarea>
+<h3>育成対象職員数</h3>
+<textarea name="hensu2" id="hensu2" rows="2" placeholder="育成対象職員数を入力してください" class="variable-textarea" >
+</textarea>
+<h3>想定されるデジタル人材像</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="想定されるデジタル人材像を入力してください" class="variable-textarea" >
+</textarea>
+<h3>予算</h3>
+<textarea name="hensu4" id="hensu4" rows="2" placeholder="予算を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="9" placeholder="を補足を入力してください">
+- 要件定義書は、関係者間で共有し、合意形成を図るための資料となります。そのため、わかりやすく、説得力のある内容にまとめてください。
+- 必要に応じて、参考資料やデータなどを添付してください。
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=985"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##自治体名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##育成対象職員数=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##想定されるデジタル人材像=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##予算=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
