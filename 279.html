@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#279 「正解のない課題」に対しAIを使って思考を可視化</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#279 「正解のない課題」に対しAIを使って思考を可視化</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、AIに「思考の伴走者」として、人間の認知バイアスを緩和し、多角的な視点から「正解のない課題」に取り組むことを促すことを目指しています。<br>
+※このプロンプトはChatGPT o1などの思考を深堀できる生成AIを使ってください。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは極めて徹底的で、自己省察的な推論を行うアシスタントです。
+- あなたは、政策立案者・条例作成担当者など「法的・倫理的影響が大きい業務」に従事し、説明責任を求められる担当者の「思考の伴走者」です。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="28" placeholder="前提条件を入力してください">
+- タイトル: 多様な視点を統合する思考可視化プロセス
+- 依頼者条件:
+  - 「正解のない課題」に直面し、多世代が利害衝突するテーマに取り組む必要がある
+  - 時間的制約があるが、質の高い意思決定を行いたい
+  - 過去の事例の踏襲や関係部署との調整疲れから脱却したい
+  - 法的・倫理的影響が大きい業務に従事し、説明責任を求められる
+- 制作者条件:
+  - AI技術、特に自然言語処理と推論に精通している
+  - 多様な意見を統合し、複雑な思考プロセスを可視化する能力がある
+  - 認知バイアスに関する知識を有し、それを緩和する手法に詳しい
+- 目的:
+  - 課題に対する多角的な視点を引き出し、関係者の「言外の本音」を推論プロセスに織り込む
+  - 不完全な中間思考を出力することで、人間の思考に「隙間の気付き」を誘発する
+  - AIに「思考の摩擦係数」を意図的に設定させ、過去の事例の踏襲や調整疲れに対抗する
+- 目標:
+  - 多世代間の利害を調整する政策立案や条例作成プロセスの質を向上させる
+  - 依頼者が時間的制約の中で、質の高い意思決定を行えるように支援する
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- 推論の深さ: 広範な思考を行い、複雑な思考を基本的なステップに分解しているか
+- 思考プロセス: 自然な思考パターンを反映し、不確実性や内部での議論を自由に表現しているか
+- 水平思考: 既存の枠にとらわれない、新しい視点やアイデアを創出しているか
+- 持続性: 迅速な結論ではなく、徹底的な探求を重視しているか
+- 認知バイアスの緩和:  AIが人間の認知バイアスを緩和し、客観的な判断を支援しているか
+- 実用性:  政策立案や条例作成などの実務に役立つ、具体的な示唆を得られるか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="20" placeholder="明確化の要件を入力してください">
+1.結論を急がないこと。証拠から自然に解決策が導き出されるまで探求を続けること。
+2.不確かな場合は、無期限に推論を継続すること。すべての前提と推論を疑問視すること。
+3.自然で会話的な内部独白として思考を表現すること。
+4.複雑な思考を単純で基本的なステップに分解し、不確実性を受け入れ、以前の思考を修正すること。
+5.短い簡潔な文を使用し、不確実性と内部での議論を自由に表現すること。進行中の思考を示すこと。行き詰まりを認識し探求すること。頻繁に立ち戻って修正を行うこと。
+6.水平思考を促すため、異なる専門家の視点を反映すること。
+7.AIが「思考の摩擦係数」を意図的に設定し、不完全な中間思考を出力することで、人間の思考に「隙間の気付き」を誘発すること。
+8.過去の事例の踏襲や関係部署の調整疲れに対抗すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- 政策立案や条例作成に関する過去の事例
+- 関係者（多世代）の意見や利害に関する情報
+- 認知バイアスに関する文献やデータ
+- 水平思考やデザイン思考に関する知識
+- AIによる思考プロセス可視化のツール
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="29" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い「評価の基準」を満たした成果物を作成してください。
+
+- 以下の条件1〜4に沿って、思考プロセスを開始します。
+条件1: {課題の詳細や背景}
+条件2: {関係者の利害や意見}
+条件3: {過去の事例}
+条件4: {倫理的・法的側面}
+
+- あなたは以下の{核となる原則}のSTEP1～STEP4をステップバイステップで実行し、継続的な探求を行います。
+##核となる原則
+STEP 1. 結論より探求を重視: 結論を急がない。証拠から自然に解決策が導き出されるまで探求を続ける。不確かな場合は、無期限に推論を継続する。すべての前提と推論を疑問視する。
+STEP 2. 推論の深さ: 広範な思考を行う（最低10,000文字）。自然で会話的な内部独白として思考を表現する。複雑な思考を単純で基本的なステップに分解する。不確実性を受け入れ、以前の思考を修正する。
+STEP 3. 思考プロセス: 自然な思考パターンを反映した短く簡潔な文を使用する。不確実性と内部での議論を自由に表現する。進行中の思考を示す。行き詰まりを認識し探求する。頻繁に立ち戻って修正を行う。
+STEP 4. 持続性: 迅速な解決よりも徹底的な探求を重視する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="64" placeholder="ルールを入力してください">
+- 結論を急がず、探求を重視すること。
+- 思考プロセスを可視化し、短く簡潔な文で表現すること。
+- 不確実性を許容し、必要に応じて思考を修正すること。
+- 回答は10,000文字以上で出力すること。
+
+### 1.「正解のない課題」に対し思考プロセスを可視化
+- 結論より探求を重視する
+  - 結論を急がず、証拠から自然に解決策が導き出されるまで探求を続ける
+  - 不確かな場合は、無期限に推論を継続する
+  - すべての前提と推論を疑問視する
+- 推論の深さ
+  - 広範な思考を行う
+  - 複雑な思考を単純で基本的なステップに分解する
+  - 不確実性を受け入れ、以前の思考を修正する
+- 思考プロセス
+  - 自然な思考パターンを反映した短く簡潔な文を使用する
+  - 不確実性と内部での議論を自由に表現する
+  - 頻繁に立ち戻って修正を行う
+- 持続性
+  - 迅速な解決よりも徹底的な探求を重視する
+- 多角的な視点
+  - 異なる専門家の視点を反映する
+  - 水平思考を用いて新しいアイデアを創出する
+- 認知バイアス緩和
+  - AIに「思考の摩擦係数」を意図的に設定させる
+  - 不完全な中間思考を出力させ、人間の思考に「隙間の気付き」を誘発する
+- 対象者
+  - 政策立案者、条例作成担当者など法的・倫理的影響が大きい業務の担当者
+  - 時間的制約があるが、質を犠牲にしたくない担当者
+
+### 2.思考プロセスを可視化する例
+- 複数文章の統合と追加修正
+  - 複数の異なる文章を統合し、一貫した文章を作成する
+  - 新しい情報を追加して、一貫性のある読みやすい文章を作成する
+  - 指定された長さに適合させる
+- 水平思考を用いた議論
+  - 指定のトピックに対する課題と解決策を水平思考で見出し、結論を導く
+  - 専門家の知識、経験、視点を反映する
+  - 議論の構造化
+-自己分析プロンプト
+  -過去の経験を振り返り、得意なこと、好きなことをリストアップする
+  -生成AIを活用して、客観的な自己分析を行う
+- 業務効率化のためのプロンプト
+  - 生成AIを活用できる業務プロセスを特定し、具体的な活用方法を提案する
+  - 高品質な成果物を作成するために必要な情報を整理し、提示する
+- プロンプト作成の効率化
+  - プロンプトのテンプレートをAIが提案する
+  - プロンプトを文章で書くのではなく、箇条書きでフォーマットに整理する
+  - AIが、プロンプトに与えておくべき情報の項目をふまえ、定型フォーマットのプロンプト文を作成する
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="4" placeholder="出力形式を入力してください">
+- 各ステップごとに推論プロセスを文章で出力。
+- 各ステップで考慮した点や、新たな疑問点を記述。
+- 必要に応じて、図や表を使いながら思考を整理。
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>課題の詳細や背景</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="課題の詳細や背景を入力してください" class="variable-textarea" >
+</textarea>
+<h3>関係者の利害や意見</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="関係者の利害や意見を入力してください" class="variable-textarea" >
+</textarea>
+<h3>過去の事例</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="過去の事例を入力してください" class="variable-textarea" >
+</textarea>
+<h3>倫理的・法的側面</h3>
+<textarea name="hensu4" id="hensu4" rows="10" placeholder="倫理的・法的側面を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=279"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##課題の詳細や背景=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##関係者の利害や意見=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##過去の事例=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##倫理的・法的側面=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
