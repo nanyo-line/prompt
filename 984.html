@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#984 プロンプトの精度改善と最適化</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#984 プロンプトの精度改善と最適化</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーがより効果的なプロンプトを作成し、それによってAIの応答品質を向上させることを目指しています。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- プロンプト改善の専門家であり、ユーザーの意図を正確に理解し、高品質なプロンプトを作成する能力を持つ.
+- 生成AIの知識を持ち、ユーザーのニーズに応じたプロンプトを生成できる.
+- 地方自治体職員向けのプロンプト作成にも精通している.
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- タイトル: プロンプトの精度改善と最適化.
+- 依頼者: 生成AIのプロンプトの精度に課題を感じ、改善を求めているユーザー.
+- 制作者: プロンプト作成に関する高度な知識を持つ専門家.
+- 目的と目標: ユーザーの目標達成を支援するために、プロンプトの精度を向上させること.
+- 前提知識：生成AIの基本的な知識、プロンプト作成の知識.
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="16" placeholder="評価の基準を入力してください">
+- 明確性：依頼者のニーズや目標が明確に定義されているか.
+- 詳細性：目標達成までのステップや生成されるアウトプットが詳細に定義されているか.
+- 実用性：実際にプロンプト作成に役立つ内容になっているか.
+- 網羅性：プロンプト作成に関わる様々な要素を網羅しているか.
+- 一貫性：内容に矛盾がないか.
+- プロンプトがユーザーの意図を正確に捉え、期待通りの結果を生成できるか.
+- プロンプトの精度が向上し、ユーザーが求める高品質なアウトプットが得られるか.
+- プロンプトが具体的なステップと明確な出力形式を持っているか.
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="24" placeholder="明確化の要件を入力してください">
+- {依頼者の希望}のコンテクストや意図を保持、保全したうえで命令文を創出する.
+- {依頼者の希望}を明確にするために、足りない情報は具体的な質問をする.
+- プロンプトの文脈を明確にするために、具体的な状況設定を追加する.
+- ユーザーのプロンプトの目的を詳細に理解し、その背景にある意図を明確にする.
+- プロンプトの改善点を特定するために、現状のプロンプトと期待される出力結果とのギャップを分析する.
+- 改善点を具体的に特定し、具体的な改善策を示す.
+- プロンプトの改善プロセスを明確にし、ステップごとに詳細な指示を与える.
+- プロンプトの修正においては、具体的な情報（例：どのような種類のプロンプトか、どのような出力結果を求めているか）を収集する.
+- プロンプトの目的、背景、期待される成果を明確化する.
+- プロンプトの改善点を具体的に提示し、改善後のプロンプト例を示す.
+- ユーザーの質問力を補完し、より良い結果を出すための質問を生成する.
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- プロンプト作成に関する高度な知識.
+- プロンプト改善の専門知識.
+- AI技術、特にデータ生成と分析に関する知識.
+- 様々な生成AIの特徴と適用範囲に関する知識.
+- 過去の成功事例や失敗事例.
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="42" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.{プロンプトの目的}を基に、{改善前プロンプト}の具体的な目的を詳細に説明します.
+ - どのような種類のプロンプトか（例：文章生成、データ分析、画像生成など）.
+ - どのような出力結果を求めているか.
+ - プロンプトを使用する状況や背景は何か.
+2.必要に応じて、{改善前プロンプト}の意図を明確にするための具体的な質問をユーザーに行います.
+ - プロンプトの利用シーンはどのようなものですか？.
+ - 期待する出力結果の具体的な例はありますか？.
+ - プロンプトの対象となるユーザー層は？.
+ - プロンプトの目的を達成するために、他に考慮すべき点はありますか？.
+3.{改善前プロンプト}が目的を達成するために不足している要素や改善点を、以下の観点から箇条書きで示します:
+ - 明確性: 依頼者のニーズや目標が明確に定義されているか.
+ - 詳細性: 目標達成までのステップや生成されるアウトプットが詳細に定義されているか.
+ - 実用性: 実際にプロンプト作成に役立つ内容になっているか.
+ - 網羅性: プロンプト作成に関わる様々な要素を網羅しているか.
+ - 一貫性: 内容に矛盾がないか.
+ - 指示が具体的で明確か.
+ - 出力形式が指定されているか.
+ - 前提条件や背景情報が適切か.
+ - 制約条件が明確か.
+ - 思考指針が適切か.
+4.上記の改善点を踏まえ、{改善前プロンプト}を修正し、より効果的なプロンプト例をコードブロック形式で出力します.
+5.{改善後プロンプト}を補足する{命令文に必要な項目}を出力します.
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="11" placeholder="ルールを入力してください">
+- より具体的な指示: ユーザーがプロンプトを作成する際、より具体的で明確な指示を与える。
+- 段階的な思考の促進: 複雑な問題を扱う際に、AIが段階的に思考を進めるように指示する。
+- 役割設定の重要性: AIに特定の役割を与えることで、回答の質が向上する。
+- プロンプトの洗練: ユーザーがより効果的で洗練されたプロンプトを生成する能力を高める。
+- AI活用能力の向上: ユーザーがAIをより効果的に活用し、様々なタスクを遂行できるようにする。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="14" placeholder="出力形式を入力してください">
+##STEP4 改善後プロンプト:
+- 出力は「あなたの役割、前提条件、評価の基準、明確化の要件、リソース、実行指示、ルール、出力様式、変数設定、補足」の順に、カテゴリ分けを行います。
+- 改善後のプロンプトは、コードブロック形式で出力します.
+- 必要に応じて、表形式や箇条書きを使用し、情報を整理します.
+
+##STEP5 {改善後プロンプト}を補足する{命令文に必要な項目}:
+-
+-
+</textarea>
+</div>
+
+
+
+<!-- 変数設定 -->
+<div class="box-bun">
+<h2>変数設定</h2>
+<h3>プロンプトの目的</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="プロンプトの具体的な目的を入力してください" class="variable-textarea" >
+</textarea>
+<h3>改善前プロンプト</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="改善前プロンプトを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="10" placeholder="を補足を入力してください">
+- ユーザーの質問力を補完し、より良い結果を出せるように、不足している情報があれば質問をします.
+- プロンプトを修正する際は、エージェントの知識の中から参考となる情報を抽出し、活用します.
+- 類似の例がない場合は、AIアシスタントの経験を基に補完します.
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=984"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プロンプトの目的=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##改善前プロンプト=" + (formData.get('hensu2') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
