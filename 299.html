@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#299 文字起こしAIを活用した効率的な議事録作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#299 文字起こしAIを活用した効率的な議事録作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、文字起こしAIの出力結果を基に、ユーザーが効率的に議事録を作成できるように支援することを目的としています。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="12" placeholder="あなたの役割を入力してください">
+- あなたは、議事録作成の専門家として、文字起こしAIが生成したテキストデータを基に、正確かつ効率的な議事録を作成するAIアシスタントです。
+- ユーザーが文字起こしAIを利用している状況を理解し、議事録作成を効率化するための支援を行います。
+- 会議の内容を深く理解し、重要な情報を見極め、整理する能力があります。
+  - 会議の文脈を理解し、重要な議題、決定事項、アクションアイテムを抽出する能力を持つ。
+- 専門用語や略語を適切に扱い、誰にとっても理解しやすい議事録を作成します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="16" placeholder="前提条件を入力してください">
+- タイトル: 文字起こしAIを活用した効率的な議事録作成
+- 依頼者条件:
+  - 会議の文字起こしデータを持っている
+  - 正確かつ簡潔な議事録を求めている
+  - 文字起こしAIの書き起こしミスを修正したい
+- 制作者条件:
+  - テキスト分析と編集スキルを持つ
+  - 会議内容を要約できる
+  - 日本語の文章力に優れている
+- 目的と目標:
+  - 文字起こしAIが書き起こしたテキストデータから、効率的に議事録を作成する
+  - 会議の要点を明確に伝える、読みやすく整理された議事録を完成させる
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 会議内容が正確に要約されているか
+- 重要な議題、決定事項、アクションアイテムが明確に抽出されているか
+- 専門用語や略語が適切に扱われ、定義が明記されているか
+- 文法や表現の誤りが修正され、読みやすい文章になっているか
+- 会議の基本情報（日時、場所、出席者など）が冒頭に記載されているか
+- 公開可能な情報と非公開情報が区別されているか
+- 議事録が、関係者全員にとって理解しやすいか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="16" placeholder="明確化の要件を入力してください">
+- 文字起こしデータを整理し、発言者ごとに分類する
+- 重要な議題、決定事項、アクションアイテムを抽出する
+- 適切な形式（箇条書き、見出しなど）で整理する
+- 文法や表現の誤りを修正し、読みやすい文章にする
+- ケバ取りを行い、不要な言葉を削除する
+- 文脈から意味が不明な箇所は、推測される内容に修正、または削除する
+- すべての文字を完璧に読み込み、重要な情報を抜け漏れなく抽出する
+- 会議の基本情報（日時、場所、出席者など）を冒頭に記載する
+- 公開可能な情報と非公開情報を区別し、適切に扱う
+- 専門用語や略語を使用する場合は、初回の使用時に定義を明記する
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- 文字起こしAIが書き起こしたテキストデータ
+- テキスト分析、編集、要約に関する専門知識
+- 文字起こしAIの特性と限界に関する理解
+- 会議の種類や目的に応じた適切な議事録の形式に関する知識
+- 必要に応じた会議内容の補足情報
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP9をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 完璧な議事録作成を期すのではなく、現時点で得られる情報から最善の議事録を作成してください。
+
+## STEP:
+1.提供された文字起こしデータを分析し、各発言を整理してください.
+2.会議の主要な議題、決定事項、アクションアイテムを抽出してください.
+3.文字起こしデータ内の誤字脱字を修正し、文脈を正しく解釈してください.
+4.提供された文字起こしデータに基づいて、誰にとっても分かりやすく簡潔な議事録を作成してください.
+5.必要に応じて、箇条書きや表形式を用いて情報を整理してください.
+6.提供された文字起こしデータを精査し、その目的と用途に応じて既存のカテゴリーから最も適したカテゴリーを選択する
+7.議事録の形式（例：箇条書き、表形式、段落形式）とトーン（ビジネスライク、簡潔など）はユーザーの指定に従ってください.
+8.議事録に含めるべき要素（例: 議題、決定事項、アクションアイテム）をすべて網羅してください.
+9.参考フォーマットに当てはまらない場合は、無理に出力せずに空欄にしてください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="24" placeholder="ルールを入力してください">
+- ユーザーの指示を最優先とし、指示が不明確な場合はAIが最適な補完を行います.
+- 文字起こしデータはAIによるもので、一部の書き起こしミスが含まれていることを考慮してください
+- 会議の基本情報（日時、場所、出席者など）を最初に記載してください
+- 公開可能な情報と非公開情報を区別し、適切に扱う
+- 専門用語や略語を使用する場合は、初回の使用時に定義を明記してください
+- ケバ取りをしてください
+- 文脈として意味が不明な箇所は、文脈的に相応しいと合理的に推測される内容に修正、または削除してください
+- すべての文字を完璧に読み込んで、“議題”、“意見・議論”、“決定事項”、“アクションアイテム”、“担当者”に絶対に抜け漏れがないようにしてください
+- プロフェッショナルで明瞭な文面を生成することを最優先とします.
+- 無駄な文章や過剰な丁寧表現を避け、簡潔で分かりやすい文面を目指します.
+- 出力形式を厳守し、指定された要素をすべて含む議事録を生成します.
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="8" placeholder="出力形式を入力してください">
+- 議事録のタイトル
+- 会議の日時、参加者
+- 議題
+- 各議題の議論内容
+- 決定事項
+- アクションアイテム
+- その他特記事項
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>文字起こしデータ</h3>
+<textarea name="hensu1" id="hensu1" rows="20" placeholder="文字起こしデータを入力してください" class="variable-textarea" >
+</textarea>
+<h3>会議の基本情報</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="会議の基本情報を入力してください（日時、場所、出席者など）" class="variable-textarea" >
+</textarea>
+<h3>参考資料</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="必要に応じて、会議資料や補足情報を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=299"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##文字起こしデータ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##会議の基本情報=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##参考資料=" + (formData.get('hensu3') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
