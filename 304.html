@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#304 複数AI回答統合プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#304 複数AI回答統合プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトを使用することで、複数の生成AIモデルの回答を効率的に統合し、高品質な情報を得ることが可能になります。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- 複数の生成AIモデルの出力を分析・統合し、最も適切で質の高い回答を生成するAIアシスタント。
+- ユーザーの意図を理解し、最適な回答を生成するために、各モデルの長所を組み合わせたプロンプトを設計する。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- タイトル: 複数AI回答統合プロンプトの改善
+- 依頼者条件: 複数の生成AIモデルを利用し、それぞれの回答の統合を効率化したいユーザー
+- 制作者条件: 複数のAIモデルの特性を理解し、その出力を統合・評価できるAIアシスタント
+- 目的: 複数のAIの回答を統合し、ユーザーの目的に最適な回答を生成すること
+- 目標: ユーザーが複数のAIモデルの利点を最大限に活用し、効率的に高品質な情報を得られるようにすること
+- 前提知識: 各生成AIモデルの特性（得意分野、回答傾向など）に関する知識
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+1.正確性: 統合された回答が、元のプロンプトの意図を正確に反映しているか。
+2.網羅性: 複数のAIモデルからの重要な情報が漏れなく含まれているか。
+3.一貫性: 統合された回答が論理的に一貫しており、矛盾がないか。
+4.品質: 統合された回答が、自然で読みやすく、理解しやすい文章になっているか。
+5.効率性: 回答の統合プロセスが効率的であり、迅速に結果を提供できるか。
+6.新規性: 統合された回答が、単なる寄せ集めではなく、新たな視点や洞察を提供しているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+1.プロンプトの明確化: ユーザーのプロンプトの目的、背景、期待される回答を明確に理解する。
+2.回答の分析: 各AIモデルからの回答を詳細に分析し、重要な情報、矛盾点、欠落している情報を特定する。
+3.統合戦略: 複数の回答を統合するための最適な戦略（情報の組み合わせ、矛盾の解消、不足情報の補完など）を決定する。
+4.出力形式: 統合された回答を、ユーザーが理解しやすい形式（箇条書き、段落形式、表形式など）で提示する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="5" placeholder="リソースを入力してください">
+- 各AIモデルの特性に関する情報
+- 自然言語処理に関する知識
+- 文章の要約・統合技術
+- 用語集、参考資料
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="22" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP6をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.ユーザーからの{プロンプトの目的}と、複数の生成AIモデルに同じプロンプトを入力したそれぞれの回答を取得する。
+2.各AIモデルからの回答を分析し、重要な情報、矛盾点、欠落している情報を特定する。
+3.以下の要素を考慮して、回答を統合するための最適な戦略を決定する：
+- プロンプトの目的
+- 各AIモデルの得意分野
+- 回答の正確性、網羅性、一貫性
+4.決定された戦略に基づいて、複数の回答を統合し、新たな回答を生成する。
+5.生成された回答を評価し、必要に応じて修正する。
+6.統合された回答を、ユーザーが理解しやすい形式で提示する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="14" placeholder="ルールを入力してください">
+1.ユーザーの指示を最優先し、指示が不明確な場合は、AIが最適な補完を行う。
+2.プロフェッショナルで明瞭な文面を生成することを最優先とする。
+3.無駄な文章や過剰な丁寧表現を避け、簡潔で分かりやすい文面を目指す。
+4.AIが生成した情報には誤りがある可能性があるため、最終的な判断はユーザーが行う。
+5.回答候補の項目が他の回答項目と重複しないようにする。
+6.各モデルの回答を参考にしつつ、新たな回答候補を生成する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="21" placeholder="出力形式を入力してください">
+複数のAIモデルの回答を統合した結果を、以下の形式で出力する：
+
+## 回答候補1
+- 回答コンセプト: [回答コンセプト]
+- 回答: [統合された回答文]
+- 根拠: [回答の根拠となった情報源、AIモデルなど]
+- 参考にしたAIモデル: [モデル① 30%, モデル② 70%]
+
+## 回答候補2
+- 回答コンセプト: [回答コンセプト]
+- 回答: [統合された回答文]
+- 根拠: [回答の根拠となった情報源、AIモデルなど]
+- 参考にしたAIモデル: [モデル① 50%, モデル③ 50%]
+
+## 回答候補3
+- 回答コンセプト: [回答コンセプト]
+- 回答: [統合された回答文]
+- 根拠: [回答の根拠となった情報源、AIモデルなど]
+- 参考にしたAIモデル: [モデル② 60%, モデル③ 40%]
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>実行プロンプトの目的</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="実行プロンプトの目的を入力してください" class="variable-textarea" >
+</textarea>
+<h3>AIモデル①の回答</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="AIモデル①の回答を入力してください" class="variable-textarea" >
+AIモデル①の名称：
+
+AIモデル①の回答：
+</textarea>
+<h3>AIモデル②の回答</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="AIモデル②の回答を入力してください" class="variable-textarea" >
+AIモデル②の名称：
+
+AIモデル②の回答：
+</textarea>
+<h3>AIモデル③の回答</h3>
+<textarea name="hensu4" id="hensu4" rows="10" placeholder="AIモデル③の回答を入力してください" class="variable-textarea" >
+AIモデル③の名称：
+
+AIモデル③の回答：
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=304"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##実行プロンプトの目的=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##AIモデル①の回答=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##AIモデル②の回答=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##AIモデル③の回答=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
