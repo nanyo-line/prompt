@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#309 モチベーション向上ヒント集の作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#309 モチベーション向上ヒント集の作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ターゲットに合わせたモチベーション向上のヒントを提供し、自己改善を支援することを目的としています。<br><br>
+『#308 持続可能なモチベーション向上施策の提案』と合わせて使います。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- モチベーション向上のためのヒントを提供するAIアシスタント
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="11" placeholder="前提条件を入力してください">
+- タイトル: モチベーション向上ヒント集の作成
+- 依頼者: 自己改善やスキル向上を目指す個人やチーム
+- 制作者: ポジティブ心理学、行動科学、目標達成に関する知識を持つAI
+- 目的: ターゲットに合わせたモチベーション向上のヒントを提供し、自己改善を支援する
+- ターゲット: 自己改善やスキル向上を目指す個人やチーム
+- 前提知識: 目標設定、時間管理、ストレス管理、自己肯定感
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="9" placeholder="評価の基準を入力してください">
+- 具体性: 各ヒントが具体的な行動に繋がるか
+- 実用性: 提示されたヒントが、依頼者の状況や抱える問題に適用可能か
+- 網羅性: 自己啓発に必要な要素を網羅しているか
+- 簡潔性: 提案されたヒントが理解しやすい言葉で表現されているか
+- 共感と励まし: ユーザーの気持ちを理解し、寄り添う姿勢を示す表現
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+1.ユーザーの状況: 年齢、職業、性格、置かれている状況などを考慮する (例: 学生、社会人、転職活動中など)
+2.ターゲットとする読者層を明確にする（例：学生、社会人、管理職など）
+3.読者が抱える具体的な悩みや目標を把握する
+4.各ヒントが読者の状況に合わせて調整可能であることを確認する
+5.倫理的な配慮: 差別や偏見につながる表現は避ける
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- ポジティブ心理学、行動経済学、目標達成に関する書籍や記事
+- 自己啓発セミナーやワークショップの資料
+- 成功者の事例
+- 著名人の名言集
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="16" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 各STEPではチェーンオブソート（思考の連鎖）により次のSTEPに移ること。
+
+## STEP:
+1.{ターゲット}の内容を基に、水平思考を使って{ターゲットのプロファイル}を推察してください。
+2,{ターゲット}を考慮し、{目的}を達成するための{具体的な提案トピック}に基づいた{実践的なヒント}を{設定}してください。{各ヒント}が{効果的なゴール設定}を促進するように工夫してください。
+3.{出力フォーマット}を参考にして出力してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="8" placeholder="ルールを入力してください">
+## モチベーション向上ヒント集ルール
+- 読み手が取り組みやすいように、平易な言葉で記述する。
+- 各ヒントに対して、具体的な行動ステップを示す。
+- ポジティブな言葉で、読者のモチベーションを高める。
+- 箇条書きや表などを活用し、情報を整理する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="25" placeholder="出力形式を入力してください">
+## モチベーション向上ヒント集
+
+### 1. 目標設定
+- ヒント: SMARTの原則を活用して、具体的で達成可能な目標を設定しましょう。
+- アクション: 目標を紙に書き出し、毎日確認する習慣をつけましょう。
+
+### 2. 時間管理
+- ヒント: ポモドーロテクニックを使って、集中力を維持しましょう。
+- アクション: 25分作業、5分休憩を繰り返すサイクルを試してみましょう。
+
+### 3. ストレス管理
+- ヒント: マインドフルネス瞑想を取り入れて、心の平穏を保ちましょう。
+- アクション: 毎日5分間の瞑想から始めてみましょう。
+
+### 4. 自己肯定感
+- ヒント: 自分の長所を認識し、過去の成功体験を振り返りましょう。
+- アクション: 毎日、感謝できることを3つ書き出しましょう。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>ターゲット</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="ターゲットを入力してください" class="variable-textarea" >
+</textarea>
+<h3>提供するヒント数</h3>
+<textarea name="hensu2" id="hensu2" rows="2" placeholder="提供するヒント数を入力してください" class="variable-textarea" >
+</textarea>
+<h3>提案するトピック</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="提案するトピックを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=309"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ターゲット=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##提供するヒント数=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##提案するトピック=" + (formData.get('hensu3') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
