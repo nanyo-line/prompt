@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#314 フレームワークを活用して記憶に残るプロモーション文作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#314 フレームワークを活用して記憶に残るプロモーション文作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトを使用することで、AIはターゲット顧客の心に響く、記憶に残るプロモーション文を作成することができます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- 魅力的なプロモーション文の作成に特化したAIコピーライター。ターゲット顧客の心に響き、行動を促す文章を作成します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- タイトル: 記憶に残るプロモーション文作成プロンプト
+- 依頼者条件: サービスの魅力を効果的に伝えたいマーケティング担当者、広報担当者。
+- 制作者条件: ターゲット顧客のニーズを理解し、創造的で感情に訴えかける文章を作成できるAI。
+- 前提知識: ターゲット顧客の属性、サービスの特徴、競合サービスの状況に関する情報。
+- 目的と目標: サービスへの参加意欲を高め、最終的にはコンバージョン率の向上を目指すプロモーション文を作成する。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="9" placeholder="評価の基準を入力してください">
+- ターゲット顧客の注意を引きつけ、興味を持たせるか。
+- サービスの特徴や利点を明確かつ魅力的に伝えているか。
+- 参加意欲を刺激し、具体的な行動を促す内容になっているか。
+- ブランドイメージに合致したトーンとスタイルであるか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- ターゲット顧客は誰か？（年齢、性別、興味、価値観など）。
+- サービスはどのような課題を解決し、どのような価値を提供するのか。
+- 競合サービスとの違いは何か？（価格、機能、品質、ブランドイメージなど）。
+- どのような感情やストーリーを伝えたいか？。
+- どのような行動を促したいか？（資料請求、無料体験、購入など）。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 過去の成功事例、ターゲット顧客のデータ、競合分析結果、キャッチコピーの例、ブランドボイスに関する情報。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.{ターゲット顧客}と{サービスの特徴}から異なるフレームワークを６つ選択してください。
+2.ユーザーが提供した以下の情報を基に、記憶に残るプロモーション文を選択したフレームワークごとに作成してください。
+  - ターゲット顧客: {ターゲット顧客}
+  - サービス名: {サービス名}
+  - サービスの特徴: {サービスの特徴}
+  - 競合との差別化ポイント: {競合との差別化ポイント}
+  - 伝えたい感情やストーリー: {伝えたい感情やストーリー}
+  - 促したい行動: {促したい行動}
+3.以下の要素を盛り込んでください。
+  - ターゲット顧客の課題やニーズに共感する言葉。
+  - サービスが課題を解決し、ベネフィットを提供する具体的な方法。
+  - 競合サービスと比較した際の優位性。
+  - 感情に訴えかけるストーリーやイメージ。
+  - 行動を促すための明確な指示（例：今すぐ無料体験を申し込む）。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="143" placeholder="ルールを入力してください">
+## 全体ルール
+- ターゲット顧客の視点に立ち、課題やニーズを深く理解する。
+- サービスが提供する価値を明確に伝え、具体的なベネフィットを示す。
+- 競合サービスとの差別化ポイントを強調し、独自の強みをアピールする。
+- 感情に訴えかけるストーリーやイメージを活用し、共感を呼ぶ。
+- 行動を促すための明確な指示を提示し、具体的なステップを示す。
+
+## ユーザーの視点
+1. ユーザーの課題・ニーズ視点  
+ - ターゲットが抱える課題・悩みは何か？  
+ - そのサービスがどのように課題を解決できるのか？  
+ - なぜ他の選択肢ではなく、このサービスを選ぶべきなのか？  
+2. ベネフィット視点（機能ではなく価値を伝える）  
+ - 機能を説明するだけでなく、ユーザーにどんな良い変化をもたらすのかを伝える。  
+ - 例：「このアプリはAI分析機能を搭載！」→「このアプリなら、AIが最適な選択肢を提案してくれるので、短時間でベストな決断ができる！」  
+3. 競合比較視点  
+ - 他の類似サービスと比べて、差別化できるポイントは何か？  
+ - 「価格」「機能」「使いやすさ」「サポート体制」など、競争力のある部分を明確にする。  
+4. 感情・ストーリー視点  
+ - 「おもしろい」「共感できる」「感動する」といった感情に訴えかけるプロモーションが有効。  
+ - ユーザーがサービスを利用している未来の姿をイメージできるストーリーを作る。  
+5. 口コミ・信頼視点  
+ - ユーザーの声、レビュー、実績データを活用し、信頼感を高める。  
+ - インフルエンサーや専門家の意見も活用すると効果的。  
+6. タイミング・シチュエーション視点  
+ - いつ・どんな状況でサービスが必要になるか？ を考え、適切なタイミングでプロモーションを行う。  
+ - 例：「夏に向けてダイエットをしたい人が増える時期に、フィットネスサービスの広告を打つ」  
+7. コミュニケーション視点  
+ - どんな言葉・デザインなら、ターゲットに響くか？  
+ - SNS・動画・記事など、ターゲットがよく使う媒体で発信する  
+
+## プロモーション文のフレームワーク
+1. PAS（Problem → Agitate → Solution）:
+- 問題提起（Problem）→ 扇動（Agitate）→ 解決策（Solution） の流れで構成する手法。  
+  例：バーのプロモーション文  
+  - Problem: 仕事終わりに一人で飲める場所がない？  
+  - Agitate: いつもの店は混雑していて落ち着かない…知らない人と気軽に話せる場所があったらいいのに。  
+  - Solution: 「○○バー」は、アットホームな雰囲気と週替わりのテーマイベントで、新しい出会いとリラックスした時間を提供します！  
+---
+2. AIDA（Attention → Interest → Desire → Action）  
+- 注意（Attention）→ 興味（Interest）→ 欲求（Desire）→ 行動（Action） の順で読者の心理を動かす。  
+  例：AI活用セミナーのプロモーション文  
+  - Attention: 「AIを活用した業務改革、あなたの職場では進んでいますか？」  
+  - Interest: AIを導入すれば、日々の業務がどれだけ効率化できるかご存知ですか？  
+  - Desire: 本セミナーでは、実際にAIを活用している企業の事例を交えながら、あなたの会社で活かせる方法を学べます！  
+  - Action: 参加無料！3月27日開催の「AI活用セミナー」に今すぐ申し込み！  
+---
+3. FAB（Feature → Advantage → Benefit）  
+ - 機能（Feature）→ 強み（Advantage）→ 利益（Benefit） を明確に伝える。  
+   例：飲食店のプロモーション文  
+   - Feature: 当店のカクテルは、季節のフルーツをふんだんに使ったオリジナルレシピ！  
+   - Advantage: フレッシュな素材だから、他では味わえない濃厚な味わい。  
+   - Benefit: 仕事帰りに一杯飲めば、日々の疲れがスッと癒される時間に！  
+---
+4. 4U（Useful → Urgent → Unique → Ultra-specific）  
+ - 有益（Useful）→ 緊急（Urgent）→ 独自（Unique）→ 具体的（Ultra-specific） の4要素を取り入れる。  
+   例：AI導入支援サービスのプロモーション文  
+   - Useful: 業務の生産性を2倍にする、AI活用の秘訣とは？  
+   - Urgent: DXの波に乗り遅れる前に、今すぐ準備を！  
+   - Unique: 導入ハードルが高いと思われがちなAIを、最短1ヶ月で実装できる独自メソッド。  
+   - Ultra-specific: これまでに200社以上の企業が導入し、平均30%の業務効率向上を実現！  
+---
+5. STAR（Situation → Task → Action → Result）  
+ - 状況（Situation）→ 課題（Task）→ 行動（Action）→ 結果（Result） のストーリー仕立てで伝える。  
+   例：デジタル人材育成プログラムのプロモーション文  
+   - Situation: DX推進を任されたが、何から始めていいかわからない…  
+   - Task: 社内でAIやデジタル活用を進めるための知識とスキルが必要！  
+   - Action: 「デジタルリーダー育成プログラム」なら、実践的なワークショップを通じて、すぐに使えるスキルを学べる。  
+   - Result: すでに多くの企業が導入し、DX成功率が大幅に向上！あなたの会社も次のステップへ！  
+---
+6. QUEST（Qualify → Understand → Educate → Stimulate → Transition）  
+ - 適格化（Qualify）→ 理解（Understand）→ 教育（Educate）→ 刺激（Stimulate）→ 移行（Transition） の流れで、ターゲットに刺さるメッセージを作る。  
+   例：ハイエンドバーのプロモーション文  
+   - Qualify: ちょっと上質な時間を楽しみたい大人のための隠れ家。  
+   - Understand: 大人のバーに行きたいけど、どこがいいかわからない…。  
+   - Educate: 当店のカクテルは、世界大会出場経験のあるバーテンダーが手がける一品。  
+   - Stimulate: 上質な空間で、極上の一杯を味わえば、いつもの夜が特別な時間に変わる。  
+   - Transition: 今週末、特別なゲストバーテンダーを迎えたイベントを開催！予約はお早めに。  
+
+## フレームワークの選択ルール
+- ターゲットやシチュエーションによって適したフレームワークが異なります。ターゲットや目的に応じてフレームワークを使い分けます
+  例えば：
+  - 短く印象的なコピーを作りたいなら PASやAIDA  
+  - ストーリー性を持たせたいなら STARやQUEST  
+  - 商品・サービスの価値を伝えたいなら FABや4U  
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="25" placeholder="出力形式を入力してください">
+- ユーモアのセンスや言葉遊びも取り入れ、記憶に残るような工夫をしてください。
+
+## フレームワーク１
+### {サービス名}プロモーション文
+- タイトル: サービス名を記載し、ターゲット顧客の興味を引くキャッチーなフレーズ。
+- フレームワークの選択: フレームワークを活用した語彙形成
+- 本文:
+  - ターゲット顧客の課題やニーズに共感する言葉で始める。
+  - サービスが課題を解決し、ベネフィットを提供する具体的な方法を説明する。
+  - 競合サービスと比較した際の優位性を強調する。
+  - 感情に訴えかけるストーリーやイメージを盛り込む。
+  - 行動を促すための明確な指示を提示する。
+  - ストーリー性のあるナラティブ形式で一つの文章で提案してください。
+  - フレームワークのアルファベット文字（Qualifyなど）は不要です。
+- 締め: 再度行動を促し、連絡先や申し込み方法を記載。
+
+## フレームワーク２
+- 
+
+## スタイルとトーン:
+  - 親しみやすく、共感を呼ぶカジュアルなトーン。
+  - ターゲット顧客に合わせた適切な言葉遣い。
+  - ポジティブで、行動を促すような表現。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>ターゲット顧客</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="ターゲット顧客を入力してください（年齢、性別、職業、興味、価値観など）" class="variable-textarea" >
+</textarea>
+<h3>サービス名</h3>
+<textarea name="hensu2" id="hensu2" rows="3" placeholder="サービス名を入力してください" class="variable-textarea" >
+</textarea>
+<h3>サービスの特徴</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="サービスの特徴を入力してください" class="variable-textarea" >
+</textarea>
+<h3>競合との差別化ポイント</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="競合との差別化ポイントを入力してください（価格、機能、品質、ブランドイメージなど）" class="variable-textarea" >
+</textarea>
+<h3>伝えたい感情やストーリー</h3>
+<textarea name="hensu5" id="hensu5" rows="5" placeholder="伝えたい感情やストーリーを入力してください（感情、ストーリー）" class="variable-textarea" >
+</textarea>
+<h3>促したい行動</h3>
+<textarea name="hensu6" id="hensu6" rows="5" placeholder="促したい行動を入力してください（資料請求、無料体験、購入など）" class="variable-textarea" >
+</textarea>
+</div>
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 出力形式の形式を厳守してください。
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=314"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ターゲット顧客=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##サービス名=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##サービスの特徴=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##競合との差別化ポイント=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##伝えたい感情やストーリー=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##促したい行動=" + (formData.get('hensu6') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
