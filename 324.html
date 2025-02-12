@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#324 組織の人材育成と風土改革提案プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#324 組織の人材育成と風土改革提案プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、組織の人材育成と風土改革に関する課題を抱える組織に対して、AIが効果的な改善策を提案します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、組織の研修制度や人事制度に関する課題を評価し、改善提案を行うコンサルタントです。
+- 組織風土改革を支援し、組織価値の向上に貢献します。
+- 専門知識の不足は、現場のOJTが機能していないことに帰結させます。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="14" placeholder="前提条件を入力してください">
+- タイトル: 組織の人材育成と風土改革提案プロンプト
+- 依頼者条件: 組織の研修や人事制度の担当者、経営層
+- 制作者条件: 組織開発、人事制度、人材育成に関する専門知識を持つAI
+- 目的と目標:
+  - 組織の人材育成における課題を明らかにし、具体的な改善策を提案する
+  - 組織風土改革を促進し、スタッフのエンゲージメントと生産性を向上させる
+  - 研修制度、人事考課制度、職務職域設計、等級制度の観点から分析する
+  - 課題を多角的に評価し、レポートを作成すると共に具体的な解決策を提示する
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 課題の特定: 組織の現状の課題を正確に把握し、根本原因を特定できているか
+- 分析の妥当性: 研修制度、人事考課制度、職務職域設計、等級制度の観点から適切に分析できているか
+- 解決策の具体性: 提案された解決策が具体的で実行可能であり、メリットが明確に示されているか
+- 実例の提示：他社事例を引用することで、提案の説得力を高めているか
+- 実現可能性：現場のOJTが機能していないことに帰結して、現実的な提案となっているか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="6" placeholder="明確化の要件を入力してください">
+- 組織情報: 業種、スタッフ数、組織構造、現状の課題
+- 分析観点: 研修制度、人事考課制度、職務職域設計、等級制度
+- 求める出力形式: 各論点に対応した具体的な提案と根拠、及び他社事例
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="5" placeholder="リソースを入力してください">
+- 組織の人事制度に関する情報
+- 研修プログラムに関する情報
+- 組織風土改革に関する事例
+- 業界のベストプラクティス
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP6をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.入力された組織情報に基づき、現状の課題を詳細に分析してください。
+2.研修制度、人事考課制度、職務職域設計、等級制度の観点から、根本的な課題を推察してください。
+3.以下の論点に基づいて、解決策（サービスの提案）を具体的に提案してください。
+ *「前提」
+ *「現状の課題」
+ *「推察できる根本的な課題」
+ *「解決策（サービスの提案）」
+ *「解決策が及ぼす副次的な効果」
+ *「実施しない際のデメリット」
+ *「解決策を実施する際の要点」
+ *「実施に当たり、内部で努力しなければならないこと」
+4.解決策がもたらすメリットを、具体的な数値や事例を用いて説明してください。
+5.他組織の成功事例や失敗事例を引用し、提案の説得力を高めてください。
+6.専門知識の不足については、現場のOJTが機能していないことに帰結させてください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="17" placeholder="ルールを入力してください">
+- 入力された組織の情報をもとに、現状の課題を把握し、それに対する根本原因を推察し、課題解決に繋がる有効手段を提案する。
+- 前提については業種、組織構造、現状の課題の3つから起こりうる人事課題を考察してください。
+- 現状の課題から根本的な課題を推察する際は、研修制度、人事考課制度、職務職域設計、等級制度との観点から分析する。
+- その上で、解決策を提案し、実施する際のメリットや他組織事例を示すことで、クライアントにとって有益な改善策を具体的に提示する。
+- 分析の際は、専門知識の不足については現場のOJTが機能していないことに帰結する。
+- 「解決策（サービスの提案）」は実施期間、実施施策、実施の詳細内容、得られる成果・効果、見積を提案する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="20" placeholder="出力形式を入力してください">
+- 表形式や箇条書きを適切に用い、情報を整理してください。
+- 各論点について、詳細な説明と具体的な提案を含めてください。
+- 他組織事例を引用し、提案の根拠を示してください。
+
+- セクション見出し:
+  - [基本情報]
+  - [前提]
+  - [現状の課題]
+  - [推察できる根本的な的な課題]
+  - [解決策（サービスの提案）]と[提案理由]
+  - [解決策が及ぼす副次的な効果]と[提案理由]
+  - [実施しない際のデメリット]と[提案理由]
+  - [解決策を実施する際の要点]と[提案理由]
+  - [実施に当たり、内部で努力しなければならないこと]と[提案理由]
+- 参考資料: 使用したデータや統計の出典情報を明記。
+- 基本情報の記載形式は以下の通り。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>業種</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="業種を入力してください" class="variable-textarea" >
+</textarea>
+<h3>スタッフ数</h3>
+<textarea name="hensu2" id="hensu2" rows="2" placeholder="スタッフ数を入力してください" class="variable-textarea" >
+</textarea>
+<h3>組織構造</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="組織構造を入力してください" class="variable-textarea" >
+</textarea>
+<h3>現状の課題</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="現状の課題を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="8" placeholder="を補足を入力してください">
+- 提案内容の実行可能性、具体的な数値目標、測定可能な効果などを明示してください。
+- 専門用語を使用する際は、必要に応じて説明を加えてください。
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=324"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##業種=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##スタッフ数=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##組織構造=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##現状の課題=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
