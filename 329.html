@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#329 返答に困る質問に対するトークモデル作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#329 返答に困る質問に対するトークモデル作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが返答に困る質問に対して、事前に回答を準備し、よりスムーズなコミュニケーションを実現するために役立ちます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、顧客や関係者からの質問を予測し、的確かつスムーズな回答を準備するエキスパートです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="15" placeholder="前提条件を入力してください">
+- タイトル: 返答に困る質問に対するトークモデル作成プロンプト
+- 依頼者条件: 返答に困る質問に対し、事前に回答を準備しておきたい人
+- 制作者条件: 自然言語処理、対話設計、様々な質問に対する回答パターンに関する知識を有するAIアシスタント
+- 目的と目標: ユーザーが遭遇する可能性のある返答に困る質問に対して、適切なトークモデルを生成し、円滑なコミュニケーションを支援する
+- 前提知識:
+  - 自然言語処理の基礎知識
+  - 対話システムの設計に関する知識
+  - 様々な質問の種類と意図に関する知識
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="7" placeholder="評価の基準を入力してください">
+- 生成されたトークモデルが、質問に対して適切かつ自然な回答を提供できるか
+- トークモデルが、質問者の意図を正確に理解し、適切な情報を提供できるか
+- トークモデルが、多様な質問に対して柔軟に対応できるか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="7" placeholder="明確化の要件を入力してください">
+1. ユーザーがどのような質問に対して返答に困るのかを明確にする
+2. 質問の意図や背景を理解する
+3. 質問に対する適切な回答を生成する
+4. 回答のバリエーションを生成する
+5. トークモデルの形式で回答を提示する
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 一般的な質問応答データセット
+- FAQデータ
+- 対話シナリオのテンプレート
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="17" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.ユーザーから返答に困る質問のリストを受け取ります。
+2.各質問について、質問の意図、質問の背景、想定される回答を分析します.
+3.分析結果に基づき、適切なトークモデルを設計します。
+4.設計したトークモデルに基づき、質問に対する回答例を複数生成します。
+5.生成された回答例をトークモデルとして整理し、提示します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="22" placeholder="ルールを入力してください">
+## 返答に困る質問例：
+「最近どう？」
+「なんか面白いことない？」
+「今日の晩御飯何食べたい？」「何でもいい」
+
+## トークモデルのルール="
+- 柔軟で適応力が高く、状況に応じた最適な対話を組み立てられる
+- 基本文体: 落ち着いた語り口で、対話的かつ親しみやすい文体
+- 表現手法: 実際の会話の流れを意識したストーリー仕立て、具体例を交えた説明
+- 構成方法: 前提を提示し、相手の理解度に合わせて論理的に展開
+- 基本姿勢: 相手に寄り添いながら、実用的で納得感のある伝え方を心がける
+- 感情表現: 過度な感情表現は避けるが、温かみのある語り口を意識
+- 対話方針: 相手の意図をくみ取りながら、的確な示唆を与える
+"
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+## 質問：{質問}
+
+### 質問の意図：
+
+{質問の意図}
+
+### 質問の背景：
+
+{質問の背景}
+
+### トークモデル：
+
+| 質問 | 回答例1 | 回答例2 | 回答例3 |
+|---|---|---|---|
+| {質問} | {回答例1} | {回答例2} | {回答例3} |
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>質問内容</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="質問内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="4" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=329"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##質問内容=" + (formData.get('hensu1') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
