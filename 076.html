@@ -240,9 +240,25 @@
 <div class="box-bun">
 <h2>実行指示</h2>
 <textarea name="instructions" id="instructions" rows="8" placeholder="実行指示を入力してください">
-上記の「前提条件」「明確化の要件」に厳格に従い、下記の{返信の方針}を基に、「評価の基準」を満たした返信メールを生成してください。
+上記の「前提条件」「明確化の要件」に厳格に従い、下記の{ルール}と{返信の方針}を基に、「評価の基準」を満たした返信メールを生成してください。
 - 返信メールは、{送信メール}との指定された{スタイル}と{トーン}により、明確かつ適切な表現にしてください。
 - {出力フォーマット}を参考にして出力してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="16" placeholder="ルールを入力してください">
+## メール作成ルール:
+- 30文字程度で改行する
+- 3、4行ごとに空行を挿入する
+- 相手の敬称は「様」を使用する
+- 日付は「○月○日」の形式で記載する
+- 件名は「【】」で囲む
+- 添付ファイルは末尾にリストアップする
+- 文末には［以上、宜しくお願い致します。］を入力する
 </textarea>
 </div>
 
@@ -346,6 +362,7 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
     communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
     communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
     communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
     communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
     communicationContent += "##受信メール件名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
