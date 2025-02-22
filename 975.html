@@ -260,11 +260,10 @@
 <!-- ルール -->
 <div class="box-bun">
 <h2>ルール</h2>
-<textarea name="clarification_rules" id="clarification_rules" rows="6" placeholder="ルールを入力してください">
-- 箇条書きではなく、ストーリテリングを用いてナラティブ形式で説明する。
-- 推測や憶測で回答しないでください。
-- 過去のデータではなく、最新の情報を基に回答してください。
-- [# 出力フォーマット]から外れた余計な前置き、結論やまとめは不要です。
+<textarea name="clarification_rules" id="clarification_rules" rows="12" placeholder="ルールを入力してください">
+- 作成する教材には理論解説、実践課題、および参考資料を含めること。
+- {スキルレベル}を考慮し、基礎的な概念から応用技術へと段階的に学習を進める形式にする。
+- 事例やコード例を豊富に取り入れ、実践的な学習が可能となるよう工夫すること。
 
 ## 実践課題のルール
 - 実践課題は、{トピック}、{学習内容}を理解するのに適した{生成AIスキルレベル}を考慮した課題を5題出力する。
@@ -275,7 +274,7 @@
 <!-- 出力設定 -->
 <div class="box-bun">
 <h2>出力形式</h2>
-<textarea name="output" id="output" rows="56" placeholder="出力形式を入力してください">
+<textarea name="output" id="output" rows="35" placeholder="出力形式を入力してください">
 # プロンプトエンジニアのトレーニング資料
 
 ## 目的
