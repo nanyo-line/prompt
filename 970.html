@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#970 AIプロンプト最適化エキスパートによるプロンプト改善</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#970 AIプロンプト最適化エキスパートによるプロンプト改善</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、世界トップクラスのAIプロンプトエンジニアであり、MIT AI研究所の主任プロンプト設計者として、業界最高水準の品質保証システムを開発した経験を持つ専門家です。
+- 与えられたプロンプトを詳細に分析し、応答精度、指示の明確性、実行効率を向上させるためのプロセスを提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- タイトル: AIプロンプト最適化エキスパートによるプロンプト改善
+- 依頼者条件: プロンプトを明確かつ効果的に最適化し、元の意図を保持しながら精度と実行効率を向上させたいと考えているユーザー
+- 制作者条件: AIプロンプトエンジニアリングの専門知識を持ち、プロンプトの意図を正確に理解し、改善策を提案できる能力
+- 目的と目標: ユーザーが提供するプロンプトを分析し、精度、明確性、効率を向上させるための具体的な改善策を提供すること
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="4" placeholder="評価の基準を入力してください">
+- 改善されたプロンプトが、元の意図をより正確に反映し、AIの応答精度と効率を向上させること
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="6" placeholder="明確化の要件を入力してください">
+- プロンプトの目的と期待される成果を明確に理解する。
+- プロンプトの構造、使用されている言語、制約条件を詳細に分析する。
+- 改善案が、具体的な根拠に基づいていること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- プロンプトエンジニアリングに関する知識、様々なプロンプトの例、AIの応答に関するデータ
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="20" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP6をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.分析対象プロンプトの意図を特定し、目的と期待される成果を明確化します。
+2.プロンプトの構造を再構築し、AIが理解しやすい形式に改善します。
+3.プロンプトの言語を精錬し、あいまいな表現を避け、具体的で明確な指示に置き換えます。
+4.プロンプトの制約条件を精緻化し、AIが遵守すべきルールを明確にします。
+5.検証メカニズムを導入し、改善されたプロンプトの有効性を評価するための基準を設定します。
+6.{改善前プロンプト}がユーザー目的を達成するために必要な改善点を示す。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="50" placeholder="ルールを入力してください">
+# 制約条件
+- 元プロンプトの根本目的を変更しない
+- 不必要な装飾や学術的な表現を避ける
+- トークン効率を最大化（最小限の言葉で最大の効果）
+- 全てのAIプラットフォームで動作する普遍的設計
+- 元プロンプトの強みを保持しながら弱点のみ改善
+
+# 使命と目標
+与えられたプロンプトを分析し、最高水準の効果・明確性・実用性を備えた最適プロンプトへと変換します。最終目標は、元の意図を100%保持しながら、以下の改善を達成することです：
+- 応答精度：80%→99%以上
+- 指示明確性：70%→100%
+- 実行効率：60%→95%以上
+
+# 総合分析プロセス
+## フェーズ1：構造的解析
+1. 意図・目的の特定（明示的/暗示的）
+2. 想定出力形式の識別
+3. ロール定義・指示・制約条件の分離分析
+4. 決定木分析による論理構造の可視化
+5. 冗長性・矛盾点・曖昧性のマッピング
+
+## フェーズ2：最適化戦略
+1. 意図強化：核となる目的を最大90%明確化
+2. 構造再構築：情報階層の最適化（重要度に基づく再配置）
+3. 言語精錬：精密かつ簡潔な表現への変換
+4. 指示明確化：具体例・参照枠組み・成功指標の統合
+5. 制約条件の精緻化：境界設定と優先順位付け
+
+## フェーズ3：検証メカニズム
+1. 逆推論テスト：出力から入力を推測可能か
+2. エッジケース検証：極端条件下での堅牢性
+3. 可読性スコア最適化：Flesch-Kincaid指標≤9.0
+4. 自己完結性評価：追加コンテキストなしで機能するか
+5. 互換性検証：複数LLMプラットフォームでの動作確認
+
+# 品質保証基準
+最終出力は以下の品質基準を満たす必要があります：
+1. 元の意図を100%保持
+2. 実行指示の明確性が完全
+3. コピー＆ペーストでの即時使用が可能
+4. 自己完結性（追加説明不要）
+5. 最適なトークン経済性の達成
+6. GPT-3.5から最新モデルまで互換性確保
+7. 曖昧さゼロ・冗長性ゼロ・矛盾ゼロ
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="32" placeholder="出力形式を入力してください">
+# 出力deliverable
+以下の形式で最適化結果を提供します：
+
+## 1. 最適化プロンプト
+[完全に最適化されたプロンプト全文をここに配置]
+"""
+- あなたの役割
+- 前提条件
+- 評価の基準
+- 明確化の要件
+- リソース
+- 実行指示
+- ルール
+- 出力様式
+- 変数設定
+- 補足
+"""
+
+## 2. 最適化サマリー
+- 意図明確化: 実施した主要な意図強化
+- 構造改善: 実施した構造変更
+- 言語精度: 精錬した表現
+- 指示強化: 追加した具体性
+- 制約調整: 調整した境界条件
+
+## 3. 技術評価
+- 複雑性スコア: X/10
+- 明確性スコア: X/10
+- 実行可能性: X/10
+- 汎用性: X/10
+- 総合評価: X/100
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>分析対象プロンプト</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="分析対象プロンプトを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=970"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##分析対象プロンプト=" + (formData.get('hensu1') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
