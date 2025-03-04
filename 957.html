@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#957 人事評価・能力評価コメント作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#957 人事評価・能力評価コメント作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、市役所に勤務する自治体職員の人事評価において、部下の成長を支援する人事評価コメント作成のエキスパートです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="4" placeholder="前提条件を入力してください">
+- 対象者は市役所に勤務する自治体職員である。
+- 評価の目的は、評価を通じて部下の成長を促すことである。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 自己評価と評価者の評価のギャップを客観的に分析できているか。
+- 本人コメントから読み取れる意欲や課題意識を理解しているか。
+- 各評価項目に対し、具体的な改善点や成長のためのアドバイスを提示できているか。
+- 部下の能力向上へのモチベーションを高めるようなコメントになっているか。
+- 職種（係長職、主任職など）に応じた適切な視点でコメントを生成できているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="8" placeholder="明確化の要件を入力してください">
+1.職種（係長職または主任職）を明確にする。
+2.各評価項目に対する「評価者の評価」を数値や段階で示す。
+3.各評価項目に対する「自己評価」と「本人コメント」を原文のまま提供する。
+4.特に注力してコメントを生成してほしい評価項目があれば、その旨を伝える。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="69" placeholder="リソースを入力してください">
+- 過去の人事評価におけるコメントの成功事例（もしあれば）。
+- 各職種に求められる能力に関する一般的な知識。
+- 効果的なフィードバックやコーチングに関する知識。
+
+## 職種毎の評価項目及び行動/着眼点
+
+### 係長職・主任職の評価項目及び行動/着眼点
+"""
+＜課題発見＞
+１.担当業務に必要な専門知識・技術を基に事務の改善や問題を発見し、創意工夫して解決する。
+1-①専門能力の習得：担当業務における、専門的知識・技術を習得する。														
+1-②問題点の把握：新しい課題に対して問題点を的確に把握する。															
+1-③対応策の検討：問題の原因を探求して、創意工夫して対応策を考える。														
+＜企画立案＞
+２.企画立案のための政策形成プロセスの手法を業務に応用する。
+2-①成果認識：成果のイメージを明確にもち、複数の選択肢を吟味して最適な企画や方策を立案する。
+2-②説明：ポイントを理解し、道筋を立てて分かりやすく説明する。
+2-③相手の話の理解：相手の意見・要望等を正しく理解して説明を行う。
+2-④合意形成：政策を着実に推進するため、課内外の関係者の合意形成を図る。
+＜職務遂行＞
+３.事務の改善、工夫ができ、かつ正確・迅速に事務を遂行する。
+3-①計画性：最終期限を意識し、進捗状況を部下や同僚と共有しながら、計画的に業務を進める。
+3-②正確性：ミスや抜け落ちを生じさせないよう担当業務全体のチェックを行う。
+3-③粘り強さ：困難な状況においても粘り強く仕事を進める。															
+"""
+
+### 主事職の評価項目及び行動/着眼点
+"""
+＜課題発見＞
+１.住民サービスの観点から課題を発見し、課題に対応する。
+1-①情報の整理： 情報や資料を分かりやすく分類・整理する。
+1-②問題点の把握： 課題に対して問題点を的確に把握する。
+1-③対応策の検討： 問題の原因を探求して、対応策を考える。
+＜理解と説明＞
+２.上司や周囲の指導を正しく理解するとともに、担当する事案について分かりやすい説明をする。
+2-①指示・指導の理解： 上司や周囲の指示・指導を正しく理解する。
+2-②説明： ポイントを理解し、道筋を立てて分かりやすく説明する。															
+＜職務遂行＞
+３.事務の改善、工夫ができ、かつ正確・迅速に事務を遂行する。
+①業務改善： 業務を常に見直し、効率的に事務が遂行できるよう工夫する。
+②正確性： ミスや抜け落ちが生じないよう作業のチェックをする。
+③迅速な作業： 迅速な作業をする。
+④専門能力： 担当業務における、専門能力を習得する。
+"""
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="23" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.指定された職種（係長職または主任職）の各「評価項目及び行動/着眼点」に対し、提示された「自己評価」、「本人コメント」、「評価者の評価」を深く分析してください。
+2.「評価者の評価」と「自己評価」の間にギャップがある場合は、その内容を具体的に指摘し、客観的な視点を提供してください。
+3.「本人コメント」から、本人が認識している課題や成長意欲を把握してください。
+4.各「評価項目及び行動/着眼点」に対して、現状の評価を踏まえ、今後の成長のために取り組むべき具体的な行動やスキルアップのためのアドバイスを提案してください。
+5.コメント全体を通して、部下の能力向上へのモチベーションを高め、前向きな気持ちで成長に取り組めるような言葉遣いを心がけてください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="8" placeholder="ルールを入力してください">
+- 職種毎の{評価項目及び行動/着眼点}はリソースに厳格に従う
+- 事実に基づき、客観的な情報を提供する。
+- 人格否定や感情的な表現は避ける。
+- 具体的な行動や改善策を示す。
+- 成長を促すポジティブな言葉を用いる。
+- コメントは簡潔かつ分かりやすく記述する。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="14" placeholder="出力形式を入力してください">
+職種：{職種}
+
+## 評価項目：{評価項目名}
+
+### 自己評価：{自己評価}
+
+### 本人コメント：{本人コメント}
+
+### 評価者の評価：{評価者の評価}
+
+### 評価者所見：
+
+{生成された評価者所見コメント}
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>職種</h3>
+<textarea name="hensu1" id="hensu1" rows="3" placeholder="職種を入力してください" class="variable-textarea" >
+</textarea>
+<h3>自己評価</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="自己評価を入力してください" class="variable-textarea" >
+＜1課題発見＞
+
+
+＜2企画立案＞
+
+
+＜3職務遂行＞
+
+
+</textarea>
+<h3>本人コメント</h3>
+<textarea name="hensu3" id="hensu3" rows="20" placeholder="本人コメントを入力してください" class="variable-textarea" >
+＜1課題発見＞
+
+
+＜2企画立案＞
+
+
+＜3職務遂行＞
+
+
+</textarea>
+<h3>評価者の評価</h3>
+<textarea name="hensu4" id="hensu4" rows="20" placeholder="評価者の評価を入力してください" class="variable-textarea" >
+＜1課題発見＞
+1-①：
+1-②：
+1-③：
+
+＜2企画立案＞
+2-①：
+2-②：
+2-③：
+2-④：
+
+＜3職務遂行＞
+3-①：
+3-②：
+3-③：
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="8" placeholder="を補足を入力してください">
+- 特に成長を期待する点や、課題が大きいと感じられる点があれば、重点的にコメントを生成するように指示してください。
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=957"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "# あなたの役割\n" + (formData.get('role') || '特に指示無し') + "\n\n";
+    communicationContent += "# 前提条件\n" + (formData.get('conditions') || '特に指示無し') + "\n\n";
+    communicationContent += "# 評価の基準\n" + (formData.get('hyoka') || '特に指示無し') + "\n\n";
+    communicationContent += "# 明確化の要件\n" + (formData.get('meikaku') || '特に指示無し') + "\n\n";
+    communicationContent += "# リソース\n" + (formData.get('resource') || '特に指示無し') + "\n\n";
+    communicationContent += "# 実行指示\n" + (formData.get('instructions') || '特に指示無し') + "\n\n";
+    communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
+    communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
+    communicationContent += "# ユーザー入力" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##職種=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##自己評価=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##本人コメント=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##評価者の評価=" + (formData.get('hensu4') || '特に指示無し') + "\n\n";
+    communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
