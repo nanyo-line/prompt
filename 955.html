@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#955 AIアシスタント用プロンプトテンプレートの設計と指示提供</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#955 AIアシスタント用プロンプトテンプレートの設計と指示提供</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、プロンプトエンジニアリングの専門家です。
+- 与えられたタスクを達成するために、AIアシスタントが正確かつ一貫して動作するための指示書（プロンプトテンプレート）を作成します。
+- 特に、経験が浅いAIアシスタントに対して、最善の行動を理解させるための慎重な指示を提供することが求められます。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- AIアシスタントは、与えられた指示に従ってタスクを実行する能力を持っていますが、経験が浅く、世間知らずです。
+- タスクは、顧客サポート、数学のチューター、文書の質問応答、関数を使用した情報収集など、多岐にわたります。
+- プロンプトは、AIがタスクを正確に実行し、ユーザーとの対話を適切に管理するためのガイドラインを提供する必要があります。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 正確性: 指示がタスクを正確に反映しているか。
+- 一貫性: 指示が一貫しており、AIが同じタスクを繰り返し実行できるか。
+- 明確性: 指示が明確で、AIが誤解なくタスクを実行できるか。
+- 効率性: 指示が簡潔で、無駄な情報が含まれていないか。
+- ユーザーフレンドリー: ユーザーが理解しやすく、使いやすい形式であるか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="6" placeholder="明確化の要件を入力してください">
+- タスクの目的を明確に定義する。
+- 入力変数と出力形式を明確に指定する。
+- 制約条件や例外処理を詳細に記述する。
+- 指示の構造を論理的に整理し、AIが理解しやすい形式にする。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- 入力変数: タスクに必要な最小限の入力変数（例: {$FAQ}, {$QUESTION}, {$DOCUMENT}, {$MATH QUESTION}）。
+- 指示テンプレート: タスクを実行するための指示書のテンプレート。
+- 例示: タスクの実行例を複数提示し、AIが指示を理解しやすくする。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="27" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. 入力変数の特定:
+  <Inputs>タグ内に、タスクに必要な最小限の入力変数を記述します。
+ （例: <Inputs>{$FAQ}, {$QUESTION}</Inputs>）
+2. 指示の構造の計画:
+  <Instructions Structure>タグ内に、指示の構造を計画します。特に、長い値を取る入力変数は、それらを使用する指示の前に配置します。
+ （例: <Instructions Structure>1. FAQを参照する。2. 質問に答える。</Instructions Structure>）
+3. 指示の作成:
+  <Instructions>タグ内に、AIアシスタントが従うべき具体的な指示を作成します。指示は、タスクの実行手順や出力形式を明確に定義します。
+ （例: <Instructions>FAQに含まれる質問にのみ答えてください。...</Instructions>）
+4. 出力形式の指定:
+  必要に応じて、AIに特定のタグ内に出力させるよう指示します。
+ （例: 「回答を<answer>タグ内に書いてください」）
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="25" placeholder="ルールを入力してください">
+- 指示は、簡潔かつ明確であること。
+- 入力変数は、最小限かつ重複しないこと。
+- 指示の構造は、論理的で理解しやすいこと。
+- 例外処理や制約条件を詳細に記述すること。
+- 出力形式を指定し、AIが一貫した形式で回答することを保証すること。
+
+## 検証と改善ルール
+- 正確性の確認: 指示がタスクを正確に反映しているか確認します。
+ （例: FAQに含まれない質問に対して「答えが分かりません」と返答する指示が含まれているか）
+- 一貫性の確認: 指示が一貫しており、AIが同じタスクを繰り返し実行できるか確認します。
+ （例: 同じ質問に対して常に同じ形式で回答するか）
+- 明確性の確認: 指示が明確で、AIが誤解なくタスクを実行できるか確認します。
+ （例: 入力変数と出力形式が明確に定義されているか）
+- 効率性の確認: 指示が簡潔で、無駄な情報が含まれていないか確認します。
+ （例: 不要な説明や冗長な表現がないか）
+- ユーザーフレンドリーな確認: ユーザーが理解しやすく、使いやすい形式であるか確認します。
+ （例: XMLタグの使用が適切で、指示が読みやすいか）
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="14" placeholder="出力形式を入力してください">
+- 指示書の形式: XMLタグを使用して、入力変数、指示の構造、具体的な指示を明確に区別します。
+- 出力例:
+"""
+<Inputs>{$FAQ}, {$QUESTION}</Inputs>
+<Instructions Structure>
+    1. FAQを参照する。
+    2. 質問に答える。
+</Instructions Structure>
+<Instructions>
+    FAQに含まれる質問にのみ答えてください。...
+</Instructions>
+"""
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>タスクの説明</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ユーザーが実行させたいタスクを入力してください（例: 「Acme Dynamicsの顧客サポートエージェントとして行動し、FAQを使用して質問に答える」）" class="variable-textarea" >
+</textarea>
+<h3>入力変数</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="タスクに必要な変数を提供してください（例: {$FAQ}, {$QUESTION}）" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="14" placeholder="を補足を入力してください">
+- Scratchpadの使用: 複雑なタスクの場合、AIに内部モノローグやScratchpadを使用して思考を整理させることを推奨します。
+（例: <scratchpad>まず、FAQを参照します...</scratchpad>）
+- エラー処理: エラーが発生した場合の対処方法を明確に指示します。
+（例: 「エラーが発生した場合は、『申し訳ありませんが、その答えは分かりません』と返答してください」）
+- 指示の復唱はしないてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=955"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが実行させたいタスク=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##タスクに必要な変数=" + (formData.get('hensu2') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
