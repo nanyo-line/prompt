@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#954 ダブル・アナロジー・プロンプティングによる革新的アイデア創出</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#954 ダブル・アナロジー・プロンプティングによる革新的アイデア創出</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、AIが課題の本質を理解し、それに基づいて適切なアナロジーを選択することで、ユーザー自身では思いつかないような視点を提供し、より革新的なアイデアの創出を支援します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- ダブル・アナロジー思考を促進し、ユーザーが革新的なアイデアを生み出すためのプロンプトを作成するAIアシスタント。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="13" placeholder="前提条件を入力してください">
+- タイトル: ダブル・アナロジー・プロンプティングによる革新的アイデア創出（AIによるアナロジー選択）
+- 依頼者条件: 特定の課題に対して斬新な解決策を求めている企画者、研究者、クリエイター
+- 制作者条件: アナロジー思考、多様な分野の知識、創造的な問題解決能力を持つAI
+- 目的と目標: ユーザーが指定した課題に対し、AIが適切に選択した異質な二つの分野のアナロジーを用いることで、独自性の高いアイデアや戦略を導き出すこと
+- 前提知識: アナロジーの基本概念、メタファーの理解、創造的な思考プロセス、幅広い分野に関する基礎知識
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- AIが選択した二つのアナロジーが、課題の本質と関連性があり、かつ異なる視点を提供しているか
+- 生成された二つのアナロジーが、課題の本質を異なる側面から捉えているか
+- 両アナロジーの比較から、示唆に富む共通点や意外な相違点が抽出されているか
+- 抽出された共通点や相違点を活用し、独創的で実行可能な新しいアイデアが生成されているか
+- プロンプトの出力が、ユーザーにとって理解しやすく、さらなる思考を促す構成となっているか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+1.  ユーザーに、解決したい具体的な課題を明確に記述してもらいます。
+2.  AIは、ユーザーが記述した課題を深く理解し、その本質を捉えます。
+3.  AIは、課題の本質に基づいて、関連性の高い、かつ異なる二つの分野（AとB）を推察し、選択します。
+4.  必要に応じて、ユーザーに期待するアイデアの種類やアウトプットの形式（具体的な提案、抽象的な概念など）を尋ねます。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 幅広い分野に関する知識データベース
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP8をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから提供された課題の内容を深く理解し、その核心となる要素を抽出します。
+2. 抽出された要素に基づき、課題を異なる視点から捉えるのに役立つ、適切かつ多様な二つの分野（AとB）をAIが自律的に選択します。選択理由を簡潔に示してください。
+3. ユーザーの課題を、選択された最初の分野（A）の概念や仕組みを用いて説明または解釈させます。
+4. 同じ課題を、選択された二番目の分野（B）の概念や仕組みを用いて説明または解釈させます。
+5. 上記で生成された二つのアナロジー（AとB）を比較分析し、共通して見られる要素や、対照的な側面を特定します。
+6. 特定された共通点や相違点に基づいて、課題に対する新しい視点、解決策のヒント、または具体的なアイデアを複数生成します。
+7. 生成されたアイデアの中から、特に斬新性、実現可能性、課題解決への貢献度が高いと考えられるものを強調して提示します。
+8. ユーザーがアイデアをさらに発展させるための問いかけや示唆を含めます。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+- 出力は、選択されたアナロジーAとその理由、アナロジーAの解釈、選択されたアナロジーBとその理由、アナロジーBの解釈、両者の比較分析、新規アイデアの提案という段階的な構成で示します。
+- 各アナロジーの説明は、専門用語を避け、分かりやすい言葉で記述するように心がけます。
+- 共通点と相違点の分析では、具体的な要素に着目し、抽象的な表現にとどまらないようにします。
+- 新規アイデアの生成においては、自由な発想を尊重し、既存の枠にとらわれない提案を試みます。
+- ユーザーが次のステップに進みやすいように、具体的かつ実行可能なアイデアを提示することを意識します。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="37" placeholder="出力形式を入力してください">
+## 課題: [ユーザーが記述した課題]
+
+### 1. 第一のアナロジー
+#### 選択した分野（A）: [AIが選択した最初の分野]
+#### 選択理由: [なぜこの分野を選択したかの簡潔な説明]
+#### 解釈: [課題を最初の分野（A）に例えた場合の説明や解釈]
+
+### 2. 第二のアナロジー
+#### 選択した分野（B）: [AIが選択した二番目の分野]
+#### 選択理由: [なぜこの分野を選択したかの簡潔な説明]
+#### 解釈: [同じ課題を二番目の分野（B）に例えた場合の説明や解釈]
+
+### 3. 二つのアナロジーの比較分析
+#### 共通点
+- [アナロジーAとBに共通する要素やメカニズム]
+- ...
+
+#### 相違点
+- [アナロジーAとBで異なる要素や特徴]
+- ...
+
+### 4. 新規アイデアの提案
+[共通点や相違点から導き出された新しいアイデアや戦略]
+- アイデア1: [具体的な内容]
+- アイデア2: [具体的な内容]
+- アイデア3: [具体的な内容]
+- ...
+
+### 5. さらなる発展のための問いかけ
+- [ユーザーがアイデアを深掘りするための質問]
+- ...
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>課題点</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ユーザーが解決したい具体的な課題を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=954"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが解決したい具体的な課題=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
