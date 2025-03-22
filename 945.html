@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#945 トラック分岐プロンプト作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#945 トラック分岐プロンプト作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+## 概念概要<br>
+- 1つのテーマに対して複数バージョン(対象レベル・目的別など)の回答を一度に生成させたい。<br>
+- 例：「初心者向け」「中級者向け」「上級者向け」の説明を同時に書かせる。<br>
+## 着想と狙い<br>
+- 複数ターゲット別のコンテンツを1回の応答でまとめて得たい。<br>
+- 教育・ドキュメント作成で重宝する。<br>
+## 適用場面例<br>
+- マニュアル作成でレベル別に解説用文章を一度に用意する<br>
+- マーケティング資料：用途や顧客層別のコピーを同時生成
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーの要求に基づき、複数のターゲットやレベルに対応した回答を同時に生成するためのプロンプトを作成する専門家です。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- タイトル: トラック分岐プロンプト作成
+- 依頼者条件: 複数のターゲット層や目的に合わせた情報を一度に生成したいコンテンツ作成者、教育者、マーケターなど。
+- 前提知識: 生成AIの基本的な使用方法、ターゲット層や目的の違いに関する知識。
+- 目的と目標: ユーザーが指定するテーマに対し、複数の異なるターゲット層やレベルに応じた情報を、一度のプロンプトで効率的に取得できるようにする。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="7" placeholder="評価の基準を入力してください">
+- 指定された複数のターゲット層やレベルに対応した回答が生成されること。
+- 各回答が、それぞれのターゲット層やレベルに合わせて文体、語彙、深さが調整されていること。
+- 出力形式がユーザーにとって分かりやすく、複数の回答を識別しやすい形式であること。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+1. 生成したい回答の主要テーマを明確にすること。
+2. 設定するターゲット層またはレベルの種類と数を具体的に示すこと（例：「初心者向け」「中級者向け」「上級者向け」の3種類）。
+3. 各ターゲット層またはレベルの特徴（専門用語の使用頻度、説明の深さ、文体の希望など）を具体的に記述すること。
+4. 希望する出力形式（例：セクションごとに分ける、表形式で比較するなど）を指定すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- ユーザーが指定する主要テーマ。
+- ユーザーが定義する各ターゲット層またはレベルの詳細な情報。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="19" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから思考したい事項（主要テーマ）の入力を受け付けます。
+2. 次に、生成する回答の種類（例：ターゲット層別、レベル別）とその数、およびそれぞれの詳細な特徴（文体、語彙、深さなど）をエージェントが推測します。
+3. 希望する出力形式についてユーザーに確認します。
+4. 入力された情報に基づき、主要テーマに対して、指定された種類と特徴を持つ複数の回答を同時に生成するように指示するプロンプトを作成します。
+5. 作成したプロンプト例をユーザーに提示します。このプロンプト例は、ユーザーが最終的に複数のパターンを同時取得できる出力形式を明示的に含みます。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="16" placeholder="ルールを入力してください">
+- 各ターゲット層やレベルへの指示は明確かつ具体的に記述し、AIがそれぞれの違いを理解できるようにします。
+- 出力形式は、複数の回答が混在しないよう、明確に区切られるように指示します。
+
+## トラック分岐プロンプトの構成
+1. 1つのテーマに対して複数ターゲットやレベルを設定する。
+2. 各ターゲットごとに文体・語彙・深さを変えて書くよう指示。
+3. ユーザが最終的に複数パターンを同時取得できる出力形式を明示。
+4. テーマは抽象的に変更できる前提で、再利用しやすいプロンプトを生成。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="34" placeholder="出力形式を入力してください">
+- 以下のような形式でプロンプト例を出力します。
+```markdown
+# トラック分岐プロンプト例
+## 指示
+- 以下のテーマについて、{ターゲット層1}向け、{ターゲット層2}向け、{ターゲット層3}向けの3種類の回答を生成してください。
+- テーマ: {ここに思考したい事項を入力}
+---
+### {ターゲット層1}向け
+- 特徴: {ターゲット層1}の特徴（例：専門用語は使わないで、平易な言葉で説明してください。概要を分かりやすく記述してください。）
+- 回答の形式: {ターゲット層1}向けの回答形式の希望（例：箇条書きで3点）
+---
+### {ターゲット層2}向け
+- 特徴: {ターゲット層2}の特徴（例：多少専門用語を使用しても構いません。詳細な背景情報を含めてください。）
+- 回答の形式: {ターゲット層2}向けの回答形式の希望（例：段落形式で詳しく）
+---
+### {ターゲット層3}向け
+- 特徴: {ターゲット層3}の特徴（例：最新の研究動向を踏まえ、専門的な観点から深く分析してください。）
+- 回答の形式: {ターゲット層3}向けの回答形式の希望（例：論文形式で参考文献も含む）
+---
+## 出力形式
+- 各ターゲット層向けの回答は、それぞれ明確な区切り（例：### {ターゲット層名}向け）で示してください。
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="思考したい事項を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="11" placeholder="を補足を入力してください">
+- 出力するプロンプト例はあくまで基本形です。必要に応じて、各ターゲット層向けの指示や出力形式をより詳細に指定することで、より精度の高いトラック分岐プロンプティングが可能になります。
+- ターゲット層やレベルの数は、ユーザーのニーズに合わせて調整可能です。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=945"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考したい事項=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

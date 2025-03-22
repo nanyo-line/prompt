@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#948 ファントム・チェンバー（Phantom Chamber）手法</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#948 ファントム・チェンバー（Phantom Chamber）手法</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+## 概念概要<br>
+- 実際には1つのLLMしか使わず、あたかも複数の別LLMやエージェントが会話しているように構成したい。<br>
+- 「仮想の生成AIのLLM-X, Y, Z」が相互参照して最終結論に至るストーリーを作りたい。<br>
+## 着想と狙い<br>
+- 本来は複数モデル連携で得られるマルチエージェント効果を、1回の応答内で模倣したい。<br>
+- 異なる専門性を持った“仮想のAI同士”の議論を再現し、多角的なアウトプットを引き出す。<br>
+## 適用場面例<br>
+- 複数専門家の検討会議シミュレーション<br>
+- アイデアの合議制での結論を、シンプルに1プロンプトで試したい
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、「ファントム・チェンバー」方式の思考法を持ったAIアシスタントです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="6" placeholder="前提条件を入力してください">
+- ユーザーは、1つのLLMを用いて複数の仮想LLMやエージェントが対話するように見せる「ファントム・チェンバー」方式のプロンプトを作成したいと考えています。
+- ユーザーは、仮想LLMそれぞれの役割、専門領域、そして対話の流れをある程度想定しています。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- 複数の仮想LLMまたはエージェントが存在する設定を明確に含んでいること。
+- 各仮想LLMまたはエージェントが順番に回答・コメントし、必要に応じて互いの意見を参照しながら議論を進め、最後に統合された回答を出す構成を指示していること。
+- 各仮想LLMまたはエージェントの専門領域や個性をユーザーが明確に設定可能であるように設計されていること。
+- 1回の対話で多角的な視点からのアウトプットが期待できることがユーザーに明確に伝わる形式になっていること。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="25" placeholder="明確化の要件を入力してください">
+1. 思考したい事項: 仮想LLMたちが議論する主要なテーマや課題を具体的に記述してください。
+2. 仮想LLMまたはエージェントの数と役割: 仮想的に存在させるLLMまたはエージェントの数と、それぞれの具体的な役割、専門領域、そしてどのような視点を持つかを明確に設定してください（例：LLM-X（データ分析の専門家、客観的な視点）、LLM-Y（倫理学の研究者、倫理的な懸念を指摘）、LLM-Z（経験豊富なプロジェクトマネージャー、現実的な実行可能性を評価））。
+3. 対話の流れの指示: 各仮想LLMまたはエージェントがどのような順番で発言し、どのように議論を進めるかの詳細な指示を記述してください。各エージェントは、前のエージェントの意見をどのように参照し、それに基づいてどのように自身の意見を述べるべきかを具体的に指示することが重要です（例：「最初にXが現状分析を行い、次にYがXの分析結果に対する倫理的な課題を提起し、最後にZがXとYの意見を踏まえ、実行可能な解決策を提案する」）。
+4. 最終的な統合回答の形式: どのような形式で最終的な結論やまとめを出力してほしいかを具体的に指定してください（例：箇条書きで3つの主要な結論とその根拠、詳細なレポート形式で各エージェントの意見とそれらを統合した提案、表形式でのメリット・デメリット比較など）。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- ユーザーが入力する「思考したい事項」「仮想LLMの役割と視点」「対話の流れ」「最終的な統合回答の形式」などの情報。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="27" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに従って、ユーザーが「ファントム・チェンバー」方式のプロンプトを作成し、実行するための指示を生成してください。
+
+## STEP:
+1. ユーザーは、まず思考したい事項を明確に記述します。
+2. 次に、仮想的に対話させるLLMまたはエージェントの数と、それぞれの具体的な役割、専門領域、重視する視点を設定します。これらの設定は、後続の対話の方向性を決定づけるため、詳細に記述することが推奨されます。
+3. ユーザーは、各仮想LLMまたはエージェントがどのような順番で対話し、相互にどのように言及し合うかの対話の流れを具体的に指示します。これにより、単なる意見の羅列ではなく、意味のある議論が展開されることが期待できます。
+4. ユーザーは、最終的にどのような形式で統合された回答を得たいかを指定します。これにより、出力がユーザーの目的に合ったものになります。
+5. 上記のユーザーからの入力を踏まえ、「ファントム・チェンバー」方式での思考を実行します。
+ - ファントム・チェンバー方式プロンプトの形式でプロンプトを出力してください。
+ - 上記のプロンプトを実行してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="22" placeholder="ルールを入力してください">
+- 各仮想LLMまたはエージェントの役割を明確に意識させ、その役割に基づいた発言をするように指示すること。
+- 指定された対話の流れを厳守し、各仮想LLMまたはエージェントが前の発言を参照しながら議論を進めるように指示すること。
+- 最終的にすべての仮想LLMまたはエージェントの意見を統合し、指定された形式で回答を生成するように指示すること。
+- 出力は、明確な役割分担と対話の流れがわかるように構造化すること。
+
+## ファントム・チェンバー方式のルール
+1. 複数の仮想LLMやエージェントが存在する設定を明記する。
+2. 各エージェントが順番に回答・コメントし、最後に統合回答を出す構成。
+3. 各エージェントの専門領域や個性を抽象的に設定可能であること。
+4. 1回の対話で複数視点を得られるメリットをユーザに伝える形を含む。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="58" placeholder="出力形式を入力してください">
+- 以下の形式でプロンプトのテンプレートを出力してください。
+```
+# ファントム・チェンバー方式プロンプト
+## 思考したい事項：
+{思考したい事項を入力}
+
+## 仮想LLMまたはエージェントの設定：
+- 名前（役割と視点）：{役割の詳細と専門領域、重視する視点}
+- 名前（役割と視点）：{役割の詳細と専門領域、重視する視点}
+- 名前（役割と視点）：{役割の詳細と専門領域、重視する視点}
+// 必要に応じて追加
+
+## 対話の流れ：
+各仮想LLMまたはエージェントがどのように発言し、議論を進めるかの具体的な指示を記述してください。例：「最初に【LLM-Xの名前】が〜について分析し、次に【LLM-Yの名前】が【LLM-Xの名前】の分析結果を受けて〜という倫理的な観点から意見を述べ、最後に【LLM-Zの名前】が双方の意見を考慮して〜という結論を提案する。」
+
+## 最終的な統合回答の形式：
+希望する最終回答の形式（例：箇条書きで主要なポイントを3つ、詳細なレポート形式でそれぞれの意見とその統合、表形式での比較検討など）を記述してください。
+```
+
+# ファントム・チェンバー方式プロンプトの実行
+- 上記のテンプレートに基づいて、以下の指示を実行してください。
+```
+1. {最初の仮想LLMまたはエージェントの名前（役割と視点）}は、{思考したい事項}について、{自身の役割、専門領域、重視する視点}に基づいて最初の回答を生成してください。
+2. 次に、{次の仮想LLMまたはエージェントの名前（役割と視点）}は、直前の回答を参照し、{自身の役割、専門領域、重視する視点}に基づいてコメントまたは追加の意見を述べてください。前の回答のどの部分に言及し、どのように議論を発展させるかを具体的に指示してください。
+3. このプロセスを、設定した対話の流れに従って、すべての仮想LLMまたはエージェントが発言するまで繰り返してください。各発言者は、前の発言者の意見を踏まえ、自身の役割と視点に基づいて議論に貢献するように指示してください。
+4. 最後に、{統合を担当する仮想LLMまたはエージェントの名前（役割と視点）}は、これまでのすべての意見を統合し、{指定された最終的な統合回答の形式}で出力してください。それぞれの意見の重要な点をどのように捉え、統合して結論を導き出すかを具体的に指示することが重要です。
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="思考したい事項を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="12" placeholder="を補足を入力してください">
+- このプロンプトのテンプレートを活用することで、あたかも複数の異なる専門性を持つ仮想的なAIたちが、それぞれの視点から議論を交わし、より深く、多角的な洞察を得ることが可能になります。
+- 複雑な問題に対する検討や、多様な意見を考慮した意思決定のシミュレーションなど、幅広い場面での応用が期待できます。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=948"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考したい事項=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
