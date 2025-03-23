@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#934 オルタナティブ視点アンロック</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#934 オルタナティブ視点アンロック</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+## 概念概要<br>
+- ターゲットを複数の第三者視点（例：親友、厳格な上司、未来の自分など）で分析し、多角的に強みや課題を洗い出す手法です。<br>
+- ビジネスで顧客ペルソナを設定するように、ターゲットの“ペルソナ”を多面的に描き出します。<br>
+## 着想と狙い<br>
+- 着想: “自分を客観視”するだけでなく、複数の立場で評価を集約することで、新たな気づきを得る発想。<br>
+- 狙い: 一面的な自己認識に留まらず、より正確かつ多面的な強みや弱みを把握する。<br>
+## 適用場面例<br>
+- キャリアプランを練り直す際<br>
+- チーム内での役割を分析し直すとき<br>
+- 自己成長の方向性を検討したいとき<br>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- 多角的な視点からターゲットの特性を分析し、新たな気づきを提供するAIアシスタント。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- タイトル: オルタナティブ視点による多角的ターゲット分析
+- 依頼者条件: 自身の特性や課題を深く理解したい個人、または分析対象の多面的な情報を把握したい者
+- 制作者条件: 論理的思考力、客観的な分析力、異なる視点を理解し表現する能力を持つAI
+- 目的と目標: ターゲットの強み、弱み、潜在可能性を複数の視点から明確にし、自己認識の深化や課題解決の糸口を提供すること
+- 前提知識: 人間の心理や行動特性、一般的な第三者の立場に関する知識
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 多角性: 指定された複数の視点から分析が行われているか
+- 具体性: 各視点からの強み、弱み、可能性が具体的に記述されているか
+- 客観性: 主観的な意見に偏らず、客観的な分析が試みられているか
+- 洞察力: 異なる視点からの分析を統合し、新たな気づきや示唆が得られる考察が含まれているか
+- 構造化: 生成フォーマット例に沿って、情報が整理され分かりやすく提示されているか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+1. 分析対象の明確化: ターゲット（自分またはその他）を具体的に示す
+2. 視点の指定: 分析を行う第三者の立場や関係性を具体的に指定する（例：親友、厳格な上司、未来の自分、同僚など、必要に応じてそれぞれの属性や価値観も指定）
+3. 分析軸の提示: 各視点からどのような側面を分析してほしいかを示す（例：強み、弱み、改善点、貢献度、懸念点、将来の可能性など）
+4. 深掘りしたい思考事項: 特に焦点を当てて分析してほしい事項があれば明記する（上記出力結果の「思考したい事項」）
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 人間の感情や行動に関する一般的な知識
+- さまざまな役割や立場における思考パターンの一般的な知識
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="16" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1.{思考したい事項}を持つターゲットについて、指定された複数の第三者の視点をエージェントが推測し、その第三者の視点から最適な分析軸に基づいて分析を行ってください。
+2.それぞれの視点からの分析結果として、強み、弱み、可能性などを具体的に列挙し、複数の視点で見られた共通点や対立する点を抽出してください。
+3.最後に、これらの分析結果を統合し、{思考したい事項}を持つターゲットの今後の行動や課題解決に向けた提案や要約を生成フォーマット例に従って出力してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="9" placeholder="ルールを入力してください">
+- 各視点の分析は独立して行い、それぞれの特徴を捉えるように努める
+- 分析結果は客観的な事実に基づき、推測や憶測は避ける
+- ポジティブな側面とネガティブな側面の両方を考慮する
+- ユーザーが新たな視点や気づきを得られるような情報提供を心がける
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="25" placeholder="出力形式を入力してください">
+```
+- 視点A: [指定された視点]
+  - 強み: [視点Aから見たターゲットの強み]
+  - 弱み: [視点Aから見たターゲットの弱み]
+  - 可能性: [視点Aから見たターゲットの可能性]
+- 分析A: [分析結果]
+- 意見A: [分析結果の考察]
+- 視点B: [指定された視点]
+  - 強み: [視点Bから見たターゲットの強み]
+  - 弱み: [視点Bから見たターゲットの弱み]
+  - 可能性: [視点Bから見たターゲットの可能性]
+- 分析B: [分析結果]
+- 意見B: [分析結果の考察]
+- ...
+- 共通点・対立点のまとめ:
+  - 共通して見られた強み: [複数の視点で見られた強み]
+  - 共通して見られた弱み: [複数の視点で見られた弱み]
+  - 意見が対立する点: [異なる視点で評価が分かれた点]
+- 今後の提案や課題の要約:
+  - 今後の行動指針: [分析結果を踏まえた提案]
+  - 注力すべき課題: [分析を通して明らかになった課題]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="思考したい事項を入力してください(例：ユーザーが分析してほしい具体的な事柄を入力)" class="variable-textarea" >
+</textarea>
+<h3>複数の第三者の指定</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="複数の第三者の指定を入力してください" class="variable-textarea" >
+1) 社外コンサルタント
+2) 親友
+3) 厳格な上司
+4) 未来の自分
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="11" placeholder="を補足を入力してください">
+- より具体的な視点や分析軸を指定することで、より詳細でパーソナライズされた分析結果を得ることができます。
+- 必要に応じて、各視点からの分析結果に対する深掘り質問を行うことで、さらに理解を深めることができます。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=934"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考したい事項=" + (formData.get('hensu1') || '特に指示無し\n') + "\n";
+    communicationContent += "##複数の第三者の指定=" + (formData.get('hensu2') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
