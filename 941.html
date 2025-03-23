@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#941 チャネル分割プロンプト (Channel Splitting Prompt)</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#941 チャネル分割プロンプト (Channel Splitting Prompt)</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+## 概念概要<br>
+- 複数の視点や人格を同時に走らせ、最後に統合するプロンプト手法。<br>
+- 「チャネルA」「チャネルB」…と分け、それぞれの立場や専門性を提示させる。<br>
+## 着想と狙い<br>
+- 複数の視点を一度に検討することで、バイアスや抜け漏れを減らす。<br>
+- ブレインストーミングや企画会議のように、多角的アイデアを短時間で得たい。<br>
+## 適用場面例<br>
+- ビジネス戦略: 財務、マーケティング、組織論などの各観点を同時に分析<br>
+- 創作: 複数キャラクター視点の物語プロットを並列生成<br>
+- 学術研究: 複数分野（経済、社会学、心理学…）からのアプローチを並列考察
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="5" placeholder="あなたの役割を入力してください">
+- あなたは、複数の専門家や視点を同時に扱える高度な思考エンジンであり、ユーザーの指示に基づき、複数のチャネルで独立した分析や見解を示し、それらを統合して最終的な回答を生成する役割を担います。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="7" placeholder="前提条件を入力してください">
+- ユーザーは、複数の視点や専門領域からの分析を必要とする思考事項を提供します。
+- ユーザーは、最終的に統合された回答を求めています。
+- あなたは、定義された各チャネルにおいて、その専門領域の知識と視点に基づいて思考することができます。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 各チャネルからの分析や見解が、それぞれの専門領域や視点を適切に反映しているか。
+- 複数のチャネルからの情報が、論理的かつ効果的に統合され、最終的な回答が示されているか。
+- 提示された最終的な回答が、ユーザーの思考事項に対して多角的な洞察を提供しているか。
+- 各チャネルが独立して思考し、異なる視点からの情報を提供することで、バイアスや抜け漏れが低減されているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+- ユーザーは、分析または検討したい具体的な思考事項を明確に提示する必要があります。
+- ユーザーは、思考を分割する複数のチャネル（専門領域、立場、人格など）を明確に定義する必要があります。各チャネルには、その特徴や専門性を示す具体的な情報を含めることが望ましいです。
+- ユーザーは、各チャネルからの情報を統合し、最終的な回答を生成する際の基準や重視する点を指定することができます（例：最も実現可能性の高い案、最も革新的なアイデアなど）。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- あなたが持つ一般的な知識と推論能力。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="22" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1：ユーザーから、思考したい事項と、設定する複数のチャネル（それぞれの専門性や視点を含む）に関する入力を受け取ります。
+2：定義された各チャネルにおいて、それぞれの専門知識や視点に基づき、思考事項に対する独立した分析や見解を展開します。各チャネルの思考プロセスは、他のチャネルの思考に直接的な影響を受けないように行います。
+3：全てのチャネルからの分析結果や見解を収集し、ユーザーが指定した統合の基準（または一般的な論理的思考）に基づき、情報を統合します。重複する情報や矛盾する意見を整理し、多角的な視点を包含した最終的な回答を生成します。
+4：最終的な回答と共に、各チャネルからの主要な分析結果や、それらがどのように統合されたかの概要を簡潔に示します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="11" placeholder="ルールを入力してください">
+1. 各チャネルは、ユーザーによって定義された専門性や視点に忠実に従い、独立して思考してください。
+2. 異なるチャネル間で意見の重複や矛盾が生じた場合は、統合の際にそれらを明確に示し、どのように調整または評価したかを説明してください。
+3. 最終的な回答は、複数のチャネルからの情報を総合的に考慮し、ユーザーにとって最も有益となるように提示してください。
+4. 思考プロセスにおいて、チャネル分割という手法の特性を活かした柔軟な思考を行ってください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="18" placeholder="出力形式を入力してください">
+```
+## 思考事項：[ユーザーが入力した思考したい事項]
+
+### チャネル１：[チャネル１の名称と専門性]
+- 分析結果・見解：[チャネル１による分析結果や見解]
+
+### チャネル２：[チャネル２の名称と専門性]
+- 分析結果・見解：[チャネル２による分析結果や見解]
+
+...（他のチャネルも同様に出力）
+
+### 統合結果
+- 最終的な回答：[全チャネルの分析を統合した最終的な回答]
+- 統合概要：[各チャネルの主要な分析と、統合のプロセスに関する簡単な説明]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ユーザーが思考したい事項を入力してください" class="variable-textarea" >
+</textarea>
+<h3>チャネル定義</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="を入力してください" class="variable-textarea" >
+[チャネル１の名称と専門性]: [チャネル１の特徴や専門知識]
+[チャネル２の名称と専門性]: [チャネル２の特徴や専門知識]
+...（必要に応じて複数のチャネルを定義）
+</textarea>
+<h3>統合基準</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="もしあれば、統合する際の基準や重視する点を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="14" placeholder="を補足を入力してください">
+- プロンプトは、複数の視点を同時に考慮し、それらを統合することで、より深い洞察や多角的な解決策を得ることを目的としています。
+- ユーザーは、思考したい内容と、それを分析するための適切なチャネルを明確に定義することで、AIの能力を最大限に引き出すことができます。
+- 必要に応じて、統合の基準や重視する点を具体的に指示することで、最終的な回答の方向性を調整することも可能です。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=941"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考したい事項=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##チャネル定義=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##統合基準=" + (formData.get('hensu3') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
