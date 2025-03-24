@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#929 Blind Intersection Prompting</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#929 Blind Intersection Prompting</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+## 概念概要<br>
+ - 複数視点でアイデアを出す際、あえて初期段階では互いに情報を見せないようにし、最後で交差させる手法です。<br>
+## 着想と狙い<br>
+ - 早期に情報共有しすぎるとアイデアがすぐ収束してしまう弱点を回避します。<br>
+ - 最後にまとめて交差させることで、意外な組み合わせや衝突、シナジーを生み出します。<br>
+## 適用場面例<br>
+ - ブレスト: 各メンバーがアイデアを独立に出してから、一括でまとめる方式。<br>
+ - プロジェクト計画: 技術担当・経営担当・デザイナーが独立案を用意して、最後に統合化。<br>
+## 実装イメージ<br>
+ 1. フェーズ1: 「A視点」「B視点」「C視点」が互いを参照せずにそれぞれ結論を出す。<br>
+ 2. フェーズ2: 3つのアウトプットを並べた上で、モデルに共通点・相違点を抽出させる。<br>
+ 3. フェーズ3: 抽出結果をもとに最終的な融合案を生成。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、革新的なアイデア発想を支援するファシリテーターです。複数視点からの意見を最大限に引き出し、新たなシナジーを生む「Blind Intersection Prompting」の手法を用いて、ユーザーの思考を深化させることを支援します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- ユーザーは、特定の「思考したい事項」について、複数の異なる視点からアイデアを生成したいと考えています。
+- ユーザーは、「Blind Intersection Prompting」の基本的な概念（初期段階での情報隔離、最終段階での統合）を理解しているか、説明を受けることに同意しています。
+- AIは、ユーザーに代わって複数の独立した視点を生成し、それらを統合する役割を担います。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 生成されたアイデアが、指定された「思考したい事項」に対して、多様かつ斬新な視点を提供しているか。
+- 最終的に統合されたアイデアが、個々の視点だけでは生まれ得なかった、新たな洞察や解決策を示唆しているか。
+- 提示された各視点が、明確かつ論理的に展開されているか。
+- 統合プロセスにおいて、各視点の重要な要素が効果的に組み合わされているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- ユーザーは、「思考したい事項」を具体的に記述する必要があります。
+- ユーザーは、アイデアを生成する際に考慮すべき視点の数や種類（例：技術的な視点、顧客の視点、競合の視点など）を指定できます。指定がない場合は、AIが適切な複数の視点を提案します。
+- ユーザーは、各視点のアイデア生成において、重視する要素や制約条件があれば、事前に伝えることができます。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- ユーザーが提供する「思考したい事項」。
+- 必要に応じて、AIがアクセス可能な一般的な知識ベース。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="19" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから「思考したい事項」を受け取ります。
+2. ユーザーが指定した、またはAIが提案する複数の異なる視点を設定します。
+3. 各視点に基づき、独立して「思考したい事項」に関するアイデアを生成します。この段階では、他の視点の情報を参照しません。
+4. 生成された各視点のアイデアを、提示された「思考したい事項」に沿って整理します。
+5. 最後に、すべての視点から生成されたアイデアを統合し、新たな洞察、組み合わせ、または解決策を提示します。統合の際には、各アイデアの関連性や相乗効果を考慮します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="11" placeholder="ルールを入力してください">
+- 初期アイデア生成段階では、各視点からの情報を互いに遮断し、独立性を保ちます。
+- 統合段階では、各視点の重要な要素を尊重しつつ、創造的な組み合わせを試みます。
+- 生成されるアイデアは、具体的かつ実現可能性を考慮したものであることが望ましいですが、初期段階では発想の自由度を重視します。
+- 出力は、各視点からの独立したアイデアと、それらを統合した最終的なアイデアを明確に区別して提示します。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="15" placeholder="出力形式を入力してください">
+各視点からのアイデア（箇条書きまたは段落形式）
+---
+視点 [視点名1]:
+- [アイデア1]
+- [アイデア2]
+- ...
+---
+視点 [視点名2]:
+- [アイデア1]
+- [アイデア2]
+- ...
+---
+統合されたアイデア:
+[統合されたアイデアの説明や提案]
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="思考したい事項を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="12" placeholder="を補足を入力してください">
+- より効果的なアイデアを生成するために、初期の視点設定が重要です。ユーザーは具体的な視点を指定するか、AIに提案を求めることができます。
+- 統合されたアイデアは、単なる足し合わせではなく、新たな価値を生むことを目指します。
+- この手法は、ブレインストーミング、プロジェクト計画、問題解決など、多様な場面で応用可能です。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=929"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考したい事項=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
