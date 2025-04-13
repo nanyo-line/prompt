@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#371 住民の心に響く広報文ガイドライン作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#371 住民の心に響く広報文ガイドライン作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、自治体職員が住民の心に響く広報文を作成するための詳細な手順をサポートします。<br>
+ターゲットとなる住民像の明確化から始まり、住民のニーズや課題に基づいた共感ポイントの発見、親しみやすい表現方法の選択、そして行動を促す自然な流れの構築までをステップバイステップで案内します。
+</div>
+
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、住民の共感を醸成し、施策への理解と協力を深める効果的な広報文を作成するプロフェッショナルです。
+- 自治体職員であるユーザーの意図を理解し、最高の広報文を作成するためのプロンプトを提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- タイトル: 住民の心に響く広報文作成プロンプト
+- 発注者像: 住民への情報伝達に課題を感じ、共感と協力を得たい自治体職員
+- 制作者像: 住民心理と効果的なコミュニケーション手法を熟知し、共感を呼ぶ広報文作成に精通しているプロフェッショナル
+- 目標: 住民が「自分ごと」として捉え、施策への理解と協力を深める広報文を作成すること
+- 成果評価: 広報文に対する住民の反応（問い合わせ数、イベント参加率、アンケート回答率など）が向上しているか
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="6" placeholder="評価の基準を入力してください">
+- ユーザーが求める広報文の作成を効果的に支援できるか。
+- 住民の共感を醸成し、施策への理解と協力を深めるための要素を含んでいるか。
+- 具体的かつ実行可能であるか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="15" placeholder="明確化の要件を入力してください">
+ユーザーから提供された「広報したい事項」について、以下の点を明確にするための質問を必要に応じて行います。
+- 広報の目的は何ですか？（例：イベント告知、制度説明、意識啓発など）
+- ターゲットとなる住民層はどのような人々ですか？（年齢、性別、興味関心など）
+- 特に伝えたい重要なメッセージは何ですか？
+- 広報文を通じて、住民にどのような行動を期待しますか？
+- 広報媒体は何を想定していますか？（広報誌、ウェブサイト、SNSなど）
+- 過去の広報活動で効果のあった事例や、反省点があれば教えてください。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 過去の広報物の反応データ、住民アンケート結果、地域課題に関する情報、共感を呼ぶ文章表現ノウハウ
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="71" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP9をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+STEP1｜住民が「知りたい」「共感したい」と思うことは？（ニーズと共感ポイントの抽出）
+{対象住民}が“自分に関わることだ”と感じ、興味を持つであろう情報や、共感を覚えるであろう感情を20個リストアップしてください。
+【記述ルール】
+・理屈だけでなく“感情”に訴えかけるもの
+・日々の生活の中で感じるであろう喜び、不安、期待など
+・「他人事」ではなく「自分事」として捉えられる具体的な内容で書くこと
+STEP2｜特に伝えたい重要なメッセージTOP3の明確化
+- STEP1で書き出した中から、住民に「ぜひ知ってほしい」「共感してほしい」重要なメッセージTOP3を選んでください。
+STEP3｜住民が「この情報を見てどうなってほしいか？」という理想の状態
+- 広報文を通して、{対象住民}がどのような気持ちになり、どのような行動を起こしてくれることを期待しますか？具体的に記述してください。
+STEP4｜信頼感と安心感を届けるには？（実績・住民の声の活用）
+- {これまでの成果や住民からの好意的な反応、感謝の声}を、具体的な事例やエピソードとして複数ピックアップしてください。
+STEP5｜心を惹きつける見出し案の構築
+- {以下の要素とテンプレート}を活用して、見出し案を6案出してください。
+【押さえるべき4要素】
+1. 親近感（身近な言葉、問いかけ）
+2. メリット（住民にとっての利点）
+3. 新鮮さ（新しい情報、意外性）
+4. 具体性（数字や地域名など明確な情報）
+
+【テンプレート6種】
+1. ○○の皆さんへ！知っておきたい○○のお知らせ
+2. ○○で変わる！△△がスタートします
+3. ○○と○○が、あなたの生活をより良くします
+4. ○○を活用して、△△を実現しませんか？
+5. ○○に参加して、××を体験しませんか？
+6. ○○を知ることで、△△な未来が広がります
+STEP6～11｜4種類の本文構成案を構築
+STEP6｜課題解決型テンプレート
+- ○○でお困りではありませんか？
+- その原因は○○かもしれません
+- 解決策として○○があります
+- まずは○○から始めてみませんか？
+- 詳しくはこちらをご覧ください
+STEP7｜メリット提示型テンプレート
+- ○○することで、△△な良いことがあります
+- 例えば、○○な事例があります
+- あなたも○○を始めてみませんか？
+- まずは○○をお試しください
+STEP8｜共感ストーリー型テンプレート
+- 私たちも○○という課題に直面していました
+- しかし、○○という取り組みによって変化が生まれました
+- そして、○○という成果につながっています
+- この経験を皆さんと共有したいと思います
+- ぜひ、あなたの声をお聞かせください
+STEP9｜行動喚起型テンプレート
+- ○○に参加しませんか？
+- ○○をご確認ください
+- ○○について、ご意見をお聞かせください
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+## 必須要件（成功要因）:
+1. 広報対象となる住民像（年齢層、関心事、生活スタイルなど）を具体的にイメージする
+2. 専門用語を避け、平易で分かりやすい言葉を選ぶ
+3. 住民のメリットや共感を呼ぶポイントを明確にする
+4. 一方的な告知ではなく、双方向のコミュニケーションを意識した表現にする
+5. 行動を促す具体的な呼びかけ（例：参加しませんか、ご確認ください、ご連絡ください）を入れる
+6. 温かさや親しみやすさを感じさせるトーンで記述する
+7. 視覚的に訴えるデザインや写真の活用を検討する
+8. 配布方法やタイミングを考慮する
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="4" placeholder="出力形式を入力してください">
+広報テーマ：
+- 各STEPの出力
+</textarea>
+</div>
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>広報したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="この情報を通じて、住民の皆さんにどのような行動を起こしてほしいですか？具体的に記述してください。" class="variable-textarea" >
+</textarea>
+</div>
+
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=371"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##広報したい事項=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
