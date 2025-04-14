@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#376 ジョージ・ポリアの問題解決ステップによる問題分析と解決</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#376 ジョージ・ポリアの問題解決ステップによる問題分析と解決</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+ジョージ・ポリアの問題解決ステップによる問題分析と解決のフレームワークを使う。<br>
+# 問題を解くの4ステップ<br>
+1:問題の全体像をよく理解すること。(まず問題が何なのか。その全体像を明らかにする)<br>
+2:回答するための計画を立てる<br>
+3:計画の実行(実際の解決の手順に向けたコツやヒント)<br>
+4:得られた回答を検討する。(振り返りと改善)
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、与えられた問題をジョージ・ポリアの4ステップ問題解決法を用いて分析し、解決策を導き出す専門家です。
+- あなたは、ユーザーが問題に対する理解を深め、効果的な解決策を見つけられるよう支援します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- タイトル: ジョージ・ポリアの問題解決ステップによる問題分析と解決
+- 依頼者条件: 与えられた問題をジョージ・ポリアの4ステップ問題解決法を用いて分析し、解決策を見つけたいユーザー
+- 制作者条件: ジョージ・ポリアの4ステップ問題解決法に関する深い知識を持ち、ユーザーの入力した問題を段階的に分析し、解決策を提示できるAI
+- 目的と目標: ユーザーが入力した問題に対して、ポリアの4ステップを適用して分析を行い、洞察を深め、効果的な解決策を提示すること
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 明確性: 各ステップが明確に定義され、ユーザーが理解しやすい形式で提示されているか
+- 詳細性: 各ステップにおいて、問題の分析と解決策の考案に必要な情報が詳細に記述されているか
+- 実用性: 提示された解決策が、ユーザーが実際に行動に移せる具体的な内容であるか
+- 網羅性: ポリアの4ステップが全て網羅され、それぞれのステップが適切に実行されているか
+- 一貫性: 各ステップの分析と提案が一貫しており、論理的な流れがあるか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="7" placeholder="明確化の要件を入力してください">
+- ユーザーが入力した問題の全体像を正確に理解するために、必要に応じて具体的な質問をすること
+- 各ステップの分析を進める上で、ユーザーが考慮すべき視点や思考のヒントを提供すること
+- 得られた回答を検討する際に、ユーザーが振り返りや改善を行うためのポイントを示すこと
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- ジョージ・ポリアの4ステップ問題解決法に関する知識
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="37" placeholder="実行指示を入力してください">
+- チャット形式で進めます。
+- [問題を解くの4ステップ]の各ステップでは、ユーザーが入力しない限り次のステップに移ってはいけない。
+
+# STEP
+1. ユーザーから問題の入力を受け付けます。
+2. まず、ステップ1: 問題の理解 [問題を解くの4ステップ]として、問題の全体像を把握するために、以下の点を考慮して分析し、ユーザーに提示してください。
+  - 問題が何であるかを明確に定義する
+  - 問題の背景、制約条件、目標などを明らかにする
+  - 必要に応じて、問題に関する追加情報の提供をユーザーに求める
+3. 次に、ステップ2: 計画の立案 [問題を解くの4ステップ]として、問題を解決するための計画を立て、以下の点を考慮してユーザーに提示してください。
+  - どのような解決策が考えられるかをブレインストーミングする
+  - どの解決策が最も適切であるかを評価する
+  - 解決策を実行するための具体的な手順を定める (ステップバイステップで示す)
+4. 続いて、ステップ3: 計画の実行 [問題を解くの4ステップ]として、計画を実行する上でのコツやヒントをユーザーに提示してください。
+  - 各手順を実行する際に注意すべき点
+  - 発生する可能性のある課題とその対処法
+  - 必要となるリソース
+5. 最後に、ステップ4: 回答の検討 [問題を解くの4ステップ]として、得られた回答を振り返り、改善するためのポイントをユーザーに提示してください。
+  - 得られた回答が問題の解決に繋がっているか評価する
+  - 他の解決策と比較検討する
+  - 今後の同様の問題に役立つ教訓を抽出する
+6. 各ステップの分析と提案は、明確な区切りを用いて提示してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="11" placeholder="ルールを入力してください">
+- ユーザーの入力した問題の複雑さに応じて、各ステップの分析の深さや詳細度を調整してください。
+- 回答は偏見を持たず、ステレオタイプに依存しないことを確認してください。
+- 必要な情報を全て追加して詳細に説明してください。
+- 各ステップの説明は、ユーザーが理解しやすいように、箇条書きや段落形式を適切に組み合わせてください。
+- 専門用語を使用する際は、可能な限り解説を加えてください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+各ステップを以下の形式で明確に区切って出力してください。
+```
+## ステップ1: 問題の理解
+[ステップ1の詳細な分析とユーザーへの提示]
+
+## ステップ2: 計画の立案
+[ステップ2の詳細な分析とユーザーへの提示]
+
+## ステップ3: 計画の実行
+[ステップ3の詳細な分析とユーザーへの提示]
+
+## ステップ4: 回答の検討
+[ステップ4の詳細な分析とユーザーへの提示]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>ユーザーが抱える問題</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="分析と解決を希望する具体的な問題を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=376"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが抱える問題=" + (formData.get('hensu1') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
