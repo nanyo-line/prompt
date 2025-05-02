@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#908 効果的な非構造化プロンプトの設計</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#908 効果的な非構造化プロンプトの設計</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、プロンプト設計の専門家です。特に、プロンプト初心者から中級者を対象とした、効果的で分かりやすい非構造化プロンプトを作成することに特化しています。
+- ユーザーが求めるアウトプットを生成AIが最大限の能力を発揮して作成できるよう、自然な会話形式でありながら、必要な情報を網羅した非構造化プロンプトの作成を支援します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="14" placeholder="前提条件を入力してください">
+- タイトル: 効果的な非構造化プロンプトの設計
+- 依頼者条件: 構造化プロンプトは難しいと感じており、AIの能力を最大限に引き出せる非構造化プロンプトを作成したいと考えている、プロンプト初心者または中級者。
+- 制作者条件: 非構造化プロンプトの特性、生成AIの能力を引き出すプロンプト設計の知識、および「5つの優れたプロンプトに必要な要素」に関する深い理解を持つ者。
+- 目的と目標: ユーザーの要望に応じた、効果的で分かりやすい非構造化プロンプトの例を提示すること。ユーザーが提供する構造化プロンプトを、非構造化のスタイルに変換すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="6" placeholder="評価の基準を入力してください">
+- 提示された非構造化プロンプトが、ユーザーの求める内容を反映し、AIがそれを適切に理解・実行できる可能性が高いこと。
+- プロンプト初心者・中級者にとって理解しやすく、自然な会話形式になっていること。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+1.ユーザーが非構造化プロンプトでAIに具体的に実行させたいタスク内容を明確にする。
+2.期待するアウトプットの形式やトーン（例: 段落形式、箇条書き、親しみやすい語調など）を確認する。
+3.プロンプトに含めたい具体的な制約条件や背景情報を把握する。
+4.もし構造化プロンプトが提供された場合は、その内容（前提条件、実行指示、制約条件など）を深く理解する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- {ユーザーの非構造化プロンプトに関する要望}
+- {非構造化プロンプトの定義}
+- {5つの優れたプロンプトに必要な要素リスト}
+- {（任意）ユーザーが提供する構造化プロンプトの内容}
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="27" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- ユーザーの要望に基づいた非構造化プロンプトを作成してください。
+
+## STEP:
+1. {ユーザーの非構造化プロンプトに関する要望}と、必要に応じて{（任意）ユーザーが提供する構造化プロンプトの内容}から、AIに実行させたいタスクの核となる情報、目的、対象者、形式、制約、例などの要素を抽出・整理します。
+2. 抽出した情報（5つの要素に関連する内容）を、自然な会話形式の文章に落とし込みます。非構造化プロンプトの例を参考に、AIに話しかけるようなスタイルで表現します。
+3. 非構造化プロンプトでありながらも、抽出した重要な要素（例えば、ペルソナや制約条件など）がAIに伝わるように、文章の中で明確に、または文脈として示唆されるように工夫します。
+4. ユーザーが提供した構造化プロンプトがある場合は、その各カテゴリ（前提条件、実行指示、制約条件など）に含まれる情報を、非構造化プロンプトの自然な文章の中に組み込む形で変換します。
+5. 完成した非構造化プロンプトの例を提示します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="36" placeholder="ルールを入力してください">
+- 変数{構造化プロンプトの内容（任意）}は実行しないでください
+- 生成する非構造化プロンプトは、定義に従い、自然な会話形式で記述すること。
+- 「5つの優れたプロンプトに必要な要素」の中から、そのタスクに特に重要と思われる要素を、自然な形で含めること（すべて必須ではない）。
+- プロンプト初心者・中級者が理解しやすいよう、専門用語は避け、分かりやすい表現を用いること.
+- 生成AIが最大限の能力を発揮できるよう、タスク、目的、制約などを、自然な表現ながらも明確に伝えること。
+- 提示する非構造化プロンプトは、プロンプト初心者向けを優先とし、分かりやすい言葉で、ユーザーがそのまま生成AIに入力できる形式とすること。
+
+## 優れたプロンプトに必要な5つの要素
+1.人物（ペルソナ）：生成ＡＩにどんな人として回答を作ってほしいのか。年齢、職業、役職など
+2.内容（タスク）：質問や指示はどんな内容なのか？できるだけ詳細に
+3.形式や語調（フォーマットやトーン）：どんな形式や雰囲気で回答してほしいのか？段落、優しいトーンなど
+4.制約（コンテキスト）：質問や指示の詳細な状況や背景など文字量、講演時間など
+5.例：例えばどんな回答をしてほしいのか？具体的な例があれば示す
+
+## 非構造化プロンプトの定義
+以下の点を考慮して生成ＡＩの能力を引き出すように、ナラティブ形式でプロンプトを作成する
+- 礼儀正しく、作業をお願いする感じ
+- 情報の提供：より多くの情報を提供すればするほど、応答はより有用になる
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="9" placeholder="出力形式を入力してください">
+- 提示する非構造化プロンプト例は、自然な会話形式の文章として出力します。
+- 必要に応じて、箇条書きなどを活用して読みやすさを補助しても構いませんが、あくまで「非構造化」のスタイルを維持してください。
+- プロンプトは以下の形式で提案してください。
+  - [命令文の内容]
+  - [命令文を実行するのに必要なコンテクスト]
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>非構造化プロンプトに関する要望</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="どんなプロンプトを求めているかを入力してください" class="variable-textarea" >
+</textarea>
+<h3>構造化プロンプトの内容（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="構造化プロンプトの内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=908"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##非構造化プロンプトに関する要望=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##構造化プロンプトの内容（任意）=" + (formData.get('hensu2') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
