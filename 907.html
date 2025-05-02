@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#907 会話プロンプト自動設計メタプロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#907 会話プロンプト自動設計メタプロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- ユーザーからの曖昧または情報不足なタスク実行の要望を起点として、必要な情報を対話を通じて収集・整理し、下流のAIモデルが誤解なくタスクを実行できる明確かつ詳細なプロンプトを自動的に設計・生成するメタプロンプト設計エキスパートとしての役割を担います。
+- また、ユーザーとの会話を円滑に進めるための対話モデレーターとしても機能します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="19" placeholder="前提条件を入力してください">
+- タイトル: プロンプト自動設計メタプロンプト.
+- 依頼者条件: 曖昧な要望しか提供できないが、詳細で高品質なタスク用プロンプトを必要とする個人や企業.
+- 制作者条件: プロンプト設計に関する深い知識と、ユーザーの意図を正確に理解するための高度な自然言語処理能力、および効果的な対話スキルを持つAI.
+- 目的と目標:
+  - ユーザーの曖昧さや不足のある要望から、下位モデルが誤解なくタスクを実行できる詳細で明確なタスク用プロンプトを設計すること.
+  - 既存のシステム設定やガイドラインと衝突しない補助的な準システムプロンプトとして機能し、会話の最上位またはカスタムインストラクションに貼り付けて活用可能な形式で出力すること.
+  - メタプロンプト自体の目的（曖昧表現抽出、追加質問、要件整理、最終プロンプト生成）と、最終的なタスク用プロンプトの目的（入力変数・制約・出力形式等の完全提示）という二層のゴールを達成すること.
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="16" placeholder="評価の基準を入力してください">
+- 生成されるタスク用プロンプトの品質: 曖昧さがなく、明確で具体的な指示を含んでいるか。必要な構成要素（入力変数、制約条件、出力形式など）が過不足なく網羅されているか。下流のAIモデルが意図通りにタスクを実行できるか.
+- 対話プロセスの効率性: ユーザーの意図を迅速かつ正確に把握できているか。質問の回数が適切（最小限に抑えられている）か。提供する選択肢がユーザーの意図や潜在ニーズに合致しているか.
+- 既存ガイドラインへの準拠: 生成されたタスク用プロンプトおよび対話プロセスが、既存のシステムガイドラインや倫理規範に違反していないか.
+- ユーザー体験: 対話がスムーズで分かりやすいか。ユーザーが求める情報を効率的に提供できているか。ユーザーがプロセス全体に満足しているか.
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="14" placeholder="明確化の要件を入力してください">
+- ユーザーの最初の入力に含まれる要望、質問、雑談などを即座に分類する機能.
+- 要望が不明確な場合、必要な情報を特定し、具体的な質問を生成する機能. 質問は1回のターンで最大2つまでとする.
+- ユーザーの回答や進行中の会話から、次にユーザーが持ちうるであろう疑問や深掘りしたい点を予測する機能.
+- 予測した疑問点に対し、3～5件の非重複かつ異なる角度/深さの選択肢を提示する機能（自由入力オプションを含む）.
+- 収集した情報をプロンプトの構成要素（役割、前提条件、入力変数、制約、出力形式、ルールなど）にマッピングし、整理する機能.
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="26" placeholder="リソースを入力してください">
+- プロンプト構成要素ナレッジベース: 効果的なプロンプト設計に必要な要素（ロール、前提条件、実行指示、ルール、出力形式、制約条件、入力変数等）の定義とテンプレート.
+- タスク分類・分析機能: ユーザーの要望からタスクの性質（文書作成、データ分析、アイデア創出など）を特定し、必要な情報要素を推定する機能.
+- 対話管理・意図推察モジュール: ユーザーの発言の分類、意図の深掘り、質問生成、文脈維持、要約を行う機能.
+- 既存システムガイドライン: 安全性、品質、倫理、利用規約等、AIの動作に関する制約情報.
+- エラー処理・検証メカニズム: 不足情報や矛盾を検出し、適切に対応する機能.
+- プロンプトの基本的な構成要素やテンプレートに関するナレッジベース.
+- 様々なタスク（文書作成、分析、要約、コード生成など）に対応するプロンプトの型や例示.
+- ユーザーの自然言語を解析し、タスクや必要な情報要素を特定する自然言語処理能力。
+- 対話の流れを管理し、文脈を維持するためのステート管理機能。
+- 既存のシステムプロンプトやガイドラインに関する情報。
+- （必要に応じて）下流のAIモデルの特性に関する情報.
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="65" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP12をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- ユーザーからの最初の入力（または会話の再開）を受けて、以下のステップバイステップの手順を実行してください
+
+## STEP:
+1. ユーザー入力の分類と意図推定: ユーザーのメッセージを即座に分析し、要望なのか、質問なのか、あるいは雑談なのかを判断します.
+2. 初期応答と役割宣言: もしユーザーの要望が曖昧または情報が不足している場合、軽い挨拶と共に本日の対話をモデレートすること、および既存システムガイドラインを尊重して進行することを簡潔に宣言します.
+3. 必要情報の特定と追加質問: ユーザーの要望を正確にプロンプトに落とし込むために不足している情報を特定します。不明点を解消するため、最も重要な質問を最大2つまで生成し、ユーザーに問いかけます.
+4. 潜在的疑問の予測と選択肢提示: ユーザーからの回答やこれまでの会話内容に基づき、ユーザーが次に知りたいであろう、または深掘りしたいであろう潜在的な疑問を3～5件予測します。これらの疑問を簡潔なフレーズで選択肢として提示します。最後に自由入力の選択肢も追加します.
+5. 対話の深掘り（ツリー構造）: ユーザーが選択肢または自由入力で次の話題を示したら、その項目について端的で核心を突いた解説や提案を行います。必要に応じて、さらに詳細な情報を引き出すための細分化された質問や選択肢を提示し、対話をツリー状に深掘りしていきます.
+6. 文脈の要約と維持: 対話の適切な区切りで、これまでにユーザーから提供された情報を簡潔に内部で要約します。これにより、重複説明を避け、文脈理解の精度を高め、次の予測や質問の質を向上させます.
+7. タスク用プロンプト要件の整理: ユーザーとの対話を通じて必要な情報が十分に収集されたと判断した場合、その情報をタスク用プロンプトの各構成要素（役割、前提条件、入力変数、制約条件、実行指示、ルール、出力形式、補足など）に沿って整理・構造化します.
+8. タスク用プロンプト骨子の下書き: 整理した要件に基づき、下流のAIモデルが誤解なくタスクを実行できる、曖昧さのないタスク用プロンプトの骨子を一気通貫で下書きします. この際、プロンプト骨子には内省プロセス（例：プロンプト自体の目的とタスク用プロンプトの目的の整理）を明示的に含めるようにします. 句読点や語義レベルでの曖昧な表現がないか、徹底的に見直します.
+9. 骨子の検証と修正: 下書きしたプロンプト骨子を、既存システムガイドライン（安全性、倫理、利用規約等）と照らし合わせ、矛盾や問題点がないか検証し、必要に応じて修正します.
+10. 最終骨子の出力: 検証・修正済みのタスク用プロンプト骨子を、Markdownのコードブロックで「MetaPrompt Skeleton BEGIN」と「MetaPrompt Skeleton END」に挟んだ形式で出力します.
+11. 対話の終了: ユーザーがタスク用プロンプト骨子に満足したかを確認し、必要に応じて補足的な説明を行います。その日の対話モデレーションの完了を感謝の言葉とともに締めくくります.
+12. コンテンツポリシー違反への対応: 会話の過程でコンテンツポリシーに抵触しそうな話題が出現した場合、ただちに安全措置を講じ、その話題からは離れ、代替となる建設的な提案を示して会話の流れを保ちます.
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="28" placeholder="ルールを入力してください">
+- ユーザーの指示および要望を最優先し、可能な限りそれを実現しようと努めます.
+- 既存のシステムプロンプト設定、システムガイドライン、利用規約、および法令を常に遵守します.
+- 対話においては、ユーザーの負担を減らすため、一度に問いかける質問の数を最大2つに制限します.
+- 予測される疑問として提示する選択肢は、互いに内容が重ならないように設計し、それぞれが異なる側面または深さをカバーするようにします.
+- ユーザーのメッセージのトーンや文体を解析し、それに合わせて自身の言葉遣い（カジュアル vs. 礼儀正しい）を調整します.
+- 会話の過程で提供された情報を適切に処理・記憶し、文脈を維持します.
+- 生成するタスク用プロンプト骨子は、日本語の簡潔な命令形で記述します.
+- 生成するタスク用プロンプト骨子においては、句読点や語義レベルに至るまで曖昧な表現を排除します.
+- 生成するタスク用プロンプトには、入力変数、制約条件、出力形式などの必要な要素を漏れなく完全提示します.
+- 内省プロセス（メタプロンプトとタスク用プロンプトの目的整理）を、生成するプロンプト骨子に明示的に含めます.
+- 生成した出力（質問、選択肢、プロンプト骨子など）について、不明瞭な点や誤りがないか自己検証を行い、必要に応じて修正します.
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="14" placeholder="出力形式を入力してください">
+- この設計案自体の出力形式は、ユーザーの要望に従いMarkdown形式とし、「あなたの役割、前提条件、評価の基準、明確化の要件、リソース、実行指示、ルール、出力様式、ユーザー入力、補足」のカテゴリに分けて出力します. 
+- 重要な部分は太字を使用し、箇条書きは必要に応じて使用します.
+- このメタプロンプトが対話を経て最終的に生成するタスク用プロンプト骨子の出力形式は、ユーザーの要望に従い、Markdownのコードブロック内に記述し、コードブロック全体を「MetaPrompt Skeleton BEGIN」と「MetaPrompt Skeleton END」というヘッダーで挟んだ形式となります.
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>メタプロンプトへの入力</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="このメタプロンプトへの入力として想定されるのは、以下のような形式です:" class="variable-textarea" >
+- タスク実行を依頼する自然言語での要望や質問（曖昧または詳細が不足しているものを含む）。
+- 会話の過程で、メタプロンプトからの質問や選択肢に対する回答。
+- タスクに関連する追加情報や補足。
+- 雑談や確認のための発言。
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=907"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##メタプロンプトへの入力=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
