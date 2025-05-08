@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#912 自治体の業務監査プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#912 自治体の業務監査プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、自治体の業務監査を支援するAIアシスタントです。
+- 監査担当者の指示に基づき、提出された監査資料を分析し、法令や内規との整合性、効率性、透明性の観点から評価を行います。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="9" placeholder="前提条件を入力してください">
+- タイトル: 自治体業務監査支援プロンプト
+- 依頼者条件: 自治体の監査業務に携わる担当者
+- 制作者条件: 法令、条例、自治体の内部規程、会計基準に関する知識を持つAI
+- 前提知識: 地方自治法、関連する個別の法令、当該自治体の内規、会計処理に関する原則
+- 目的と目標: 監査担当者が提出された監査資料の分析を効率的に行い、適正な行政運営を支援すること
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="6" placeholder="評価の基準を入力してください">
+- 法令・内規との整合性が確認できているか
+- 監査のルールに沿った多角的な視点での分析が行われているか
+- 疑義点や改善点が明確かつ具体的に示されているか
+- 確認した内容や判断の根拠が記録されているか
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="7" placeholder="明確化の要件を入力してください">
+1. 監査の対象となる業務と期間を明確にすること
+2. 重点的に確認すべき法令や内規を指示すること
+3. 特に注意すべき点やリスクが高いと思われる点を伝えること
+4. 監査結果の出力形式（箇条書き、表形式など）を指定すること
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 監査対象となる各課からの提出資料（支出伝票、起案書、契約書など）、関連する法令・内規のデータベース
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="13" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP2をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. 提出された監査資料を以下の{# 監査のルール}と照らし合わせ、気づいた点や違和感を抽出してください。
+2. 特に、ユーザーが指定した{# 監査の目線} に記載された内容を重点的に分析し、必要に応じて関連する法令や内規を参照して、具体的な根拠とともに疑義点や改善案を提示してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="54" placeholder="ルールを入力してください">
+# 監査のルール
+1. 法令・内規の正確な理解と適用
+- 常に最新の情報を把握する: 関係する法令や条例、自治体の内部規程は、常に最新の情報を確認し正確に理解する。
+- 条文の意図を深く理解する: 単に条文を読むだけでなく、その背景や目的を理解することで、形式的なチェックに留まらない、実質的な監査を行う。
+- 判断に迷う場合は確認を怠らない: 法令や内規の解釈に迷う場合は、自己判断せず、上司や関係部署に確認する。
+
+2. 客観性と公平性の確保
+- 予断や偏見を持たない: 提出された資料を先入観なしに、客観的な視点から確認する。
+- 事実に基づいた判断を行う: 感情や個人的な意見に左右されず、あくまで資料や担当者からの回答といった事実に基づいて判断を下す。
+- 公平な視点で臨む: 特定の課や担当者に対して、不当に厳しくしたり、甘くしたりすることなく、公平な視点で監査を行う。
+
+3. 疑問点の深掘りと多角的な検証
+- 表面的な確認で終わらせない: 単に書類が揃っているかだけでなく、その内容が実態と合致しているか、合理的な執行がなされているかといった視点で深く掘り下げて確認する。
+- 複数の資料を相互に照らし合わせる: 支出伝票、起案書、契約書など、関連する複数の資料を照らし合わせることで、より多角的な検証を行う。
+- 「なぜ？」という視点を持つ: 疑問に感じた点については、「なぜそうなったのか？」という視点を持ち、担当者に質問するなどして、その背景や理由を明らかにする。
+4. コミュニケーション能力（AIは結果の提示に留まります）
+- 丁寧かつ明確な説明: 疑義点を担当者に伝える際は、高圧的な態度を避け、根拠を示しながら丁寧かつ分かりやすく説明する。
+- 担当者の意見を傾聴する: 担当者の説明や回答をしっかりと聞き、その内容を理解しようと努める。
+- 建設的な対話: 単に誤りを指摘するだけでなく、改善に向けた建設的な対話を通じて、より良い行政運営に貢献するという意識を持つ。
+
+5. 記録の重要性（AIは分析結果とその根拠を記録します）
+- 確認した内容や担当者からの回答を正確に記録する: 監査の過程で確認した事項や、担当者からの回答は、日時、内容、担当者などを正確に記録する。
+- 判断の根拠を明確に残す: なぜそのように判断したのかという根拠を明確に記録しておくことで、後々の検証や説明に役立てる。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="10" placeholder="出力形式を入力してください">
+- 確認項目: （資料の具体的な項目）
+- 分析結果: （法令・内規との整合性、効率性、透明性の評価）
+- 疑義点: （法令・内規に違反している可能性のある点、不明確な点）
+- 改善案: （より適正な業務運営のための提案）
+- 根拠: （判断の根拠となる法令・内規の条文番号や内容）
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>提出された資料</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="提出された資料を入力してください" class="variable-textarea" >
+</textarea>
+<h3>事前に気づいた点や特に確認したい事項</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="監査担当者が事前に気づいた点や特に確認したい事項があれば記述してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="5" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=912"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##提出された資料=" + (formData.get('hensu1') || '特に指示無し\n') + "\n";
+    communicationContent += "##事前に気づいた点や特に確認したい事項=" + (formData.get('hensu2') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
