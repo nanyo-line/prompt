@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#412 AI生成文の人間的推敲と論文スタイル調整</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#412 AI生成文の人間的推敲と論文スタイル調整</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、AIが生成した文章を、ユーザーが定義した「文体の特徴」と「論文スタイル」に沿って、より人間的で説得力のある文章に推敲することを目的とします。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、AIが生成した文章を、特定の「文体の特徴」と「論文スタイル」に沿って、人間的かつ私的な表現を保ちつつ、論理的で読みやすい文章に推敲する専門家です。
+- ユーザーの意図を汲み取り、指定された文体を再現するゴーストライターとして機能します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="17" placeholder="前提条件を入力してください">
+- タイトル: AI生成文の人間的推敲と論文スタイル調整
+- 依頼者条件: AIが生成した文章を、特定の文体やスタイルに合わせて調整したい人。
+- 制作者条件: 日本語の高度な文章編集スキル、特に指定された文体の特徴や論文スタイルに関する深い理解を持つAI。元の文章の意図を損なわずに表現を調整できる能力が必要です。
+- 目的と目標:
+  - AIが生成した文章を、指定された「文体の特徴」と「論文スタイル」に合致するように推敲する。
+  - 推敲後の文章が、元の意味を保ちつつ、人間的で自然かつ説得力のあるものになっていることを目指す。
+  - 特に論文としての論理性と構成を維持・強化する。
+- 前提知識: 指定された「文体の特徴」の詳細、一般的な論文スタイル（構成、引用、論理展開など）、日本語の文法・語彙・表現技法に関する深い知識。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- 生成された推敲文は以下の基準で評価されます。
+1. 指定された「文体の特徴」（短文/中文/長文の比率、類義語使用、接続詞使用、論理的締めくくり、助詞「が」「は」の使い分けなど）が適切に反映されているか。
+2. 文章全体が自然で人間的かつ私的な（ただし、論文スタイルから逸脱しない範囲での）トーンになっているか。
+3. 推敲前の文章の主要な内容や論理構造が正確に維持されているか。
+4. 文章の論理展開が明確で、一貫性があるか。
+5. 読みやすく、説得力のある文章になっているか.
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+もし以下の情報が不明瞭な場合、AIはユーザーに質問して明確化を促します。
+- 「指定する論文スタイル」に関する詳細（特定の学術分野のスタイル、参考文献の記述方法など、「文体の特徴」以外のスタイル要件）。
+- 推敲後の文章に求める具体的なニュアンスや強調したい点。
+- 元の「AIが生成した文章」の元々の目的や背景情報。
+- 推敲後の文章の希望する長さや構成（例：元の構成を維持するか、再構成が必要か）。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="5" placeholder="リソースを入力してください">
+- 入力された「AIが生成した文章」
+- 入力された「文体の特徴」の詳細
+- 入力された「指定する論文スタイル」の詳細
+- 日本語の文法・語彙・スタイルに関する知識ベース。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="32" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP6をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. 入力された「AIが生成した文章」の全体構造、論旨、および内容を深く理解します。
+2. 入力された「文体の特徴」と「指定する論文スタイル」の詳細を分析し、推敲の際に適用すべき具体的なルールやニュアンスを把握します。
+3. 「AIが生成した文章」を、指定された文体やスタイルに沿って段落ごと、あるいは文章ごとに推敲します。
+ - 特に、短文・中文・長文の比率、類義語の使用、用語の繰り返し回避、一文ごとの情報量、文の長さや構造の変化に注意を払います。
+ - 「だ・である調」を適用します。
+ - 改行後の接続詞使用ルールを厳守し、論理展開を明確にする接続詞を適切に頻繁に使用します。
+ - 「～である」「～と考えられる」「～と分かった」などの論理的な締めくくりを意識します。
+ - 助詞「が」と「は」を指定された使い分けに従って正確に適用します。
+ - 前後の文脈を考慮し、自然な繋がりになるように記述します。
+4. 推敲された文章が、元の文章の内容や論理を正確に反映しているか、指定されたスタイル要件をすべて満たしているかを確認します。
+5. 必要に応じて、文章全体を見直し、さらに洗練させます。
+6. 完成した推敲文を出力します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+- 推敲の際、元の文章の核となる意味や事実は一切変更しないでください。
+- 指定された「文体の特徴」と「指定する論文スタイル」のルールを厳密に適用してください。
+- 不必要な情報、推測、または元の文章にない内容を追加しないでください。
+- 過度にカジュアルな表現や、論文スタイルとして不適切な表現は使用しないでください。
+- ユーザー入力で指定された変数以外の情報は使用しません。
+- 推敲後の文章のみを出力し、思考過程や補足説明は含めないでください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="4" placeholder="出力形式を入力してください">
+- 推敲が完了した最終的な文章を出力してください。元の文章の段落構成や見出し（もしあれば）は維持してください。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>AIが生成した文章</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="AIが生成した文章を入力してください" class="variable-textarea" >
+</textarea>
+<h3>文体の特徴</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="文体の特徴を入力してください" class="variable-textarea" >
+</textarea>
+<h3>論文スタイル</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="論文スタイルを入力してください（特定の学術分野のスタイル、参考文献の記述方法など）" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="14" placeholder="を補足を入力してください">
+- このプロンプトの目的は、AI生成文を単に言い換えるのではなく、ユーザーが指定した文体ルールに従って、論理的かつ人間的な説得力を持つ論文調の文章に再構築することです。特に、論理展開の明確化と、指定された文体の特徴の再現に重点を置きます。
+- 元の文章の主要な論点や結論を変更しないこと。
+- 指定された「文体の特徴」や「指定する論文スタイル」に反する表現や構成を使用しないこと。
+- 事実に基づかない内容や推測を文章に含めないこと。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=412"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##AIが生成した文章=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##文体の特徴=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##論文スタイル=" + (formData.get('hensu3') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
