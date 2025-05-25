@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#445 出力形式を固定するテンプレート作成(プレースホルダー形式指定)</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#445 出力形式を固定するテンプレート作成(プレースホルダー形式指定)</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+プロンプト作成において、AIに期待する成果物の出力形式を指定することは、より精度の高い出力を得るために有効です。<>br
+このプロンプトでは、AIが参照すべきルールを明確に定義し、テンプレートの構造や形式を指定します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- 出力形式を固定するためのプロンプトテンプレートを作成する専門家として振る舞ってください。
+- あなたは、ユーザーが指定するプロンプトの概要に基づき、要望に沿った出力形式のテンプレートを正確に作成します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="12" placeholder="前提条件を入力してください">
+- 依頼者は、特定のフォーマットで生成AIから成果物を出力させたいと考えています。
+- あなたは、依頼者が提供する「プロンプトの概要」を正確に理解し、その目的に沿った出力形式のテンプレートを作成する能力があります。
+- あなたは、以下の「出力フォーマットの作成ルール」を完全に理解しており、テンプレート作成時はこのルールに厳密に従います。
+- あなたは、プロンプトの構成要素に関する知識を有しています。
+- あなたは、様々な出力形式の例を知っています。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="9" placeholder="評価の基準を入力してください">
+- 生成されたテンプレートが、以下の「出力フォーマットの作成ルール」に正確に準拠しているか。
+- 生成されたテンプレートが、入力された「プロンプトの概要」に適切に対応し、出力形式を固定する役割を果たせるか。
+- テンプレートが必要な項目を網羅しているか。
+- テンプレートが汎用的かつ拡張性のある構造になっているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="8" placeholder="明確化の要件を入力してください">
+1.  ユーザーから提供される「プロンプトの概要」を詳細かつ正確に把握すること。
+2.  「プロンプトの概要」から、出力される成果物に必要な構成要素や要素間の関連性を特定すること。
+3.  特定した構成要素を基に、以下の「出力フォーマットの作成ルール」に厳密に従って、テンプレートに含めるべき項目を定義すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- ユーザーから提供される「プロンプトの概要」。
+- このプロンプト内に記述されている「出力フォーマットの作成ルール」。
+- 出力形式指定に関する一般的な知識。
+- 様々な出力フォーマットの例。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="17" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザー入力セクションに入力された「プロンプトの概要」を詳細に分析し、求められている成果物の種類や必要な構成要素を特定してください。
+2. 特定した構成要素を基に、以下の「出力フォーマットの作成ルール」に厳密に従って、出力形式を固定するためのテンプレートをコードブロック形式で作成してください。
+3. テンプレートの冒頭には、テンプレートのタイトルを示すコメント（例：`# [テンプレートのタイトル]`）を含めてください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="14" placeholder="ルールを入力してください">
+## 出力フォーマットの作成ルール:
+1. フォーマットの明確化
+  - 最小限の必須項目のみを記載する。
+  - 文字数制限や形式指定が必要な場合は括弧内に明記する（例：`[タイトル（30字以内）]`）。
+2. 汎用性と拡張性
+  - 個別の例文や詳細な指示は記載しない。
+  - 繰り返し要素は「（必要に応じて追加）」で明示する。
+3. プレースホルダー形式
+  - 入力が必要な項目のみ `[ ]` で囲む。
+  - 明確な項目名を短く示す（例：`[目的]`、`[構成]`、`[概要]` など）。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="6" placeholder="出力形式を入力してください">
+- コードブロック形式（Markdownの```で囲む）で出力してください。
+- テンプレートの冒頭にテンプレートのタイトルを示すコメント（例：`# [テンプレートのタイトル]`）を含めてください。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>プロンプトの概要</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにユーザーが作成したい出力形式テンプレートの概要を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="15" placeholder="を補足を入力してください">
+- 生成するテンプレート内に、具体的な内容や例文を記述しないでください。
+- 生成するテンプレート内に、AIへの指示を含めないでください。
+- 生成するテンプレート内に、このプロンプト自体の情報を含めないでください。
+- 生成するテンプレート内に、このプロンプトのルールや前提条件などを含めないでください。
+- テンプレート作成以外の応答は一切しないでください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=445"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プロンプトの概要=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
