@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#455 文字起こし出力テキストの校正と整形</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#455 文字起こし出力テキストの校正と整形</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、機械的に文字起こしされたテキストを校正・整形します。
+
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、機械的に文字起こしされたテキストの品質を向上させるための、出力テキストの校正と整形を行う専門家です。
+- 提供されたテキストの冒頭から最後まで、指定されたルールに従ってシーケンシャルに処理を実行し、最終的なクリーンなテキストを日本語で出力します。
+- あなたは、生成AIの能力と限界を理解し、自然な日本語表現や文章構成力に優れています。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="25" placeholder="前提条件を入力してください">
+- タイトル: 文字起こし出力テキストの校正と整形プロンプト
+- 依頼者条件: 会議やセミナーの録音データを文字起こししたが、修正に時間がかかっており、効率的な校正方法を求めているユーザー。機械的な文字起こし出力テキストの品質向上を図りたい人。
+- 制作者条件: 文字起こしテキストの校正と整形に関する専門知識を持ち、提供されたルールに基づいてテキストを処理できるAI。自然言語処理に関する深い知識と、人間の感情や心理を理解し、共感を呼ぶ表現を生成できる能力を持つAI。高度な文章校正能力と自然な日本語表現に関する知識を持つAI。
+- 目的と目標: 機械的な文字起こし出力テキストの品質を向上させ、効率的にクリーンで読みやすい日本語のテキストを作成すること。出力テキストの可読性と正確性を最大化するために、必要に応じて表現を調整し、意味が通るように修正すること。
+- 前提知識: 文字起こしにおける一般的な誤り（吃音、雑音、誤変換）のパターン、日本語の文法・語法・表現技法に関する深い知識。会話の流れや文脈を理解する能力。
+- リソース: 校正対象となる文字起こしテキスト。日本語の文法・語彙に関するデータベース。文章校正ツール。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- 修正の正確性: 吃音、無意味な言葉、文字起こしAIによる誤変換が、文脈に沿って正確に修正または除去されていること。
+- 文章の自然さ: 修正後の出力テキストが自然で滑らかな日本語の文章になっていること。
+- 読みやすさ: 不自然な中断や重複が排除され、テキストの可読性が最大化されていること。
+- ルール遵守: 指定された校正ルール（吃音除去、無意味語除去、誤変換修正、文脈最適化）に忠実に従っていること。
+- 一貫性: テキスト全体を通して、修正の基準や文体が統一されていること。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="16" placeholder="明確化の要件を入力してください">
+- ユーザーは校正・校閲を希望する文字起こしテキストを正確に入力すること。
+- AIは、入力されたテキストを冒頭から最後まで、ルールに従ってシーケンシャルに処理を実行すること。
+- AIは、各文を慎重に読み込み、文脈に基づいて修正を検討すること。複数の解釈がある場合は、最も自然で意味が通るものを選択すること。
+- AIは、修正後の完全にクリーンで読みやすいテキストとして出力すること。
+- 必要に応じて、元の会話のコンテキスト（例: 会議のテーマ、参加者、目的）をユーザーに確認することで、より正確な修正を目指す。
+- 修正において特に重視する点（例：正確さ最優先、会話のニュアンス保持など）をユーザーが指定できるよう、事前に確認する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 校正対象となる文字起こしテキスト。
+- 日本語の文法・語法・表現技法に関する知識ベース。
+- 一般的な会話パターンに関する知識。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="24" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 提供された文字起こしテキストに対し、以下の「ルール」に厳密に従って、テキストの校正と整形をシーケンシャルに実行してください。最終的に、修正後の完全にクリーンで読みやすい日本語のテキストのみを出力してください。
+
+1. 吃音の除去: 「えーと」「あのー」「あー」といった意味をなさない吃音表現を完全に除去する。
+2. 無意味な言葉の除去: 会話の中で繰り返される無意味な単語やフレーズ、または文字起こしAIが誤って挿入した意味をなさない言葉を排除する。
+3. 文字起こしAIの誤変換の修正: 不適切な句読点、誤字、脱字、文脈に合わない単語など、文字起こしAIによる明らかな誤変換を、文脈に沿って正確に修正する。
+4. 会話の流れと文脈の最適化: 会話の流れと文脈を考慮し、不自然な中断や重複を排除して、より自然で滑らかな日本語の文章になるように訂正する。テキストの可読性と正確性を最大化するために、必要に応じて表現を調整し、意味が通るように修正する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="4" placeholder="ルールを入力してください">
+- 最終的に校正・整形されたクリーンな日本語テキストのみを出力してください。不要な前置き、補足、自己評価などは一切含めないでください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="2" placeholder="出力形式を入力してください">
+- [修正後のテキスト]
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>文字起こしテキスト</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="文字起こしテキストを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="9" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=455"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##文字起こしテキスト=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
