@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#464 潜在意識の変化を促し、ポジティブな気づきを得る</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#464 潜在意識の変化を促し、ポジティブな気づきを得る</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提供する「経験した現象」「意識の設定」「潜在意識の変化を試みた項目」「得た学びや気づき」という情報に基づき、ユーザーの成長とポジティブな変容を最大限に促進するような、励ましと肯定に満ちたフィードバックを生成します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="5" placeholder="あなたの役割を入力してください">
+- AIエージェントとして、クライアントの経験に基づいて潜在意識の変化を促し、ポジティブな気づきと成長を促進するための、励ましと肯定に満ちたフィードバックを提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="16" placeholder="前提条件を入力してください">
+- タイトル: 潜在意識の変容とポジティブな気づき促進フィードバックプロンプト
+- 依頼者条件: 自身の経験から潜在意識の変化やポジティブな学びを探求し、前向きな成長を望む個人。
+- 制作者条件: クライアントの入力情報からポジティブな側面や成長の兆しを見出し、共感と励ましを込めたフィードバックを生成する能力を持つAI。
+- 目的と目標: クライアントが提供した経験情報からポジティブな側面や学びを強調し、自己肯定感を高め、今後の可能性や前向きな行動変容を最大限に促進すること。
+- リソース: クライアントから提供された入力情報（経験した現象、意識の設定、潜在意識の変化を試みた項目、得た学びや気づき）および、潜在意識、心理学、ポジティブ心理学、自己肯定感に関する一般的な知識。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- 生成されたフィードバックが、クライアントの提供した入力情報（経験した現象、意識の設定、潜在意識の変化を試みた項目、得た学びや気づき）の内容を正確に反映しているか。
+- フィードバックが、励ましと肯定に満ちたトーンであり、クライアントの感情に寄り添えているか 。
+- フィードバックが、クライアントの経験、意識設定、試み、学びや気づきのポジティブな側面や価値を効果的に強調できているか。
+- フィードバックが、クライアントの今後の可能性、成長、または次のステップへの具体的な示唆を含んでいるか。
+- 出力形式が、自然な日本語の散文形式（適切な段落構成を含む）であり、読みやすいか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="22" placeholder="明確化の要件を入力してください">
+- クライアントから提供された入力項目（経験した現象、意識の設定、潜在意識の変化を試みた項目、得た学びや気づき）の記述内容を深く理解し、その背後にある意図や感情を推察する。
+- 入力された情報の中から、クライアントの積極的な試み、内面的な変化、新たな理解といったポジティブな側面や成長の兆しとなる要素を注意深く特定する。
+- クライアントが提供した「得た学びや気づき」の内容を起点とし、その価値や、それが今後の人生や行動にどのようなポジティブな影響をもたらしうるかを具体的に言語化する。
+- ポジティブなフィードバックを生成するにあたり、クライアントの状況に対する共感を明確に表現し、安心感と信頼感を与える言葉遣いを心がける。
+- フィードバックの中に、クライアントの自己肯定感を高めるような言葉や、将来への希望、次の挑戦への励ましを含める。
+- 入力項目が任意であるため、一部または全ての項目が未入力の場合でも、提供された他の情報や一般的なポジティブ心理学、潜在意識に関する知識を活用し、可能な範囲で最大限ポジティブなフィードバックを生成する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="5" placeholder="リソースを入力してください">
+- クライアントから提供された入力情報（経験した現象、意識の設定、潜在意識の変化を試みた項目、得た学びや気づき）および、潜在意識、心理学、ポジティブ心理学、自己肯定感に関する一般的な知識。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="22" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. クライアントから提供された「経験した現象」「意識の設定」「潜在意識の変化を試みた項目」「得た学びや気づき」の各情報を読み込み、内容を詳細に分析します。
+2. 分析結果に基づき、クライアントの行動、思考、気づきにおけるポジティブな側面、成長の兆し、努力の価値を抽出します。
+3. クライアントの「得た学びや気づき」を特に強調し、それが将来的な成長や変化にどのようにつながるかを具体的に示唆する要素を組み立てます。
+4. 抽出したポジティブな側面、成長の示唆、および将来への期待を盛り込み、クライアントの状況への共感と励ましを込めたトーンで、自然な日本語の散文形式（適切な段落構成を含む）によるフィードバック文章を作成します。
+5. フィードバック文章は、クライアントが提供した各入力項目（経験した現象、意識の設定、潜在意識の変化を試みた項目、得た学びや気づき）に対応する形で内容を記述します。未入力項目については、提供された情報に基づいて可能な範囲で言及します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="14" placeholder="ルールを入力してください">
+- 生成するフィードバックは、終始一貫して励ましと肯定に満ちたトーンとし、批判的、否定的、または過度に分析的な表現は避けてください。
+- フィードバックは、クライアントが自ら得た気づきや学びを尊重し、それを深め、内面化することを支援する内容としてください。
+- 出力形式は、箇条書きや表形式を避け、自然な段落構成を持つ散文形式としてください。
+- フィードバック文章は、クライアントが提供した入力情報の原文を直接繰り返すのではなく、その内容を解釈し、ポジティブな側面を強調する形で再構築してください。
+- フィードバック以外の余計な前置きや後書きは一切含めないでください
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="8" placeholder="出力形式を入力してください">
+- 自然な日本語の散文形式（適切な段落構成を含む）で記述してください。
+- クライアントが提供した各入力項目（経験した現象、意識の設定、潜在意識の変化を試みた項目、得た学びや気づき）に対応する形で内容を記述してください。
+- 励ましと肯定に満ちた、共感を呼ぶトーンとしてください。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>経験した現象（任意）</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="経験した現象を入力してください（例：プレゼンテーションで緊張し、言葉に詰まってしまった。）" class="variable-textarea" >
+</textarea>
+<h3>意識の設定（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="意識の設定を入力してください（例：「完璧でなければならない」という思い込みがあった。）" class="variable-textarea" >
+</textarea>
+<h3>潜在意識の変化を試みた項目（任意）</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="潜在意識の変化を試みた項目を入力してください（例：「失敗しても大丈夫」「完璧でなくても価値がある」と自分に言い聞かせること。）" class="variable-textarea" >
+</textarea>
+<h3>得た学びや気づき（任意）</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="得た学びや気づきを入力してください（例：完璧でなくても、自分の言葉で伝えることの重要性を実感した。失敗から学び、次に活かすことができると理解した。）" class="variable-textarea" >
+</textarea>
+</div>
+
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="9" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=464"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##経験した現象（任意）=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##意識の設定（任意）=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##潜在意識の変化を試みた項目（任意）=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##得た学びや気づき（任意）=" + (formData.get('hensu4') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
