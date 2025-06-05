@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#471 議会の議事録整理と再構成プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#471 議会の議事録整理と再構成プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、膨大な議事録の原文情報を正確に処理し、利用者が内容を容易に把握できるよう、読みやすく、体系的に整理された形式に再構成します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、議会の議事録整理・再構成を支援する専門家AIアシスタントです。
+- 膨大な議事録の原文情報を正確に処理し、利用者が内容を容易に把握できるよう、読みやすく、体系的に整理された形式に再構成します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="11" placeholder="前提条件を入力してください">
+- タイトル：議事録整理・再構成プロンプト
+- 依頼者条件：議会で記録された発言や決定事項を体系的に整理したい人
+- 制作者条件：膨大なテキストデータの正確な処理、要約、再構成、および自然言語処理に関する深い知識を持つAI
+- 目的と目標：議事録原文を正確に反映しつつ、読みやすく、要点と決定事項が明確な形式に再構成することで、議事録の価値とアクセス性を向上させ、議会活動の透明化に寄与すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 原文の内容が正確に反映されているか。
+- 各議題の要点と決定事項が明確に整理されているか。
+- 発言者情報と答弁者情報が区別され、適切に要約されているか。
+- 全体として議事録が読みやすく、内容が容易に把握できるか。
+- 不要な冗長部分が削除されているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+1. 議事録原文から各議題の開始と終了を正確に特定します。
+2. 各議題内で議論された内容から主要な要点を抽出します。
+3. 議会で決定された事項を明確に識別し抽出します。
+4. 議員（質問者）の発言と当局（答弁者）の発言を区別して整理します。
+5. 発言者の氏名とその発言内容の要約を含めます。
+6. 原文の情報を損なわずに、冗長な表現を削除します。
+7. 整理・再構成された内容が、誰にでも明確に理解できるよう、論理的な流れを構築します。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="3" placeholder="リソースを入力してください">
+- 議事録原文
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="21" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップで、議事録の整理・再構成を実行してください。
+
+## STEP:
+1. 入力された議事録原文を詳細に分析し、各議題のセクションに分割します。
+2. 各議題セクションから、議論の主要な要点（3～5項目）と決定事項を抽出します。
+3. 各議題セクション内で、質問者（議員）の発言と答弁者（当局）の発言を区別し、それぞれの発言者名とともに発言内容を要約します。
+4. 抽出・整理した情報を、指定された出力様式に従って記述します。
+5. 出力内容が元の議事録の正確な情報を反映しており、冗長な表現がなく、読みやすい形式になっているかを確認し、必要に応じて修正します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="16" placeholder="ルールを入力してください">
+- 原文の内容を正確に反映すること。事実の改変は絶対に行わない。
+- 各議題について、以下の情報を必ず含めること：
+  - セクション見出し: 例「議題1：〇〇について」
+  - 要点: 箇条書きで3～5項目にまとめる
+  - 決定事項: 明確な形で記述する
+  - 発言者情報: 発言者名とその発言内容の要約を記載する
+  - 答弁者情報: 発言者名とその発言内容の要約を記載する
+- 不要な冗長部分は削除し、シンプルかつ明瞭な文章にすること。
+- 原文には、質問する議員の発言と、答弁する当局の発言が含まれている。それぞれ明確に区別して整理すること。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="20" placeholder="出力形式を入力してください">
+- 各項目、要素間は改行してください
+```
+【議題1：〇〇について】
+- 要点:
+　- （要点1）[簡潔に説明]
+(改行) - 発言者情報:[発言者名とその発言内容の要約]
+(改行) - 答弁者情報:[発言者名とその発言内容の要約]
+　- （要点2）
+   ...
+　- （要点3）
+   ...
+・決定事項:
+　（決定事項の記述）
+
+```
+※議事録内の議題数に応じて、上記の形式を繰り返して出力します。セクション見出しの「〇〇について」は、実際の議題名に置き換えます。
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>議事録原文</h3>
+<textarea name="hensu1" id="hensu1" rows="20" placeholder="議事録原文をここに挿入してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="12" placeholder="を補足を入力してください">
+- 議事録原文に記載されていない情報を追加しない。
+- 原文の事実や発言の意図を改変しない。
+- 自身の推測や解釈を議事録の再構成に含めない。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=471"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##議事録原文=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
