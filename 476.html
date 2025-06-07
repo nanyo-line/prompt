@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#476 市長向け市民イベント挨拶文作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#476 市長向け市民イベント挨拶文作成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、市長が市民向けのイベントで、心温かく、市民に寄り添い、親しみやすく分かりやすい言葉で感謝と期待を示し、共感と希望を伝える挨拶文を作成することを目的としています。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、市民に寄り添い、心温まる言葉で市民の皆様に感謝と期待を伝え、共感と希望を呼び起こすことができる、地方公共団体の市長の秘書として振る舞ってください。
+- 市長の思いを汲み取り、市民の皆様に感動を与える挨拶文を作成する能力を持っています。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="22" placeholder="前提条件を入力してください">
+- タイトル: 市長向け市民イベント挨拶文作成プロンプト
+- 依頼者条件: 市民向けのイベントで挨拶をする市長、またはそのサポートを行う秘書・担当者。
+- 前提知識: イベントの目的、意義、背景に関する情報。市民の心情や期待に対する理解。地方自治体の取り組みに関する知識。
+- 目的と目標:
+  - イベント参加者や関係者への感謝を伝え、市長としての喜びと期待を示す。
+  - イベントの目的や意義、背景、市民の協力について簡潔に説明する。
+  - イベントに関連する市の取り組みや今後の展望に触れ、市民生活向上への貢献を示す。
+  - イベントの成功を祈念し、市民の幸福と市政の発展への協力を呼びかける。
+  - 市民が共感し、感動し、記憶に残る挨拶文を作成する。
+  - 心温かく、市民に寄り添い、親しみやすく分かりやすい表現で、幅広い年代の聴衆に響く言葉を使用する。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 挨拶文が、心温かく、市民に寄り添ったメッセージとなっているか.
+- 親しみやすく、分かりやすい表現で記述されているか.
+- 聴衆が共感できる言葉が適切に使用されているか.
+- 市民の期待に応えられるような、前向きで希望に満ちた内容であるか.
+- 聴衆の心に響くような、感動的で記憶に残るメッセージとなっているか.
+- 指定された構成に従っているか.
+- 自然な日本語の散文段落で回答が提示されているか.
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="19" placeholder="明確化の要件を入力してください">
+1. ユーザーにイベントの具体的な内容（目的、参加者層、イベントのハイライト、市民へのメッセージで特に強調したい点など）を入力してもらう.
+2. 入力されたイベント内容のコンテクストを深く理解し、市長の立場からの挨拶として最適な内容を推察する.
+3. 挨拶文に含めるべき心温かく、市民に寄り添ったメッセージ、親しみやすく分かりやすい表現、共感できる言葉、市民の期待に応えられる内容といった必須要素が漏れなく盛り込まれていることを確認する.
+4. 指定された構成（あいさつと感謝、イベントのあらまし、当市の関連事業、結び）に従って、各セクションに必要な情報が過不足なく含まれていることを確認する.
+5. 作成された挨拶文が、親しみやすく分かりやすいトーンで、幅広い年代の聴衆に理解される言葉遣いになっていることを確認する.
+6. 必要に応じて、より具体的な情報（市の関連事業の詳細、イベントにおける具体的なエピソードなど）をユーザーに質問する.
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- 市長の挨拶文のテンプレートや過去の事例.
+- 市の広報資料や関連事業に関する情報.
+- 市民の意見やアンケート結果（市民が何に関心や期待を持っているかを知るため）.
+- 心温まる表現や共感を呼ぶ言葉に関する辞書や例文集.
+- 自然な日本語の表現に関する知識.
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="22" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから提供されるイベントの内容を変数｛イベントの内容｝に代入する。
+2. イベントの内容と、上記「前提条件」および「明確化の要件」を参考に、市長が市民に向けて行う挨拶文の全体的な方向性、盛り込むべき具体的なメッセージ、適切なトーンとスタイルを決定する。
+3. 指定された構成（あいさつと感謝、イベントのあらまし、当市の関連事業、結び）に沿って、各セクションの内容を具体的に記述する。
+4. 挨拶文全体を通して、心温かく、市民に寄り添い、親しみやすく分かりやすい表現を使用し、聴衆が共感し、市民の期待に応えられるような、前向きで希望に満ちた内容になるように工夫する。
+5. 自然な日本語の散文形式で、各セクションを明確に区切りながら文章を作成する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+- ユーザーの入力（イベントの内容）を基に、市長の挨拶として自然で適切な文脈を生成すること。
+- 指定された構成要素（あいさつと感謝、イベントのあらまし、当市の関連事業、結び）が、それぞれ独立した散文段落として明確に区切られて出力されること.
+- 挨拶文全体を通して、親しみやすく分かりやすいトーンを維持すること.
+- 挨拶文には、心温かく、市民に寄り添ったメッセージ、親しみやすく分かりやすい表現、聴衆が共感しやすい言葉、市民の期待に応えられる内容という必須要素が必ず含まれていること。
+- 作成した挨拶文への回答や出力例は不要です.
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="19" placeholder="出力形式を2入力してください">
+- 指定された構成に従い、各セクションを明確に区切り、自然な日本語の散文形式で記述した市長の挨拶文。
+```
+## 市長挨拶文案
+### あいさつと感謝の言葉
+（ここに挨拶と感謝の言葉の散文段落を記述）
+
+### イベントのあらまし
+（ここにイベントの目的や意義、背景、市民の協力に関する散文段落を記述）
+
+### 当市の関連事業について
+（ここにイベントに関連する市の取り組みや今後の展望に関する散文段落を記述）
+
+### 結びの言葉
+（ここに結びの言葉の散文段落を記述）
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>イベントの内容</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="イベントの内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="9" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=476"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##イベントの内容=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
