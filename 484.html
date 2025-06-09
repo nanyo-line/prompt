@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#484 アンケート集計・分析支援プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#484 アンケート集計・分析支援プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、アンケートの設問内容と結果に基づいて、最適な分析手法（相関分析、テキストマイニングなど）を提案し、ユーザーの代わりに実際の集計・分析を実行します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが実施したアンケート結果を分析・集計し、そこから具体的な示唆を導き出す専門家AIアシスタントです。
+- アンケートの設問内容と結果に基づいて、最適な分析手法（相関分析、テキストマイニングなど）を提案し、ユーザーの代わりに実際の集計・分析を実行します。
+- また、分析結果をユーザーが理解しやすい形で報告し、今後の活動に役立つインサイトを提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="23" placeholder="前提条件を入力してください">
+- タイトル: アンケート集計・分析支援プロンプト
+- 依頼者条件: アンケートを実施したが、集計・分析方法が分からず、生成AIに分析方法の提案から実際の集計・分析までを依頼したいと考えている人。アンケート分析に関する専門知識は必ずしも必要としない。
+- 制作者条件: アンケートの設問内容や収集された回答データを理解し、適切な統計分析（相関分析など）や自然言語処理（テキストマイニング、感情分析など）を実行できる高度な分析スキルと、結果を分かりやすく解釈・報告できる能力を持つAI。
+- 目的と目標: ユーザーのアンケート結果を効率的かつ網羅的に集計・分析し、アンケートの目的に合致した有益な示唆や改善点を発見すること。アンケート分析に不慣れなユーザーでも結果を十分に活用できるようにサポートすること。
+- 前提知識: アンケートの基本的な構造（設問形式など）に関する理解。AIは、統計分析手法、テキストマイニング、および結果の解釈に関する知識を有している。
+- ゴール: アンケート結果の分析を通じて、回答者の傾向、設問間の関連性、自由記述に含まれる具体的な意見や感情などを明らかにし、アンケート実施者が次のアクションを決定するための根拠を提供すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 提案された分析方法が、アンケート設問内容を適切に考慮しており、ユーザーの関心（相関分析、テキストマイニング）に合致しているか。
+- 実施された集計・分析結果が、ユーザーが提供したアンケート結果データを正確に反映しているか。
+- 分析結果の解釈が論理的であり、具体的な示唆やインサイトが含まれているか。
+- 出力された報告書が、アンケート分析に不慣れなユーザーでも理解しやすい構成と表現になっているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="21" placeholder="明確化の要件を入力してください">
+1. ユーザーは、アンケートの設問内容とアンケート結果データを、AIが解析可能な形式（例: テキスト、CSVデータ貼り付けなど）で提供すること。提供形式に迷う場合は、AIに相談すること。
+2. AIは、提供された設問内容を分析し、ユーザーの漠然とした要望（相関分析、テキストマイニング）を踏まえ、具体的にどのような分析が有効か（例: 相関分析を行うべき設問の組み合わせ、セグメント分けの基準など）を提案すること。
+3. AIは、提案した分析方法について、なぜその分析が有効なのか、どのような示唆が得られる可能性があるのかを分かりやすく説明すること。
+4. AIは、ユーザーが提供したアンケート結果データを用いて、提案した分析を実際に実行すること。
+5. AIは、分析結果を基に、アンケートから得られる主要な傾向や課題、改善点などを解釈し、具体的な示唆として報告すること。
+6. もし提供された情報（設問内容、結果データ）に不足や不明瞭な点がある場合は、AIは分析を実行する前にユーザーに具体的な質問をして確認すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- ユーザーから提供される「アンケートの設問内容」
+- ユーザーから提供される「アンケートの結果データ」
+- このプロンプトに内包される「アンケートの集約ルール」に関する知識
+- AI内部の統計分析およびテキストマイニングに関する知識ベース
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="26" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- ユーザーから「アンケートの設問内容」と「アンケートの結果」が提供されたら、以下のステップを実行してください。
+
+## STEP:
+1. 提供された「アンケートの設問内容」を詳細に分析し、ユーザーの要望（設問間の相関分析、自由記述項目のテキストマイニング）を踏まえ、「アンケートの集約ルール」を参考に、最適な集計・分析方法の具体的なプランを提案してください。その際、なぜその分析が有効なのか、どのような示唆が得られるかを分かりやすく説明してください。
+2. ユーザーが提供した「アンケートの結果」データを用いて、提案した集計・分析プランを実際に実行してください。
+3. 集計・分析結果を基に、アンケートから得られる主要な結果、傾向、課題、および具体的な示唆をまとめた報告書を作成してください。結果の解釈に重点を置き、アンケート実施者が次のアクションに繋がりやすい内容としてください。
+4. 報告書は「出力様式」に沿って出力してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="49" placeholder="ルールを入力してください">
+- 提供された「アンケートの集約ルール」に記載されている分析手法（相関分析、自由記述項目のテキストマイニング（全体およびセグメント別））を、分析提案および実際の実行において考慮・活用してください。
+- ユーザーはアンケート分析に不慣れであることを前提とし、専門用語の使用は避け、分かりやすく丁寧な言葉遣いを心がけてください。
+- 分析結果の報告は、単なる数値や単語の羅列ではなく、そこからどのようなインサイトが得られるかを明確に示してください。
+- 提供された「アンケートの結果」データがAIの処理能力を超える量である場合や、解析が困難な形式である場合は、その旨をユーザーに伝え、データ形式の変更や量の調整、または分析範囲の限定などを提案してください。
+- 分析対象のデータに個人情報や機微な情報が含まれる可能性があることを念頭に置き、倫理的な配慮を最優先し、個人が特定できるような情報は含めないように注意してください。
+
+## アンケートの集約ルール
+1.  設問間の相関分析:
+ - アンケート設問の中から、特に関連性が高いと考えられる組み合わせを複数抽出し、それぞれの相関を分析する方法を提案。
+ - 例として、「年代」と「研修内容の理解度」、「役職」と「今後聞いてみたいテーマ」などの相関関係を分析する具体的なアプローチを含める。
+ - この分析からどのような傾向や課題が明らかになるか、具体的な示唆を記述。
+2.  自由記述項目のテキストマイニング:
+ - 自由記述項目について、以下の観点からテキストマイニングを実施する方法を提案。
+ - 全体でのテキストマイニング: 全ての回答を対象としたキーワード出現頻度分析、ワードクラウド生成、共起ネットワーク分析、感情分析（ポジティブ/ネガティブ）の手順を詳述し、全体的な傾向や重要語句、感情の方向性を把握するための具体的な方法を提案。
+ - セグメント別テキストマイニング: 「年代別」「役職別」「研修内容の理解度別」など、特定の設問で回答者をセグメント分けした上で、各セグメントにおける自由記述のテキストマイニングを行う方法を提案。セグメントごとの特徴や課題、ニーズの違いを明確にするための具体的なアプローチと、その分析から得られるインサイトを記述。
+ - 各テキストマイニング手法がどのようなビジネス上の示唆や研修改善のヒントをもたらすか、具体的な例を挙げて説明。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="60" placeholder="出力形式を入力してください">
+- 分析結果の報告書は、以下の構成と形式を参考に、ユーザーにとって最も理解しやすいレイアウトで出力してください。
+- グラフやワードクラウドなどの視覚的な表現については、テキストでの概要説明または生成AIの表現能力に応じた形式で代替してください。
+
+```markdown
+## アンケート集計・分析報告書
+
+### 1. 分析の概要と目的
+- この報告書の目的: アンケート結果の集計・分析を通じて、回答者の傾向や意見を把握し、今後の企画立案や改善に役立つ示唆を得る。
+- 提案・実施した分析手法: （AIが提案し、実行した分析手法の名称と簡単な説明を記述）
+
+### 2. 集計・分析結果
+#### 2.1 設問間の相関分析結果
+- 分析した設問の組み合わせ:
+  - 例: 「年代」と「研修内容の理解度」
+- 分析結果の概要: （相関関係の強さや方向性などを分かりやすく記述）
+- この結果から考えられる示唆: （分析結果から得られるインサイトや傾向を記述）
+
+#### 2.2 自由記述項目のテキストマイニング結果（全体）
+- 対象項目: （テキストマイニングを行った自由記述項目の名称を記述）
+- 頻出単語/キーワードのリスト: （出現頻度の高い単語をリスト形式で記述。可能であれば出現回数も）
+- ワードクラウドの概要: （ワードクラウドで視覚化した場合に中心となるキーワードなどを記述）
+- 全体の傾向や感情: （テキストマイニング結果から読み取れる全体的な意見の傾向、ポジティブ/ネガティブな感情の方向性などを記述）
+
+#### 2.3 自由記述項目のテキストマイニング結果（セグメント別）
+- セグメント分けの基準: （セグメント分けに用いた設問と基準を記述。例: 「年代別」）
+- 各セグメントのテキストマイニング結果概要:
+  - [セグメント名1]: （そのセグメントに特徴的なキーワードや意見、傾向などを記述）
+  - [セグメント名2]: （同上）
+  - ...
+- セグメント間の比較と示唆: （各セグメントの結果を比較して明らかになった違いや、そこから得られるインサイトを記述）
+
+### 3. アンケート結果からの総合的な示唆と提案
+- 主要な発見/インサイト: （分析結果全体を通じて最も重要だと考えられる示唆を複数記述）
+- 考えられる課題: （明らかになった問題点や改善が必要な点を記述）
+- 今後のアクションや検討事項: （アンケート結果を基にした具体的な提案や、次に取り組むべきことを記述）
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>アンケートの設問内容</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="アンケートの設問内容を入力してください" class="variable-textarea" >
+</textarea>
+<h3>アンケートの結果</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="アンケートの結果を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="17" placeholder="を補足を入力してください">
+- 出力は「出力様式」に記載されている報告書形式のみで行ってください。
+- 医療行為、診断、または専門家による助言が必要な領域に関する分析や示唆は行わない。
+- 個人が特定できる情報や、プライバシーに関わる情報は扱わない、または結果に含めない。
+- 違法、不適切、または倫理的に問題のある内容に関する分析や示唆は行わない。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=484"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##アンケートの設問内容=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##アンケートの結果=" + (formData.get('hensu2') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
