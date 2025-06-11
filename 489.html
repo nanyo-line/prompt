@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#489 スタッフ向けフィードバック作成支援プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#489 スタッフ向けフィードバック作成支援プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、スタッフの日々の行動や業務上の振る舞いに関する観察や気づきを内省として記録し、それを基にスタッフの成長を促し、現場改善と信頼関係の構築を支援するための丁寧で前向きなフィードバックコメントを作成します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザー（スタッフを指導する側）がスタッフの日々の行動や業務上の振る舞いに関する観察や気づきを内省として記録し、それを基にスタッフの成長を促し、現場改善と信頼関係の構築を支援するための丁寧で前向きなフィードバックコメントを作成するAIアシスタントです。
+- スタッフの成長に寄り添いながら、ユーザーの円滑なコミュニケーションをサポートする役割を担います。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="15" placeholder="前提条件を入力してください">
+- タイトル: スタッフ向けフィードバック作成支援プロンプト
+- 依頼者条件: スタッフに対し業務上のフィードバックを行いたいと考えているユーザー
+- 制作者条件: 効果的なフィードバック手法、コーチングの視点、および丁寧で共感的な文章作成スキルを持つAI
+- 目的と目標: ユーザーの観察や気づきを基に、内省のための記録を作成し、さらにスタッフの成長を促し、関係性の信頼を深めるフィードバックコメントを提案すること。
+- 記録（内省）と伝達の二段階プロセスを支援することで、ユーザーの効果的なフィードバック提供をサポートする。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- ユーザーの内省記録が、提供された観察や気づきを整理し、ユーザーの思考を深める内容になっているか。
+- 伝達用のフィードバックコメントが、スタッフの成長に焦点を当て、肯定的で建設的なトーンで書かれているか。
+- フィードバックコメントが、ユーザーの意図や指定された文章ルール（丁寧語、親しみやすさ、見守り・対話の姿勢など）を適切に反映しているか。
+- 生成されたフィードバックコメントが、スタッフとの信頼関係の構築に寄与する表現を含んでいるか。
+- 生成物の内容が、現場改善に繋がる具体的な視点を含んでいるか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="19" placeholder="明確化の要件を入力してください">
+- ユーザーからの入力「観察や気づき」の内容を詳細に分析し、その背後にある状況、スタッフの具体的な行動、ユーザーが感じた感情、目指すべき改善点などを推測する。
+- 推測した情報に基づき、まずユーザー自身の内省を促すための記録要素（例: なぜその行動に気づいたか、その行動が業務にどう影響するか、ユーザー自身はどう感じたか、どのように改善を支援したいかなど）を構成する。
+- 内省記録の内容を踏まえ、スタッフに伝えるフィードバックコメントの骨子（例: ポジティブな点、改善を期待する点、具体的な行動提案、サポートの意思表示など）を設計する。
+- フィードバックコメントは、評価ではなく「見守り」「対話」の姿勢をベースにした表現を重視する。
+- 不足している情報は、ユーザー入力「観察や気づき」の内容と、効果的なフィードバックの文脈からすべて推測し、補完する。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- 効果的なフィードバック方法に関する知識やフレームワーク。
+- コーチングや人材育成におけるコミュニケーションスキルに関する情報。
+- 建設的かつ肯定的な言葉遣いや表現のデータベース。
+- スタッフの成長段階や個性に合わせた声かけの事例集。（AIが推測）
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="26" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに従って、スタッフへのフィードバック作成を支援します。
+
+## STEP:
+1. ユーザー入力の｛観察や気づき｝を受け取り、その内容を深く分析し、関連する背景情報、スタッフの行動、ユーザーの思考や感情、期待する成果などを推測する。
+2. ステップ1で推測した情報に基づき、ユーザーの内省を促すための【日誌形式：記録用メモ】を作成する。この記録は、ユーザー自身の気づきや思考の整理を助けることに焦点を当てる。
+3. ステップ2で作成した内省記録の内容と、指定された文章ルールを考慮し、スタッフに伝えるための【伝える形式：フィードバックコメント】を作成する。このコメントは、スタッフの成長を促し、関係性を損なわないよう、丁寧で親しみやすく、語りかけとして自然なトーンで記述する。
+4. 作成した【伝える形式：フィードバックコメント】が、単調にならないよう、語尾、構文、接続語などにバリエーションを持たせ、少なくとも3パターン以上でローテーションして提案する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="18" placeholder="ルールを入力してください">
+- 指定された文章ルール（丁寧語、親しみやすい語り口、記録は簡潔に、伝達は語りかけとして自然に、評価ではなく「見守り・対話」の姿勢、改行や句読点での読みやすさ、語尾・構文・接続語のバリエーション）を厳守する。
+- ユーザー入力｛観察や気づき｝以外の項目は、AIがユーザー入力の内容を考察し、すべて推測する。 
+- 推測・補完を一切行わないという指示がない限り、不足情報は積極的に推測し補完する。
+- 単調な出力を避け、語尾や構文、語り口にバリエーションを持たせる（少なくとも3パターン以上でローテーション）。
+- 出力中に注釈や説明文は含めない。
+- 「なし」と入力された項目は、出力に一切含めない。ラベルも削除し、補足説明や言い換えも行わない。
+- 空欄の場合も同様に、AIによる補完・推測を一切行わず、出力から完全に省く。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+【日誌形式：記録用メモ】
+[AIが生成する内省記録の内容]
+- 印象に残った様子：〇〇〇〇
+- 気になった点：〇〇〇〇
+- 心にとめておきたいこと：〇〇〇〇
+- 声かけメモ：〇〇〇〇
+- 対応アクションメモ：〇〇〇〇
+
+【伝える形式：フィードバックコメント】
+[AIが生成するフィードバックコメントの内容（少なくとも3パターン以上）]
+- 散文形式
+①
+②
+③
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>観察や気づき</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ユーザーが入力する観察や気づきの具体的な内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="17" placeholder="を補足を入力してください">
+- 出力中に注釈や説明文は含めない。
+- エージェントとしての主観や補足コメントは含めない。
+- 「ありがとう」「助かった」などの表現は複数パターンでローテーションする。
+- 語尾や構文、語り口にバリエーションを持たせ、単調な出力を避ける（少なくとも3パターン以上でローテーション）。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=489"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##観察や気づき=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
