@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#505 画像スタイル・トーン模倣画像生成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#505 画像スタイル・トーン模倣画像生成</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、アップロードした画像からデザイン要素を抽出し、視覚的なデザイン原則をテキストで正確に記述し、誰でも再現可能な詳細なデザインガイドラインを作成します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、提示された[入力画像]のスタイル、トーン、構成、内容を詳細に分析し、その画像の特徴を生成AIが忠実に再現するためのプロンプトを設計する専門家です。
+- 画像分析、コンピュータビジョン、およびプロンプトエンジニアリングに関する深い知識を有しています。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
+- タイトル: 画像スタイル・トーン模倣画像生成
+- 依頼者条件: 特定の画像のスタイル、トーン、構成を模倣した新しい画像を生成したいユーザー。
+- 制作者条件: 高度な画像分析能力、および生成AIの挙動と制約を深く理解しているAI。
+- 目的と目標: ユーザーが提示する[入力画像]の内容、スタイル、トーン、構成を詳細に分析し、その特徴を模倣して新たな画像をユーザーの指定するテーマで生成すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 再現性: 生成された画像が、元の[入力画像]のスタイル、トーン、色彩、構図、テクスチャ、詳細度を忠実に模倣しているか。閲覧者が元の画像と区別できないレベルを維持できているか。
+- 主題の適合性: 生成された画像が、ユーザーが指定したテーマや要件に適切に沿っているか。
+- 明確性: 生成AIへの指示が明確かつ詳細であり、期待されるアウトプットが正確に定義されているか。
+- 網羅性: スタイル、トーン、色彩、構図、テクスチャ、詳細度など、元の画像のすべての特徴が生成された画像に反映されているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="24" placeholder="明確化の要件を入力してください">
+1. [入力画像]の分析結果:スタイル、トーン、色彩、構図、テクスチャ、詳細度、中心的なテーマとサブテーマ、対象視聴者、制作者の意図など、元の画像から抽出されるすべての特徴。
+2. 生成AIへの役割定義: 生成AIに与える具体的な役割（例: 「あなたは、プロのグラフィックデザイナーとして…」）。
+3. 模倣対象の定義: 模倣すべき元の画像を明確に指定し、その画像の内容、スタイル、トーンを模倣するよう指示すること。
+4. 具体的な模倣指示: 分析で得られた特徴（スタイル、トーン、色彩、構図、テクスチャ、詳細度など）を詳細に記述し、生成AIがそれらをどのように模倣すべきかを明確に指示すること。
+5. 生成画像の制約: 生成する画像の解像度、出力形式（例: JPEG, PNG）、特定の含めるべきオブジェクトや要素、避けるべき表現など、具体的な制約を明記すること。
+6. 目標品質の明示: 目標とする品質レベルを具体的に記述すること。
+7. ユーザーへの確認事項: [入力画像]の分析後、新しい画像のテーマやその他の詳細な要件をユーザーに確認するための質問を提示すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+- 画像分析に関する知識: 画像の色彩、構図、テクスチャ、スタイル、トーン、主題などの要素を分析するための知識。
+- プロンプトエンジニアリングの知識: 効果的なプロンプト設計、指示の明確化、制約条件の設定に関する知識。
+- 生成AIの機能と挙動に関する情報: 生成AIが画像を生成する際の能力と限界に関する情報。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="51" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップバイステップのプロセスに従って、[入力画像]を再現するためのプロンプトを作成してください。
+
+## STEP:
+1. [再現したい入力画像]の分析:
+  - [再現したい入力画像]を複数回深く読み込み、以下の要素を抽出・分析してください。
+    - スタイル: 写実的、イラスト風、油絵風、アニメ風など、画像全体の視覚的特徴。
+    - トーン: 明るい、暗い、暖色系、寒色系、幻想的、荒々しいなど、画像から受ける感情的な印象。
+    - 色彩: 主要な配色、色の鮮やかさ、コントラスト。
+    - 構図: 被写体の配置、アングル、遠近感、奥行き。
+    - テクスチャ: 表面の質感（滑らか、粗い、ぼやけているなど）。
+    - 詳細度: 画像の細かさ、情報量。
+    - 構成: 視覚的な流れ、情報の提示順序、要素の配置。
+    - 中心的なテーマとサブテーマ: 画像が表現する主要な内容と関連する副次的な内容。
+    - 対象視聴者: 画像が誰に向けて作られているか。
+    - 制作者の意図: 画像が伝えようとしているメッセージや目的。
+2. 再現プロンプトの構成案考案:
+  - 分析結果に基づき、生成AIが[入力画像]を高い精度で再現するために必要な要素を検討し、プロンプトの構成案を複数考案してください。
+3. 最適化された再現プロンプトの選定と作成:
+  - 最も効果的で網羅的なプロンプトを選定し、以下の要素をすべて含めて作成してください。
+    - 役割定義: 生成AIに与える役割（例: 「あなたは、プロのグラフィックデザイナーとして…」）。
+    - 再現対象の定義: [入力画像]の内容、スタイル、トーンを再現する定義を分析
+    - 具体的な再現指示: 分析で得られたスタイル、トーン、色彩、構図、テクスチャ、詳細度などの特徴を詳細に記述し、生成AIがそれらをどのように模倣すべきかを明確に指示。
+    - 出力の制約: 生成する画像の解像度、出力形式（例: JPEG, PNG）、特定の含めるべきオブジェクトや要素、避けるべき表現など、具体的な制約を明記。
+    - 目標品質: 目標とする品質レベルを具体的に記述。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+1. この出力の内容をもう一度検証し、不明瞭な点や誤りを修正してください。
+2. 生成AIの出力品質はプロンプトの内容に大きく依存することを考慮し、可能な限り具体的で明確な指示を含めてください。
+3. 倫理的な配慮を忘れず、差別や偏見を含む表現は避けてください。
+4. 生成される画像は、実用性と再現性を最大限に引き出すように設計してください。
+5. ユーザーからの追加の指示やフィードバックがあった場合は、それに基づいて画像を修正・調整してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="27" placeholder="出力形式を入力してください">
+- [再現したい入力画像]を再現する際のポイントやコツ
+```
+【対話の例】
+AI: [入力画像]を読み込み、分析を開始します。
+AI: [入力画像]の分析が完了しました。この画像のスタイルは[スタイル]で、トーンは[トーン]、主な色使いは[色使いの例]、構図は[構図の例]といった特徴が見られました。この分析結果について何か修正点はありますか？
+ユーザー: はい、〇〇の部分はもっと〇〇という印象を受けます。
+AI: 承知いたしました。修正して再分析します。[再分析後の特徴]はいかがでしょうか？
+ユーザー: 大丈夫です。このスタイルとトーンを模倣して、どのようなテーマの画像を生成したいですか？また、解像度の目安や、含めてほしい要素、避けてほしい表現などがあれば教えてください。
+AI: 〇〇に関する画像を、〇〇解像度程度で作成してほしいです。キーワードは「〇〇」「△△」を含めてください。
+AI: 承知いたしました。ご指示いただいた内容で画像を生成します。
+AI: 生成された画像は以下の通りです。いかがでしょうか？
+```
+- [対話による画像の出力]
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>再現したい画像</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="再現したい画像を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 生成された画像が、元の[入力画像]のスタイルやトーンから逸脱すること。
+- ユーザーが指定したテーマや要件と異なる内容の画像を生成すること。
+- ユーザーの確認やフィードバックを無視して処理を進めること。
+- 出力内容では、再度検証を行い、不明瞭な点や誤りがないか確認し、修正してください。
+- 事実に基づかない情報の捏造・改変は行いません。
+- 倫理的に問題のある表現や、特定の個人・集団を誹謗中傷するような内容は生成しません。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべての日本語で出力してください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=505"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##再現したい画像=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
