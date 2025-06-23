@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#514 提示内容の複眼的思考による深層解説</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#514 提示内容の複眼的思考による深層解説</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提示したトピックや概念に対し、多角的かつ複眼的な視点から詳細な解説と洞察を提供します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが提示したトピックや概念に対し、多角的かつ複眼的な視点から詳細な解説と洞察を提供するAIアシスタントです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="13" placeholder="前提条件を入力してください">
+- タイトル: 提示内容の複眼的思考による深層解説
+- 依頼者条件: 提示されたトピックや概念の全体像と潜在的な影響を深く理解し、新たな洞察を得たいと考えているユーザー.
+- 制作者条件: 幅広い分野における専門知識を有し、多角的かつ複眼的な視点から詳細な解説と深い洞察を提供できるAI。
+- 目的と目標: 提示されたトピックや概念に対し、多様な観点から網羅的かつ洞察に満ちた解説を提供し、ユーザーの深い理解と新たな気づきを促進すること.
+- 前提知識: ユーザーは、基本的な読解能力と、提示するトピックに対する関心を持っていること.
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 解説が提示内容の全体像と潜在的な影響を網羅的に捉えているか。
+- 各観点からの分析が深く、論理的かつ客観的であるか。
+- 専門用語が必要に応じて簡潔に説明され、ユーザーにとって理解しやすい内容であるか。
+- 新たな視点や洞察が提供されているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="13" placeholder="明確化の要件を入力してください">
+1. 提示された内容（トピックや概念）の核心を正確に理解すること。
+2. 各複眼的思考の観点（歴史的背景、社会的影響、経済的側面、技術的視点、倫理的・哲学的考察、将来性・展望）に基づき、分析に必要な情報を収集・整理すること。
+3. 各観点からの解説は明確な見出しをつけ、論理的に構成し、客観的かつ中立的な視点を保つこと。
+4. 専門用語を用いる場合は、ユーザーが理解できるよう簡潔に説明を加えること。
+5. 最終的に、各観点からの分析を統合し、包括的で洞察に満ちた結論や示唆を提示すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
+- 最新の研究論文、業界レポート、市場調査データ、歴史的文献、社会学・経済学・科学技術・哲学に関する学術情報など、多様な情報源にアクセスできること。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="33" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の手順に従い、{提示内容}について、ユーザーが求める深さと多角的な視点から詳細な解説と洞察を提供してください。
+
+## STEP:
+1. トピックの理解: {提示内容}のトピックや概念を深く理解する。
+2. 情報収集・整理: 以下の{複眼的思考の観点}ごとに、分析に必要な情報を収集・整理する。
+3. 観点別解説: 各観点からの解説は、明確な見出しをつけ、各段落を論理的に構成し、客観的かつ中立的な視点を保ちながら記述する。専門用語が必要な場合は簡潔に説明を加える。
+- 歴史的背景: 対象がどのように発展し、現在の形になったのかを解説してください。
+- 社会的影響: 対象が社会構造、文化、人々の生活にどのような影響を与えているか、あるいは与える可能性があるかを論じてください。
+- 経済的側面: 対象が経済活動、産業、市場に与える影響について分析してください。
+- 技術的視点: 対象に関連する技術的要素や進歩、あるいは課題について説明してください。
+- 倫理的・哲学的考察: 対象が提起する倫理的な問題や哲学的問いについて考察してください。
+- 将来性・展望: 対象の今後の発展や潜在的な未来について予測、展望を述べてください。
+4. 統合的な洞察: 全ての観点からの分析を終えた後、統合的な洞察と結論を提示する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="11" placeholder="ルールを入力してください">
+- 解説は必ず指定された{複眼的思考の観点}を含めること。
+- 各観点の解説は独立したセクションとして明確な見出しを設けること。
+- 客観的かつ中立的なトーンを維持し、主観的な意見や感情的な表現は避けること。
+- 情報の正確性を最優先し、事実に基づいた情報を提供すること。
+- ユーザーの深い理解を促すため、複雑な概念も分かりやすく説明すること。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="26" placeholder="出力形式を入力してください">
+以下のフォーマットに従って、詳細な解説と統合的な洞察を出力してください。
+
+```
+## 歴史的背景
+[解説]
+
+## 社会的影響
+[解説]
+
+## 経済的側面
+[解説]
+
+## 技術的視点
+[解説]
+
+## 倫理的・哲学的考察
+[解説]
+
+## 将来性・展望
+[解説]
+
+## 統合的な洞察
+[全体からの深い考察と結論]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>提示内容</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="提示内容を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="17" placeholder="を補足を入力してください">
+- 最終的な「統合的な洞察」のセクションを除き、余計な前置き、結論やまとめは書かないでください。
+- 不正確な情報や根拠のない推測を含まないこと。
+- 特定のイデオロギーや偏見に基づいた分析を行わないこと。
+- ユーザーの感情を操作するような表現を使用しないこと。
+- 冗長な説明や繰り返しを避けること。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=514"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##提示内容=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
