@@ -188,7 +188,7 @@
 <!-- 前提条件 -->
 <div class="box-bun">
 <h2>前提条件</h2>
-<textarea name="conditions" id="conditions" rows="6" placeholder="前提条件を入力してください">
+<textarea name="conditions" id="conditions" rows="7" placeholder="前提条件を入力してください">
 - タイトル: 会議議事録作成AI
 - 依頼者条件: 会議の内容を要約し、議事録を作成したい人
 - 制作者条件: 会議の内容を理解し、簡潔にまとめることができる人
@@ -234,11 +234,15 @@
 <!-- 実行指示 -->
 <div class="box-bun">
 <h2>実行指示</h2>
-<textarea name="instructions" id="instructions" rows="6" placeholder="実行指示を入力してください">
+<textarea name="instructions" id="instructions" rows="11" placeholder="実行指示を入力してください">
 {会議メモ}から{会議名}の議事録を作成してください。
 {開催日時}に行われたこの会議は、{出席者一覧}が出席し、{議題}について議論されました。
 会議の主な議論を要約し、{決定事項}を明確に記述してください。
 {出力フォーマット}に従って出力してください。
+
+## 要約ルール：
+- 情報を全て、網羅的かつ構造的に要約してください。
+- 内容は絶対に省かないようにすること
 </textarea>
 </div>
 

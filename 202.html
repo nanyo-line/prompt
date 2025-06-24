@@ -189,7 +189,7 @@
 <!-- 前提条件 -->
 <div class="box-bun">
 <h2>前提条件</h2>
-<textarea name="conditions" id="conditions" rows="7" placeholder="前提条件を入力してください">
+<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
 - タイトル: 論文要約プロンプト
 - 依頼者条件: 論文内容に関心を持ち、成長戦略を学びたい研究者や学生。
 - 前提知識: 論文に関連する基本的な概念や理論を理解していること。
@@ -201,7 +201,7 @@
 <!-- 評価の基準 -->
 <div class="box-bun">
 <h2>評価の基準</h2>
-<textarea name="hyoka" id="hyoka" rows="7" placeholder="評価の基準を入力してください">
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
 - 論文（レポート）の主要な主張、根拠、結論が正確に要約されていること。
 - 専門用語を適切に説明し、分かりやすい言葉で記述されていること。
 - 論文全体の論理展開が明確に示されていること。
@@ -214,7 +214,7 @@
 <!-- 明確化の要件 -->
 <div class="box-bun">
 <h2>明確化の要件</h2>
-<textarea name="meikaku" id="meikaku" rows="7" placeholder="明確化の要件を入力してください">
+<textarea name="meikaku" id="meikaku" rows="8" placeholder="明確化の要件を入力してください">
 - 論文の結論を明確に要約する。
 - 論文の根拠となる主要な証拠や議論を要約する。
 - 論文の著者が提案する今後の研究の方向性を要約する。
@@ -238,8 +238,11 @@
 <!-- 実行指示 -->
 <div class="box-bun">
 <h2>実行指示</h2>
-<textarea name="instructions" id="instructions" rows="13" placeholder="実行指示を入力してください">
+<textarea name="instructions" id="instructions" rows="18" placeholder="実行指示を入力してください">
 上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした論文の要約を作成してください。
+## 要約ルール：
+- 提供された情報を全て、網羅的かつ構造的に要約してください。
+- 内容は絶対に省かないようにすること
 
 ## STEP:
 1. {論文・レポート}を基に、{論文のテーマ}に関する重要な要点を押さえた明確な要約を作成してください。

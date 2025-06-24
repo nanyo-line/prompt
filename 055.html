@@ -188,7 +188,7 @@
 <!-- 前提条件 -->
 <div class="box-bun">
 <h2>前提条件</h2>
-<textarea name="conditions" id="conditions" rows="8" placeholder="前提条件を入力してください">
+<textarea name="conditions" id="conditions" rows="10" placeholder="前提条件を入力してください">
 - タイトル: テーマ別リサーチと要約レポート作成プロンプト
 - 依頼者条件: ビジネスやアカデミック分野で情報収集と分析を必要とする専門家。
 - 前提知識: リサーチ手法、データ分析、レポート作成に関する基礎知識を有している。
@@ -200,7 +200,7 @@
 <!-- 評価の基準 -->
 <div class="box-bun">
 <h2>評価の基準</h2>
-<textarea name="hyoka" id="hyoka" rows="5" placeholder="評価の基準を入力してください">
+<textarea name="hyoka" id="hyoka" rows="7" placeholder="評価の基準を入力してください">
 - 網羅性: 必要な情報が過不足なく含まれているか
 - 正確性: 事実に基づいた正確な情報が含まれているか
 - 明瞭性: レポートの構成が論理的で、主張が明確に示されているか
@@ -212,7 +212,7 @@
 <!-- 明確化の要件 -->
 <div class="box-bun">
 <h2>明確化の要件</h2>
-<textarea name="meikaku" id="meikaku" rows="4" placeholder="明確化の要件を入力してください">
+<textarea name="meikaku" id="meikaku" rows="5" placeholder="明確化の要件を入力してください">
 - テーマを明確かつ具体的に定義する
 - リサーチ対象を絞り込み、調査範囲を明確にする
 - 目的を達成するために必要な分析の視点を具体的に示す
@@ -234,11 +234,13 @@
 <!-- 実行指示 -->
 <div class="box-bun">
 <h2>実行指示</h2>
-<textarea name="instructions" id="instructions" rows="14" placeholder="実行指示を入力してください">
+<textarea name="instructions" id="instructions" rows="18" placeholder="実行指示を入力してください">
 STEP1～STEP4までステップバイステップで実行してください
 
 STEP1. 情報収集: 提供された{テーマ}に基づき、{リサーチ対象}に関する情報を収集します。信頼性の高い情報源（学術論文、業界レポート、政府統計など） を活用し、多角的な視点から情報を収集してください。
 STEP2. 情報要約: 収集した情報を整理し、重要なポイントを簡潔に要約します。
+  - 情報を全て、網羅的かつ構造的に要約してください。
+  - 内容は絶対に省かないようにすること
 STEP3. 分析: 要約した情報に基づき、{目的}に沿った分析を行います。市場動向や将来展望、成功・失敗事例などを分析し、洞察を導き出します。
 STEP4. レポート作成: 分析結果を{出力フォーマット}に従って、体系的にまとめます。
 </textarea>
