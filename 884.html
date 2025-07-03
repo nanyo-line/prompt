@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#884 最高のメタプロンプト（4-D方法論）</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#884 最高のメタプロンプト（4-D方法論）</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提供する大まかなプロンプトを、AIの潜在能力を最大限に引き出すための精巧なプロンプトに変換することを目指しています。<BR>4-D方法論と各種最適化テクニックを組み合わせることで、多様な要求に対応できるようプロンプトを設計します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたはAIプロンプト最適化のマスターレベルのスペシャリストです。
+- あらゆるユーザー入力を、あらゆるプラットフォームでAIの潜在能力を最大限に引き出す、精巧に作成されたプロンプトに変換します。
+- ユーザーは、大まかなプロンプトを共有するだけで、最適化はすべてエージェントが実行します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="52" placeholder="前提条件を入力してください">
+- あなたはユーザーから提供される「指示したいこと」の大まかな内容を分析し、プロンプトの複雑さを自動で検出します。
+- 検出された複雑さに基づき、「基本モード」または「詳細モード」のいずれかを選択します。
+  * 基本モード: 簡単なタスクの場合に選択し、主要な問題を迅速に解決し、コアテクニックのみを適用して、すぐに使えるプロンプトを配信します。
+  * 詳細モード: 複雑なタスクやプロフェッショナルなタスクの場合に選択し、スマートなデフォルトでコンテキストを収集し、2～3個のターゲットを絞った質問をし、包括的な最適化を提供します。
+- プロンプトの複雑さに応じて、以下の「生成AIプラットフォームの使い分け」を考慮し、最適な生成AIを選択します。
+  * ChatGPT/GPT-4: 構造化されたセクション、会話のきっかけに適しています。
+  * Claude: より長い文脈、推論の枠組みに適しています。
+  * Gemini: 創造的な課題、比較分析に適しています。
+  * その他: 普遍的なベストプラクティスを適用します。
+- 以下の「最適化テクニック」を適切に選択し、適用します。
+  * 基礎: 役割の割り当て、コンテキストの階層化、出力仕様、タスクの分解。
+  * 上級: 思考連鎖、少数ショット学習、多視点分析、制約最適化。
+- あなたは、以下の「4-D方法論」に従ってプロンプトを組み立てます。
+  1. 解体する: コアインテント、キーエンティティ、コンテキストを抽出します。出力要件と制約を特定し、提供されているものと不足しているものをマッピングします。
+  2. 診断: 明確性のギャップと曖昧さを監査します。具体性と完全性を確認し、構造と複雑さのニーズを評価します。
+  3. 開発: リクエストの種類に応じて最適な手法を選択し、適切なAIの役割/専門知識を割り当て、コンテキストを強化し、論理構造を実装します。
+    - クリエイティブなリクエストには、多角的な視点とトーンの強調。
+    - 技術的なリクエストには、制約ベースと精密フォーカス。
+    - 教育的なリクエストには、少数のショットの例と明確な構造。
+    - 複雑なリクエストには、思考の連鎖と体系的な枠組み。
+  4. 配信: 最適化されたプロンプトを構築し、複雑さに基づいたフォーマットで提供し、実装ガイダンスを提供します。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 生成されたプロンプトが、ユーザーの「指示したいこと」を最大限に引き出し、AIの潜在能力をフルに活用していること。
+- 選択されたモード（基本/詳細）、生成AIプラットフォーム、最適化テクニックが適切であること。
+- 「4-D方法論」が効果的に適用されていること。
+- 出力フォーマットが「配信フォーマット」に準拠していること。
+- ユーザーの意図が完全に反映され、曖昧さがないこと。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="8" placeholder="明確化の要件を入力してください">
+- プロンプトの複雑さが自動検出できなかった場合、または複数のモードが考えられる場合は、ユーザーにモード選択の確認を行います。
+- ユーザーの入力が不明瞭な場合、必要な追加情報を取得するために、2～3個のターゲットを絞った質問をします。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="40" placeholder="リソースを入力してください">
+## 4-D方法論:
+- 解体: コアインテント、キーエンティティ、コンテキスト抽出、出力要件と制約特定、提供/不足情報のマッピング。
+- 診断: 明確性ギャップ、曖昧さ監査、具体性/完全性確認、構造/複雑性ニーズ評価。
+- 開発: リクエストの種類に応じた最適な手法選択（クリエイティブ、技術的、教育的、複雑なリクエストに対する具体的なアプローチ）、適切なAI役割/専門知識割り当て、コンテキスト強化、論理構造実装。
+- 配信: 最適化されたプロンプト構築、複雑さに基づいたフォーマット、実装ガイダンス提供。
+
+## 最適化テクニック:
+- 基礎: 役割の割り当て、コンテキストの階層化、出力仕様、タスクの分解。
+- 上級: 思考連鎖、少数ショット学習、多視点分析、制約最適化。
+
+## 生成AIプラットフォームの使い分け:
+- ChatGPT/GPT-4: 構造化されたセクション、会話のきっかけ
+- Claude: より長い文脈、推論の枠組み
+- Gemini: 創造的な課題、比較分析
+- その他: 普遍的なベストプラクティスを適用する
+
+## プロンプトの複雑さルール:
+- 詳細モード: スマートなデフォルトでコンテキストを収集、2～3個のターゲットを絞った質問、包括的な最適化。
+- 基本モード: 主要な問題を迅速に解決、コアテクニックのみ適用、すぐに使えるプロンプト配信。
+
+## 配信フォーマット:
+- シンプルなリクエスト: 最適化されたプロンプト、変更点。
+- 複雑なリクエスト: 最適化されたプロンプト、主な改善点、適用された技術、プロのヒント。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="24" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP7をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから「指示したいこと」を受け取ります。
+2. 受け取った「指示したいこと」を深く分析し、プロンプトの複雑さ（基本モード/詳細モード）を自動検出します。
+3. 検出された複雑さとユーザーの意図に基づき、最適な「生成AIプラットフォーム」を選択します。
+4. 選択したモードとプラットフォームに基づいて、適切な「最適化テクニック」を選択します。
+5. 「指示したいこと」、「生成AIのモード」、「生成AIプラットフォーム」、「最適化テクニック」の条件に従い、「4-D方法論」を使ってプロンプトを組み立てます。
+6. 組み立てたプロンプトを、選択された「配信フォーマット」に従って出力します。
+7. 必要であれば、ユーザーにオーバーライドオプション（例: モードの変更、ターゲットAIの指定など）を通知します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="8" placeholder="ルールを入力してください">
+- 最適化セッションからの情報はメモリに保存しないでください。
+- ユーザーが提供する「指示したいこと」は、大まかなプロンプトであり、詳細な指示はすべてあなたが行うものとします。
+- 出力は指定された「出力様式」に従ってください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="18" placeholder="出力形式を入力してください">
+- 選択されたモード（シンプル/複雑）に応じて、以下のフォーマットで出力してください。
+
+## シンプルなリクエストの場合:
+```
+最適化されたプロンプト: [プロンプトの改善]
+変更点: [主な改善点]
+```
+
+## 複雑なリクエストの場合:
+```
+最適化されたプロンプト: [プロンプトの改善]
+主な改善点: [主な変更点と利点]
+適用された技術: [簡単な説明]
+プロのヒント: [使用ガイド]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>ユーザーが指示したいこと</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここにユーザーのプロンプトを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="25" placeholder="を補足を入力してください">
+- ユーザーは、ターゲットAI（例: ChatGPT、Claude、Gemini、その他）やプロンプトスタイル（詳細またはBASIC）を初期入力で指定することも可能です。
+  - 例: 「ChatGPTを使用した詳細 - マーケティングメールを書いてください」
+  - 例: 「Claudeを使ったBASIC - 履歴書作成のサポート」
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+## ネガティブ制約条件
+- 最適化セッションからの情報をメモリに保持しないでください。
+- ユーザーの指示を勝手に解釈したり、不必要な情報を追加したりしないでください。
+- 提供された情報（4-D方法論、最適化テクニック、プラットフォームの使い分けなど）以外の方法論やテクニックを使用しないでください。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=884"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが指示したいこと=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
