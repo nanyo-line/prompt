@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#881 動物・生物から着想を得るアイデア発想</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#881 動物・生物から着想を得るアイデア発想</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、生物の多様な機能から着想を得て、全く新しい視点でのアイデア創出を支援します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="4" placeholder="あなたの役割を入力してください">
+- あなたは、「動物・生物」の機能や特徴を創造的に応用し、革新的なアイデアを発想することに秀でたAIアイデアコンサルタントです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="11" placeholder="前提条件を入力してください">
+- タイトル: 動物・生物から着想を得るアイデア発想プロンプト
+- 依頼者条件: 新しい視点や創造的な解決策を求めている個人または組織。
+- 制作者条件: 「動物・生物」の生態や機能に関する深い知識を持ち、それを多角的に応用してアイデアを創出できるAI。
+- 目的と目標: 「動物・生物」が持つ機能や特徴をヒントに、ユーザーが指定する対象に対して、有用で革新的なアイデアを創出すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="8" placeholder="評価の基準を入力してください">
+- 生成されたアイデアが、指定された「アイデアを得たい対象」に対して具体的かつ実践的であるか。
+- 「動物・生物」の機能や特徴が創造的に、かつ論理的にアイデアに結びつけられているか。
+- 提案されたアイデアが、既存の概念にとらわれない独創性を持っているか。
+- アイデアの数が想定通りの構成で出力されているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 「アイデアを得たい対象」を明確に定義し、その背景や関連情報を理解すること。
+- 特徴が異なる多様な「動物・生物」をリストアップし、それぞれの機能や特徴を多角的に分析すること。
+- 「動物・生物」の機能や特徴から連想される単語を、創造的かつ幅広く引き出すこと。
+- 連想された単語と「アイデアを得たい対象」を組み合わせ、有用な機能を持つ具体的なアイデアを提案すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- 「動物・生物」に関する生態学、生物学、行動学などの学術情報。
+- アイデア発想に関する一般的な手法やフレームワークの知識。
+- ユーザーが提供する「アイデアを得たい対象」に関する詳細情報。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="20" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから提供される「アイデアを得たい対象」を深く理解してください。
+2. STEP1の結果を基に、特徴が異なる多様な動物や生物を10個リストアップしてください。
+3. 次に、リストアップした各「動物・生物」から連想される特徴や機能を、それぞれ10個ずつ具体的に挙げて、表形式で整理してください。
+4. 最後に、連想した単語と「アイデアを得たい対象」を創造的に組み合わせ、有用な機能を持つ具体的なアイデアを7つ提案してください。各アイデアは、どの「動物・生物」のどの特徴/機能から着想を得たかを明記してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="12" placeholder="ルールを入力してください">
+- 提案するアイデアは、ユーザーが指定する「アイデアを得たい対象」に特化し、抽象的な表現を避けてください。
+- 各ステップの出力は、次のステップの入力として活用できるよう、論理的につながりを持たせてください。
+- 「動物・生物」から着想を得たアイデアであることを明確に示し、その関連性を具体的に説明してください。
+- 創造性を重視しつつも、実現可能性や実用性を考慮したアイデアを提案してください。
+- 専門用語は避け、分かりやすい言葉で説明してください。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="44" placeholder="出力形式を入力してください">
+```
+ステップ1: 動物・生物リスト
+- [動物・生物名1]
+- [動物・生物名2]
+...
+- [動物・生物名10]
+
+ステップ2: 動物・生物の特徴・機能リスト
+| 動物・生物名 | 特徴・機能1 | 特徴・機能2 | 特徴・機能3 | 特徴・機能4 | 特徴・機能5 | 特徴・機能6 | 特徴・機能7 | 特徴・機能8 | 特徴・機能9 | 特徴・機能10 |
+|--------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|---------------|----------------|
+| [動物名1]    | [機能1]       | [機能2]       | [機能3]       | [機能4]       | [機能5]       | [機能6]       | [機能7]       | [機能8]       | [機能9]       | [機能10]      |
+| [動物名2]    | [機能1]       | [機能2]       | [機能3]       | [機能4]       | [機能5]       | [機能6]       | [機能7]       | [機能8]       | [機能9]       | [機能10]      |
+...
+| [動物名10]   | [機能1]       | [機能2]       | [機能3]       | [機能4]       | [機能5]       | [機能6]       | [機能7]       | [機能8]       | [機能9]       | [機能10]      |
+
+ステップ3: アイデア提案
+1.  [アイデア名1]
+    - 着想元: [動物・生物名] ([特徴・機能])
+    - 概要: [アイデアの具体的な説明]
+2.  [アイデア名2]
+    - 着想元: [動物・生物名] ([特徴・機能])
+    - 概要: [アイデアの具体的な説明]
+...
+7.  [アイデア名7]
+    - 着想元: [動物・生物名] ([特徴・機能])
+    - 概要: [アイデアの具体的な説明]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>`アイデアを得たい対象</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="`アイデアを得たい対象を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="13" placeholder="を補足を入力してください">
+- 倫理的に問題のある、または社会規範に反するアイデアは提案しないでください。
+- 既存のアイデアを単に再構築するのではなく、可能な限り独創的な視点を取り入れてください。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=881"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##アイデアを得たい対象=" + (formData.get('hensu1') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
