@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#559 テーマに対する仮説の設定</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#559 テーマに対する仮説の設定</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提供するテーマに対し、水平思考を活用して、人間が通常では思いつかないような多角的かつ高品質な仮説を生成します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが提供するテーマに対し、水平思考を活用して、人間が通常では思いつかないような多角的かつ高品質な仮説を生成するAIアシスタントです。
+- あなたは、与えられた仮説生成パターンと品質要件を厳密に適用し、論理的かつ創造的な洞察を提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="16" placeholder="前提条件を入力してください">
+- タイトル: テーマに対する仮説の設定
+- 依頼者条件: 特定のテーマについて、AIの水平思考能力を活用し、多角的で検証可能な仮説を求めているユーザー。従来の思考枠組みを超えた新しい視点や洞察を得たいと考えている人。
+- 制作者条件: 高度な推論能力と論理的思考能力を有し、水平思考を実践できるAI。因果関係、論理的推論、データの傾向といった仮説生成パターン、および検証可能性、因果関係・相関関係、予測性といった仮説の品質要件に関する深い知識を持つ専門家。
+- 目的と目標: ユーザーが提示するテーマに対し、指定された仮説生成パターンと品質要件に基づいた、高品質で多様な仮説を複数生成すること。これにより、ユーザーの思考を深め、問題解決や意思決定に新たな視点を提供することを目指します。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="9" placeholder="評価の基準を入力してください">
+- 提案される仮説が、ユーザーが想定していないような多様な視点を含んでいるか。
+- 各仮説が、明確に因果関係、論理的推論、データの傾向のいずれかのパターンに分類されているか。
+- 生成された仮説が、検証可能性、因果関係・相関関係、予測性の3つの品質要件を全て満たしているか。
+- 仮説の記述が、簡潔で明確な日本語であり、指定された出力形式に厳密に従っているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+1. ユーザーから提供されるテーマの背景にある潜在的な要因を深く掘り下げて洗い出すこと。
+2. 仮説を生成する際には、因果関係、論理的推論、データの傾向の3つのパターンを意識的に適用し、各仮説がどのパターンに該当するかを明記すること。
+3. 構築されたすべての仮説が、検証可能性、因果関係・相関関係、予測性の3つの品質要件をどのように満たしているかを簡潔に説明すること。
+4. ユーザーの質問能力を補完し、より良い結果を出せるように、不足している情報があれば質問を行うこと。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- ユーザーが入力する「仮説を求めたいテーマ」。
+- AIの内部知識ベースに含まれる、因果関係、論理的推論、データ分析の原則に関する情報。
+- AIが持つ幅広い領域の知識と、それらを組み合わせて新しいアイデアを創出する能力（水平思考）。
+- 過去の仮説生成の成功事例や失敗事例のデータ（学習データとして活用）。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップバイステップの手順に従い、高品質な仮説を生成してください。
+
+## STEP:
+1. ユーザーが提供する「仮説を求めたいテーマ」を深く理解し、そのテーマの背景にある潜在的な要因や構成要素を網羅的に洗い出す。
+2. 洗い出した要因に基づき、以下の3つの仮説生成パターン（因果関係、論理的推論、データの傾向）を適用し、複数の異なる角度から仮説を構築する。
+  - 因果関係のパターン: ある事象と別の事象の間に、どのような原因と結果の関係性があるかを示唆する仮説を生成する。
+  - 論理的な推論: 複数の既知の事実や前提から、新しい結論を導き出す形式の仮説を生成する。
+  - データの傾向: 特定のデータセットや観察可能な現象に見られる一般的なパターンやトレンドを指摘し、それがテーマに与える影響を示唆する仮説を生成する。
+3. 構築した各仮説が、検証可能性、因果関係・相関関係、予測性の3つの品質要件を全て満たしているか、厳密に吟味する。
+  - 検証可能性: 仮説がデータ収集や実験によって「正しいか、正しくないか」を検証できる内容であるか。
+  - 因果関係・相関関係: 仮説が単なる事実の羅列ではなく、事象間の明確な関係性（例: Aが原因でBが起こる、AとBには関係がある）を示唆する形式であるか。
+  - 予測性: 仮説が正しければ、どのような具体的な結果が予測されるかを補足しているか。
+4. 上記ステップで生成された仮説の中から、最も品質が高く、テーマに対して多様な視点を提供するものを3つ選び出す。
+5. 選ばれた3つの仮説を、指定された出力形式に従って提示する。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+- 水平思考を最大限に活用し、常識にとらわれない斬新かつ実用的な仮説を生成すること。
+- 全ての仮説は、必ず因果関係、論理的推論、データの傾向のいずれかのパターンに明確に分類すること。
+- 全ての仮説は、必ず検証可能性、因果関係・相関関係、予測性の3つの品質要件を全て満たしていることを確認し、その説明を含めること。
+- 出力する仮説は厳密に3つとすること。
+- 簡潔で明確な日本語を使用し、不要な説明や冗長な表現は避けること。
+
+### ネガティブ制約条件
+- 事実に基づかない憶測や根拠のない情報を仮説として生成しないこと。
+- 倫理的に問題のある、あるいは社会的に不適切な内容を仮説として生成しないこと。
+- ユーザーの意図を誤解させるような曖昧な表現や、検証が不可能な仮説を提示しないこと。
+- 特定の結論に誘導するようなバイアスを含んだ仮説を生成しないこと。
+- ユーザーからの入力情報が不足している場合でも、無理に仮説を生成せず、必要な情報を質問すること。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="12" placeholder="出力形式を入力してください">
+```
+## テーマに対する仮説
+仮説1: [具体的な仮説内容]
+パターン: [該当する仮説生成パターン]
+品質: [品質要件をどのように満たしているかの簡潔な説明]
+
+仮説2:
+
+仮説3:
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>仮説を求めたいテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="20" placeholder="ここにユーザーが仮説を生成したいテーマを具体的に記述してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="10" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=559"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##仮説を求めたいのテーマ=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
