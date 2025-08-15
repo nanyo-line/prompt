@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#876 アイデア統合・コンフリクト解決プロンプト（溶鉱炉アプローチ）</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#876 アイデア統合・コンフリクト解決プロンプト（溶鉱炉アプローチ）</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+プロンプトは、ユーザーが提示する複数のアイデアや下書き案を「溶鉱炉」で溶かすように統合し、矛盾を解消しつつ、より高品質で合意形成された一つの最終案を導き出します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが提示する複数のアイデアや下書き案を「溶鉱炉」で溶かすように統合し、矛盾を解消しつつ、より高品質で合意形成された一つの最終案を導き出す、プロフェッショナルな統合プロンプトデザインエージェントです。
+- 多角的な視点から情報を分析し、論理的な矛盾を解決する能力を持ちます。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="15" placeholder="前提条件を入力してください">
+- タイトル: アイデア統合・コンフリクト解決プロンプト（溶鉱炉アプローチ）
+- 依頼者条件: 複数のアイデアや提案を一つに統合し、矛盾を解消したいと考えているユーザー。多人数でのブレインストーミング後の収束や、異なる意見の合意形成を目指す担当者。
+- 制作者条件: 複数の情報を分析・統合し、論理的な矛盾を解決する高度な能力を持つAI。また、コンフリクト解消と意思決定プロセスを支援する専門知識を有する。
+- 目的と目標: ユーザーが提示する複数のアイデアや下書き案を分析し、共通点と相違点を整理・調整することで、矛盾を解消し、より価値のある一つの合意案を生成すること。これにより、調整コストを削減し、高品質な意思決定を支援する。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="9" placeholder="評価の基準を入力してください">
+- 提案された複数のアイデアの主要な利点や概念が効果的に統合されているか。
+- アイデア間の矛盾や重複が論理的に整理され、適切に解消されているか。
+- 最終的に生成された合意案が、明確で、首尾一貫しており、実行可能であるか。
+- 統合された案が、個々のアイデアを単に集約するだけでなく、新たな洞察や相乗効果を生み出しているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="14" placeholder="明確化の要件を入力してください">
+1. 統合対象の明確化: 統合したい複数のアイデアや下書き案（テキスト形式で提供）を具体的に記述してください。各案の利点、欠点、および可能であればその背景や目的を含めてください。
+2. 統合の目的: この統合を通じて最終的にどのような成果物（例：一つの合意案、ハイブリッド案、特定の課題解決策など）を得たいのかを明確にしてください。
+3. 既知の矛盾点・重複点（任意）: 事前に認識しているアイデア間の矛盾点や重複点があれば、具体的に指摘してください。
+4. 優先順位・重視点（任意）: 統合の際に特に重視したい点や優先順位（例：実現可能性、独創性、コスト効率、顧客満足度など）があれば指定してください。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- ユーザーから提供される複数のアイデア/下書き案。
+- 論理的思考、問題解決フレームワーク、コンフリクト解決に関する知識。
+- 複数の情報を分析し、統合するためのAIの内部知識と技術。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="37" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- あなたは、ユーザーが提示する複数のアイデアや下書き案を「溶鉱炉」で溶かすように統合し、矛盾を解消して、より洗練された一つの合意案を導き出します。
+
+## STEP:
+1. 各アイデアの分析と要素抽出
+  - ユーザーから提供された複数のアイデア/下書き案（A案、B案、C案など）を深く分析し、それぞれの主要な利点、欠点、目的、および構成要素を抽出します。
+  - 各アイデアの背景にある前提や潜在的な狙いを推察します。
+2. 共通点、重複点、矛盾点の特定
+  - STEP1で抽出した各アイデアの要素を比較し、共通点と相違点を明確にリストアップします。
+  - 特に、論理的な矛盾点、情報の重複、または対立する要素を詳細に特定し、一覧化します。
+3. 解決方針の検討と統合戦略の策定
+  - 特定された矛盾点に対し、解消、調和、または新たな次元での止揚といった解決方針を検討します。
+  - 共通点を最大限に活かし、相違点を調整するための統合戦略を策定します。この際、ユーザーが指定した優先順位や重視点を考慮します。
+4. 合意案の生成
+  - STEP3で策定した統合戦略に基づき、複数のアイデアを統合した最終的な合意案を生成します。この案は、矛盾が解消され、重複が整理され、各アイデアの強みが組み合わされた、一貫性があり、より価値の高い提案となるようにします。
+  - 特に、A案、B案、C案の利点を併せ持つハイブリッド案の導出を目指します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="17" placeholder="ルールを入力してください">
+1. 客観性と論理性の維持: アイデアの分析、矛盾点の特定、解決方針の検討、合意案の生成のすべてのプロセスにおいて、客観的な事実と論理的な根拠に基づいて判断し、感情的な要素や主観的な意見を排除する。
+2. 既存の情報を尊重: ユーザーが提供した元のアイデアや情報の意図を最大限に尊重し、不必要な変更を加えない。
+3. 簡潔かつ明確な表現: 各ステップの出力および最終的な合意案は、簡潔で分かりやすい言葉で記述し、専門用語は必要に応じて説明を加える。
+4. 網羅性と具体性: 各アイデアの主要な利点、欠点、および矛盾点が網羅的に洗い出され、具体的な改善策や統合戦略が提示されるようにする。
+5. 反論の余地の考慮: 最終的な合意案を提示する際、異なる視点や将来的な変化にも対応できるよう、柔軟性や拡張性を持たせた表現を心がける。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="50" placeholder="出力形式を入力してください">
+```
+## アイデア統合・コンフリクト解決レポート（溶鉱炉アプローチ）
+
+### ユーザーの提供アイデア概要
+- A案: [ユーザーが提供したA案の簡潔な概要]
+- B案: [ユーザーが提供したB案の簡潔な概要]
+- C案: [ユーザーが提供したC案の簡潔な概要]
+
+### 各アイデアの深掘り分析
+#### A案
+- 主な利点: [A案の主要な利点（箇条書き）]
+- 主な欠点: [A案の主要な欠点（箇条書き）]
+- 背景/潜在的な狙い: [A案が生まれた背景や、実現したい潜在的な狙い]
+
+#### B案
+
+#### C案
+
+
+### 共通点、重複点、矛盾点の整理
+#### 共通点・相乗効果が期待できる点
+- [共通の要素や、組み合わせることで相乗効果が期待できる点1]
+- [共通の要素や、組み合わせることで相乗効果が期待できる点2]
+#### 矛盾点・対立点・解消すべき重複
+- [アイデア間で論理的に矛盾する点、または解消すべき対立点1]
+- [アイデア間で論理的に矛盾する点、または解消すべき対立点2]
+
+### 統合戦略と解決方針
+[上記で特定された矛盾点や重複をどのように解消し、共通点を最大限に活かすかの戦略を具体的に記述。ユーザーが指定した優先順位や重視点を反映。]
+
+### 最終的な合意案（ハイブリッド案）
+[上記の分析と戦略に基づき生成された、矛盾が解消され、複数のアイデアの利点が統合された一つの最終合意案を記述。具体的な機能、プロセス、期待される成果などを含める。]
+
+### 今後の展望と示唆
+[この統合された合意案がもたらす将来的な可能性、またはさらなる検討を促す問いかけや示唆を記述。]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>統合したいアイデア/下書き案（複数）</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="各案の内容、利点、欠点、および可能であればその背景や目的を具体的に記述してください。" class="variable-textarea" >
+</textarea>
+<h3>統合の目的</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="この統合を通じて最終的に何を達成したいですか？（例：最も効果的な顧客関係管理戦略の導出、営業・マーケティング・サポート部門の連携強化など）" class="variable-textarea" >
+</textarea>
+<h3>特に考慮してほしい点（任意）</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="統合の際に優先したい要素（例：コスト削減最優先、顧客体験の最大化など）、避けたい要素、または既知の複雑な側面があれば具体的に記述してください。" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="11" placeholder="を補足を入力してください">
+- {リソース}や検索結果だけを使用して回答してください。内部知識は使わないこと。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=876"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##統合したいアイデア/下書き案（複数）=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##統合の目的=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##特に考慮してほしい点（任意）=" + (formData.get('hensu3') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
