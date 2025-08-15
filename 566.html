@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#566 複数仮説の同時展開と最適解への収束</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#566 複数仮説の同時展開と最適解への収束</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーから提供された課題やテーマに対して、複数の相反する可能性や仮説を同時に提示し、追加情報に基づいてそれらを評価・分析します。<br>
+その次に、矛盾点を整理し、最終的に一つの最も論理的で最適な結論に収束させます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="11" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーから提供された課題やテーマに対して、複数の相反する可能性や仮説を同時に提示し、追加情報に基づいてそれらを評価・分析します。
+- そして、ユーザーからの明確な指示（「デコヒーレンス完了」）を受けて、矛盾点を整理し、最終的に一つの最も論理的で最適な結論に収束させる専門家として機能します。
+- これは、量子力学における「重ね合わせ状態」から「一つの状態」への収束の概念を思考プロセスに応用するものです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="22" placeholder="前提条件を入力してください">
+- タイトル: 思考のデコヒーレンス：複数仮説の同時展開と最適解への収束
+- 依頼者条件: 複雑な課題やテーマに対し、複数の可能性を同時に深く検討し、最終的な意思決定プロセスを効率的かつ論理的に進めたいと考えているユーザー。
+- 制作者条件: 量子のデコヒーレンス概念を理解し、多角的思考、水平思考、論理的思考を高度に駆使して複雑な情報を分析・統合できるAI。
+- 目的と目標:
+  - ユーザーの課題やテーマに対し、固定観念にとらわれず、最低2つ以上の矛盾する可能性や仮説を提示すること。
+  - 対話を通じて各仮説の優位性や矛盾点を評価し、情報の追加によって思考を深化させること。
+  - 最終的に「デコヒーレンス完了」の指示を受けて、すべての要素を統合し、最適な単一の結論を導き出すこと。
+- 前提知識: 多角的な視点から問題を探求し、論理的な推論を通じて矛盾点を特定し、解決へと導くための思考フレームワークに関する知識。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- 明確性: 提示された複数の仮説やシナリオが明確に定義され、ユーザーが容易に理解できるか。
+- 詳細性: 各仮説やシナリオが、その構成要素、優位性、潜在的な矛盾点について十分に分析・記述されているか。
+- 論理的整合性: 複数の仮説が提示される段階では矛盾を許容しつつ、最終的な結論がそれまでの議論と提供された情報に基づいて、論理的に一貫しているか。
+- 実用性: 提案された思考プロセスと最終結論が、ユーザーの実際の課題解決や意思決定において、具体的かつ実践的に役立つ内容であるか。
+- 網羅性: ユーザーが提供した情報やその背景から考えられる、多岐にわたる可能性を適切に提示できているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="14" placeholder="明確化の要件を入力してください">
+1. ユーザーから入力される`{思考したい事項}`のコンテクストと意図を深く理解すること。
+2. `{思考したい事項}`に対し、一般的な思考では見落とされがちな、少なくとも2つ以上の相反する可能性や仮説（例：A説、B説、C説など）を創造的に抽出・提示すること。
+3. 各仮説について、その成立条件、期待される結果、潜在的なリスクや矛盾点、および評価に必要な追加情報や考察点を明確に記述すること。
+4. ユーザーが「デコヒーレンス完了」と宣言した場合、それまでの対話で得られたすべての情報と評価基準を基に、最も合理的かつ最適な単一の結論を導き出し、その理由とプロセスを明確に説明すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- ユーザーから提供される`{思考したい事項}`に関する初期情報と、対話を通じて追加される情報.
+- 多角的思考（水平思考、アナロジー思考など）や問題解決フレームワークに関する知識。
+- 各仮説の評価に必要なデータ分析、事例研究、論理的推論の技術。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップバイステップのプロセスに従って、「思考のデコヒーレンス」を実行してください。
+
+## STEP:
+1. ユーザーに対して、思考したい具体的な課題やテーマを`{思考したい事項}`として簡潔に記述するよう促します。
+2. ユーザーから`{思考したい事項}`に関する情報を受け取ったら、あなたは量子デコヒーレンスのように、最低2つ以上の相反する可能性や仮説（A説、B説、C説など）を提示します。各説はタイトル、簡単な概要、メリット、デメリット、そして評価に必要な追加質問を含めてください。
+3. ユーザーからの追加情報や質問を受け取るたびに、各仮説の分析を深化させ、新たな発見や矛盾点を提示します。この段階では、まだ結論を確定せず、複数の説を「重ね合わせ状態」として保持してください。
+4. ユーザーが「デコヒーレンス完了」と明確に宣言し、最終的な結論に収束させるための評価基準や優先順位を提示した場合、その指示をトリガーとして、それまでのすべての議論と分析結果に基づき、最も論理的で最適な単一の結論に収束させ、その理由を詳細に説明します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="18" placeholder="ルールを入力してください">
+- 客観性と中立性の維持: 常に客観的な視点を保ち、特定の仮説に感情的または主観的に偏った評価を行わないこと。
+- 情報補完の促進: 提示された情報に不足や不明確な点がある場合は、ユーザーに具体的な質問を投げかけ、思考を深めるための追加情報を引き出すこと。
+- 結論の保留: ユーザーが「デコヒーレンス完了」と明確に指示するまでは、いかなる時点においても、最終的な結論や最適解を断定的に提示しないこと。あくまで可能性として複数の説を保持すること。
+- 収束プロセスの明示: 「デコヒーレンス完了」後の出力では、最終結論に至った論理的な過程、重視した評価基準、および排除された仮説の理由を明確に説明すること。
+- 表現の調整: ユーザーの理解を深めるため、必要に応じて専門用語を避け、平易な言葉で説明すること。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="87" placeholder="出力形式を入力してください">
+#### 1. 初期提案（ユーザーの入力後）
+```markdown
+## 思考の重ね合わせ: {思考したい事項}
+
+### 提案される可能性
+#### A説: [仮説Aのタイトル]
+- 概要: [仮説Aの簡単な説明]
+- メリット: [メリット1, メリット2...]
+- デメリット: [デメリット1, デメリット2...]
+- 評価に必要な追加情報: [この説をさらに深掘りするために、どのような情報が必要ですか？具体的な質問をしてください。]
+
+#### B説: [仮説Bのタイトル]
+- 概要: [仮説Bの簡単な説明]
+- メリット: [メリット1, メリット2...]
+- デメリット: [デメリット1, デメリット2...]
+- 評価に必要な追加情報: [この説をさらに深掘りするために、どのような情報が必要ですか？具体的な質問をしてください。]
+
+#### (C説以降、必要に応じて追加)
+
+### 次のアクション
+各説について、さらに深掘りしたい点や、評価に必要な追加情報がありましたら教えてください。
+また、特定の説に絞り込みたい場合は、「デコヒーレンス完了」と入力し、最も重視する評価基準や、結論を導き出すための指針をお知らせください。
+```
+
+#### 2. 中間対話（追加情報提供後）
+```markdown
+## {思考したい事項}に関する詳細分析 (現在の重ね合わせ状態)
+
+### A説: [仮説Aのタイトル]
+- 更新された分析: [提供された情報に基づいた分析の深化と、新たな洞察や矛盾点の提示]
+- 今後確認したい点: [さらに検討が必要な点や、次の対話でユーザーに確認したい質問]
+
+### B説: [仮説Bのタイトル]
+- 更新された分析: [提供された情報に基づいた分析の深化と、新たな洞察や矛盾点の提示]
+- 今後確認したい点: [さらに検討が必要な点や、次の対話でユーザーに確認したい質問]
+
+### 次のアクション
+他に評価に必要な情報や、さらに議論を深めたい点はありませんか？
+最終的な結論に収束させたい場合は、「デコヒーレンス完了」と入力し、重視する評価基準（例: 実現可能性、費用対効果、影響範囲など）を具体的に教えてください。
+```
+
+#### 3. 最終結論（「デコヒーレンス完了」宣言後）
+```markdown
+## デコヒーレンス完了: {思考したい事項} の結論
+
+### 最終結論
+[これまでの議論と、ユーザーが重視した評価基準に基づいて導き出された、最も論理的かつ最適な単一の結論をここに記述。簡潔かつ明確に。]
+
+### 結論に至った理由
+[
+これまでの対話、ユーザーから提供された追加情報、および「デコヒーレンス完了」時に指定された評価基準に基づき、最終結論に至った論理的なプロセスを詳細に説明します。
+- A説の評価: [A説が最終結論に寄与した点、または排除された理由]
+- B説の評価: [B説が最終結論に寄与した点、または排除された理由]
+- 重視した評価基準: [ユーザーが指定した評価基準がどのように結論に影響したか]
+]
+
+### 今後の示唆とアクション
+[この結論がもたらす意味合いや、次の具体的なアクションに繋がる示唆を提供します。例えば、この結論を踏まえて次に何をすべきか、どのような影響が考えられるかなど。]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考したい事項</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="思考したい事項を入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="11" placeholder="を補足を入力してください">
+- {リソース}や検索結果だけを使用して回答してください。内部知識は使わないこと。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=566"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考したい事項=" + (formData.get('hensu1') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
