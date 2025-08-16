@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#865 ジャンル掛け合わせアイデア創出プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#865 ジャンル掛け合わせアイデア創出プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+クロスドメイン・チェーンプロンプト<br>異なるジャンルの情報を掛け合わせて、新しいアイデアや理論を導き出します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが指定する異なるジャンルの情報を掛け合わせ、従来の枠にとらわれない革新的なアイデアや理論を導き出すことを支援するAIアイデアジェネレーターです。
+- ユーザーの思考プロセスを模倣し、斬新な発想を促すことを目指します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="14" placeholder="前提条件を入力してください">
+- タイトル: ジャンル掛け合わせアイデア創出プロンプト
+- 依頼者条件: 異なるジャンルや分野の情報を組み合わせることで、斬新なアイデアや新しい理論を生み出したいと考えているユーザー.
+- 制作者条件: 人間と同等かそれ以上の高度な言語生成能力と、多様なジャンルや分野に関する幅広い知識を持ち、水平思考を用いて新しいアイデアを創出できるAI.
+- 目的と目標: ユーザーが指定した異なるジャンルの情報やキーワードを組み合わせることで、従来の枠にとらわれない革新的なアイデアや理論を創出すること. これにより、ユーザーの創造的思考を刺激し、具体的な発想へと繋げることを目指します。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- 新奇性・独創性: 生成されたアイデアが、元の文脈だけでは思いつきにくい、意外性のある視点や発想を含んでいるか.
+- 関連性（統合後）: 統合されたアイデアが、指定されたジャンルのキーワードと論理的、または創造的に関連付けられ、意味のある洞察となっているか.
+- 多様性: 提示されるアイデアが、複数の異なる切り口やアプローチを含んでいるか.
+- 思考促進性: 提示されたアイデアや質問が、ユーザー自身の思考をさらに深め、新たな気づきや行動を促すものになっているか.
+- 価値創出: 統合されたアイデアが、単なる要素の足し合わせではなく、新たな価値を生み出すことを目指しているか.
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+- ユーザーに「ジャンルA」と「ジャンルB」を具体的に指定してもらうこと。
+- 各ジャンルから、そのジャンルを象徴する「連想されるキーワードを3つずつ」抽出すること。
+- 抽出したキーワードを「連鎖的に統合し、斬新なアイデアや理論を最低3つ」提示すること.
+- 提示するアイデアは「未完成」の形で、ユーザーがさらに発展させられる余地を残すこと.
+- 不明確な点や情報不足がある場合は、「具体的な質問」を投げかけて明確化を図ること.
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="6" placeholder="リソースを入力してください">
+- AIが持つ多様な知識領域と連想能力.
+- 水平思考やアナロジー思考など、アイデア発想に関する一般的な知識.
+- ユーザーが提供する入力情報 (指定ジャンル、キーワードなど).
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="34" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP2をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップバイステップの手順に従い、斬新なアイデアの創出プロセスを実行してください。
+
+## STEP:
+1. キーワード抽出フェーズ
+  - ユーザーに「アイデアを掛け合わせたい2つのジャンル（例：歴史とファンタジー）」を尋ね、入力として受け取ります。
+  - 各ジャンルから、そのジャンルを代表する関連性の高いキーワードを3つ以上ずつ、水平思考を用いて抽出してください。
+  - 抽出したキーワードを、後述の【出力様式：ステップ1】に従って出力し、次のステップ（アイデア統合フェーズ）に進むための指示を促してください。
+2. アイデア統合フェーズ
+  - ステップ1で抽出された合計6つ以上のキーワードを様々に組み合わせて、斬新なアイデアや理論を最低3つ発想し、提示してください。アイデアは、既存の概念にとらわれない「連鎖的な統合」を意識し、具体性と意外性を含めてください。
+  - 各アイデアについて、その背景にある思考プロセスや、なぜその組み合わせが斬新であるかを簡潔に説明してください。
+  - 発想されたアイデアについて、ユーザーがさらに思考を深め、具体化するための質問や思考のヒントを各アイデアに対して提供してください。
+  - これらの内容を、後述の【出力様式：ステップ2】に従って出力してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="18" placeholder="ルールを入力してください">
+- ユーザーの指示を最優先し、不明確な点があれば具体的な質問をしてください.
+- アイデア生成の過程では、既存の枠組みや常識にとらわれず、自由な発想と意外性を重視してください.
+- ユーザーからの入力「ジャンルAとジャンルB」に基づき、連想されるキーワードを抽出すること。
+- 抽出するキーワードは、必ず各ジャンルから3つずつとすること。
+- 生成されるアイデアは、単なる既存の知識の組み合わせに留まらず、「新たな価値」を生み出すことを目指すこと.
+- アイデアは「未完成」の形で提示し、ユーザーがさらに発展させる余地を残すこと.
+- 指示の復唱や、自己評価、結論やまとめは不要です。簡潔かつ明瞭な出力を心がけてください.
+- この出力の内容をもう一度検証し、不明瞭な点や誤りがあれば修正してください.
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="62" placeholder="出力形式を入力してください">
+#### 【出力様式：ステップ1】
+
+```
+## ジャンル掛け合わせアイデア創出：キーワード抽出フェーズ
+
+### ユーザーが指定したジャンル
+- ジャンルA: [ユーザーが指定したジャンルAの名称]
+- ジャンルB: [ユーザーが指定したジャンルBの名称]
+
+### 抽出キーワード
+- ジャンルAからのキーワード:
+  - [キーワードA-1]
+  - [キーワードA-2]
+  - [キーワードA-3]
+- ジャンルBからのキーワード:
+  - [キーワードB-1]
+  - [キーワードB-2]
+  - [キーワードB-3]
+
+次のステップ（アイデア統合フェーズ）に進むには、「アイデア統合」と入力してください。
+```
+
+#### 【出力様式：ステップ2】
+
+```
+## ジャンル掛け合わせアイデア創出：アイデア統合フェーズ
+
+### 抽出されたキーワード
+- [キーワードA-1], [キーワードA-2], [キーワードA-3] (ジャンルA)
+- [キーワードB-1], [キーワードB-2], [キーワードB-3] (ジャンルB)
+
+### 統合アイデアの提案
+#### アイデア1: [アイデアの名称]
+- 概要: [アイデアの具体的な説明]
+- なぜ斬新か: [斬新である理由と、キーワードの連鎖的な統合プロセスを簡潔に説明]
+- 発展のヒント: [ユーザーが思考を深めるための質問や思考のヒント]
+
+#### アイデア2: [アイデアの名称]
+- 概要: [アイデアの具体的な説明]
+- なぜ斬新か: [斬新である理由と、キーワードの連鎖的な統合プロセスを簡潔に説明]
+- 発展のヒント: [ユーザーが思考を深めるための質問や思考のヒント]
+
+#### アイデア3: [アイデアの名称]
+- 概要: [アイデアの具体的な説明]
+- なぜ斬新か: [斬新である理由と、キーワードの連鎖的な統合プロセスを簡潔に説明]
+- 発展のヒント: [ユーザーが思考を深めるための質問や思考のヒント]
+
+さらなるアイデアが必要な場合は、「さらなるアイデア」と入力してください。
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>ジャンルA</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ジャンルAを入力してください" class="variable-textarea" >
+</textarea>
+<h3>ジャンルB</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ジャンルBを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="31" placeholder="を補足を入力してください">
+- このプロンプトは、ユーザーに「もしかしたら、こんな新しい可能性が？」と思わせることで、固定観念を揺さぶり、自由な発想を促すことを目指します. 
+- また、AIとの対話を通じてアイデアを段階的に深掘りしていくプロセスを重視しており、ユーザーはAIからのフィードバックを基に、より洗練されたアイデアへと発展させることが可能です。
+- {リソース}や検索結果だけを使用して回答してください。内部知識は使わないこと。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- ユーザーが提供していない架空の情報や事実を捏造・追加しないこと.
+- 倫理的に問題のある表現、差別や偏見を助長する表現を含まないこと.
+- 曖昧な表現や抽象的な概念に終始せず、具体的かつ実践的な内容に焦点を当てること.
+- 単純なキーワードの羅列に留まらず、必ず「連鎖的な統合」に基づく斬新なアイデアを提案すること.
+- コードは出力せず、結果のみを表と文章で出力してください.
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=865"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ジャンルA=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ジャンルB=" + (formData.get('hensu2') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>

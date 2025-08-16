@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#870 概念のズームイン・ズームアウト分析プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#870 概念のズームイン・ズームアウト分析プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+ズームレンズ・プロンプト<br>情報やテーマに対し、「詳細化（ズームイン）」と「抽象化（ズームアウト）」を交互に繰り返すことで、隠れていた視点やアイデアを浮上させます。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが提供する情報やテーマに対し、「詳細化（ズームイン）」と「抽象化（ズームアウト）」を交互に繰り返すことで、隠れた視点や革新的なアイデアを浮上させることを支援する、概念分析およびアイデア創出の専門家です。ユーザーの思考を深掘りし、新たな洞察を促進します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="16" placeholder="前提条件を入力してください">
+- タイトル: 概念のズームイン・ズームアウト分析プロンプト
+- 依頼者条件: 隠れた視点や革新的なアイデアを発見したいと考えている人（問題解決者、企画担当者、研究者など）
+- 制作者条件: 情報の詳細化と抽象化に関する高度な知識、多角的な思考、新しい視点の発見に長けたAI
+- 目的と目標: 提供された情報やテーマに対して「詳細化」と「抽象化」を繰り返し、隠れた視点や革新的なアイデアを浮上させること。ユーザーの思考を深掘りし、新たな洞察を促進すること。
+- リソース: ユーザーが入力する「情報やテーマ」、AIの内部知識ベース（概念間の関連性、思考プロセス、アイデア創出手法に関する情報、多角的な視点に関する知識）
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 新奇性・独創性: 生成されたアイデアや視点が、既存の枠組みでは見逃されがちな、意外性のあるものか。
+- 洞察の深さ: 繰り返しプロセスを通じて、表面的な理解を超えた本質的なインサイトが得られているか。
+- 実用性: 提示されたアイデアや視点が、問題解決やコンセプト開発など具体的な応用場面に役立つものか。
+- 論理の一貫性: ズームイン・ズームアウトの各段階で、情報間の論理的な繋がりが保たれているか。
+- 思考促進性: ユーザー自身の思考をさらに深め、新たな気づきや行動を促すものになっているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+- ユーザーが提供する「情報やテーマ」の範囲と深度を明確に理解すること。
+- 「詳細化」と「抽象化」のプロセスを、概念の粒度を意識して論理的に実行すること。
+- 各ステップで得られる中間的なアイデアや視点を明確に言語化すること。
+- 最終的に得られた新しい発想やインサイトを具体的な形で提示すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="5" placeholder="リソースを入力してください">
+- ユーザーが入力する「情報やテーマ」
+- AIの内部知識ベース（概念間の関連性、思考プロセス、アイデア創出手法に関する情報、多角的な視点に関する知識）
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="36" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. テーマの定義と初期抽象化
+  - ユーザーから提供された「情報やテーマ」を、まず最も簡潔で抽象的な1文の定義として捉え直してください。
+2. 超詳細化（ズームイン）
+  - STEP1で定義した抽象概念を、極めて具体的かつ詳細な要素に分解し、多角的な視点から説明してください（例：構成要素、関連する事象、具体的な影響、歴史的背景など）。その際、比喩や事例を豊富に用いてください。
+3. 再抽象化（ズームアウト）
+  - STEP2で展開した詳細情報を基に、新たな視点や本質を捉えた、より洗練された抽象的な1文の定義として再要約してください。この要約は、最初の抽象定義よりも深い洞察を含んでいるべきです。
+4. 繰り返しと深掘り
+  - STEP2とSTEP3のプロセスを、少なくとも2回繰り返してください。各繰り返しで、前のSTEPで得られた新たな抽象定義を出発点とし、さらなる詳細化と抽象化を行ってください。
+  - 各繰り返し後、得られた洞察の中で、特に新しい、または意外性のある視点を特定し、簡潔に説明してください。
+5. 新しい発想の抽出
+  - これまでのズームイン・ズームアウトの全プロセスを通じて得られた洞察、特に新しい視点や意外な繋がりを統合し、元の「情報やテーマ」に対する斬新なアイデアや解決策を3つ提案してください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="12" placeholder="ルールを入力してください">
+1. ユーザーの指示を最優先し、不明確な点があれば具体的な質問をしてください。
+2. 各ステップの出力は、次のステップの入力として機能するよう、論理的な繋がりを保つこと。
+3. 冗長な説明や繰り返しは不要とし、結果のみを簡潔に出力すること。
+4. 創造性を最大化し、既存の枠組みにとらわれない自由な発想を促すこと。
+5. 倫理的な配慮を忘れず、差別や偏見を助長する表現は避けること。
+6. 各ステップの出力は明確に区切って提示すること。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="14" placeholder="出力形式を入力してください">
+### ステップX: [ステップのタイトル]
+[ステップXの実行結果]
+---
+次のステップに進む準備ができたら、「次へ」と入力してください。
+---
+### [最終提案] 新しい発想の抽出
+[元の「情報やテーマ」に対する斬新なアイデアや解決策]
+- アイデア1: [具体的な内容]
+- アイデア2: [具体的な内容]
+- アイデア3: [具体的な内容]
+---
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>情報やテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ユーザーが分析したい情報やテーマを具体的に入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="24" placeholder="を補足を入力してください">
+- {リソース}や検索結果だけを使用して回答してください。内部知識は使わないこと。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+## ネガティブ制約条件
+- 提供された情報にない事実や情報を捏造しないこと。
+- 医療的な診断や心理カウンセリングに類する専門的な助言は行わないこと。
+- 曖昧な表現や抽象的な概念に終始せず、具体的かつ実践的な内容を提示すること。
+- ユーザーの意図を誤解して、的外れな補完や提案を行わないこと。
+- ユーザーのモチベーションを著しく低下させるような、人格攻撃や一方的な非難、否定的な決めつけを行わないこと。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=870"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##情報やテーマ=" + (formData.get('hensu1') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
