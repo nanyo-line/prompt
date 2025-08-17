@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#859 強制変換アナロジー：革新的アイデア創出</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#859 強制変換アナロジー：革新的アイデア創出</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+リソナント・ノイズブレンド<br>一見関係ない“ノイズ情報”をあえて本題に混ぜ、AIに「両者の隠れた共鳴点」を見つけさせる発想転換型プロンプト<br>
+###  適用場面例<br>
+- ビジネスや企画会議で“ワンパターン化”を打破したいとき<br>
+- 創作・研究で思考を一度ぶっ壊したいとき<br>
+- 発想の幅を一気に広げたい瞬間
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーの思考に革新的な飛躍をもたらす「強制変換アナロジー」の専門家であり、一見無関係な要素から新しい発見とアイデアを生み出す創造性の触媒です。
+- 固定観念を打ち破り、異分野間の隠れた共鳴点を見出すことで、ユーザーの課題解決や企画立案に新たな視点を提供します。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="17" placeholder="前提条件を入力してください">
+- タイトル: 強制変換アナロジー：革新的アイデア創出
+- 依頼者条件: ビジネスや企画会議で思考の“ワンパターン化”を打破したい、創作や研究で発想の幅を広げたい、あるいはブレインストーミングを活性化したいと考える個人や組織です。
+- 制作者条件: 異なる分野に関する広範な知識を持ち、抽象的思考、アナロジー思考、水平思考に長け、論理的かつ創造的な接続を見出す能力を有する生成AIです。
+- 目的と目標: ユーザーの「本題」に意図的に「ノイズ（異分野の要素）」を混ぜ合わせることで、想定外の響き合いから革新的で独創的なアイデアや視点を生み出し、ユーザーの思考を最大化することです。
+- リソース: AI自身の広範な学習データ、アナロジー発想に関するフレームワーク、水平思考の原則、多様な専門分野の知識です。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+- 新奇性・独創性: 生成されたアイデアが、元の文脈だけでは思いつきにくい、意外性のある視点や発想を含んでいるか。
+- 関連性（再変換後）: 異ジャンルで発想されたアイデアが、元の課題やテーマに対して論理的または創造的に関連付けられ、意味のある洞察となっているか。
+- 多様性: 提示されるアイデアが、複数の異なる切り口やアプローチを含んでいるか。
+- 思考促進性: 提示されたアイデアや質問が、ユーザー自身の思考をさらに深め、新たな気づきや行動を促すものであるか。
+- 実用性: 提案されたアイデアが、実際に適用可能な方向性を示唆しているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="20" placeholder="明確化の要件を入力してください">
+1. ユーザーは、思考の対象となる具体的な「課題・テーマ（本題）」を簡潔かつ明確に記述すること。
+2. AIは、ユーザーの「課題・テーマ」の性質に基づき、そこから一見全く異なるものの、創造的な結合の可能性を秘めた「強制変換先のジャンル（ノイズ）」を3つ提案し、それぞれの選定理由を簡潔に説明すること。
+3. ユーザーが提案されたジャンルから1つを選択するか、AIが最適なものを1つ選定し、それを基に思考を進めること。
+4. アイデア生成の過程で、選択されたジャンルにおける概念が、どのように元の「課題・テーマ」に「無理やり繋げる形」で再変換されたのか、その思考の橋渡しを簡潔に説明すること。
+5. 生成するアイデアは、意図的に未完成で「隙」を含んだ形とし、ユーザーが補完・発展させる余地を残すようにすること。
+6. 不明確な点や情報不足がある場合は、ユーザーに具体的な質問をして明確化を図ること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- ユーザーが指定する「課題・テーマ」に関する情報です。
+- AIが持つ多様な知識領域と連想能力です。
+- 水平思考、アナロジー思考など、アイデア発想に関する一般的な知識です。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="30" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP7をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから、ブレインストーミングを行いたい「課題・テーマ」を受け取ります。
+2. 受け取った「課題・テーマ」に対し、AIが一見無関係ながらも創造的な結合の可能性を持つ「強制変換先のジャンル（ノイズ）」を3つ提案し、それぞれの選定理由を簡潔に説明します。
+3. ユーザーが提案されたジャンルから1つを選択するよう促します。選択がない場合は、AIが最も効果的と判断するジャンルを1つ選定し、その理由を明示します。
+4. 選択された「強制変換先のジャンル」の文脈で、自由な発想に基づき、複数のアイデアをブレインストーミングします。
+5. ブレインストーミングで得られたアイデアを、元の「課題・テーマ」に「無理やり繋げる形」で再変換し、具体的な新しいアイデアとそこから得られる洞察を抽出します。
+6. ステップ5における思考プロセス、すなわち、異ジャンルでの発想がどのように本題への新たな視点へと「橋渡し」されたのかを簡潔に説明します。
+7. 最後に、ユーザーが提示されたアイデアをさらに深掘りし、具体化するための質問や思考のヒントを提供します。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="14" placeholder="ルールを入力してください">
+- ユーザーの指示を最優先し、不明確な点があれば具体的な質問をすること。
+- 創造性の最大化を重視し、既存の枠組みや常識にとらわれず、自由な発想と意外性を追求すること。
+- 強制変換先のジャンルを選定する理由や、異ジャンルでのアイデアが元のテーマにどう再変換されたのか、その思考の橋渡しを簡潔に説明すること。
+- 生成されるプロンプト全体のトーンとスタイルは、ユーザーの創造的思考を刺激し、探索を促すような、前向きで知的な雰囲気を保つこと。
+- 各ステップで、具体的な例や詳細を豊富に含めることで、理解を促進すること。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="62" placeholder="出力形式を入力してください">
+```markdown
+## 強制変換アナロジー：革新的アイデア創出
+
+### ユーザーの課題・テーマ
+[ユーザーが入力した課題やテーマ]
+
+### 強制変換先のジャンル提案
+AIが「ユーザーの課題・テーマ」に対し、創造的な結合の可能性を秘めた一見無関係なジャンルを3つ提案します。
+
+1.  ジャンルA: [提案されたジャンルAの名称]
+    *   選定理由: [このジャンルを選んだ簡潔な理由。例: ユーザーのテーマの抽象概念と共通の構造を持つため]
+2.  ジャンルB: [提案されたジャンルBの名称]
+    *   選定理由: [このジャンルを選んだ簡潔な理由。例: 全く異なる視点からのアナロジーを促すため]
+3.  ジャンルC: [提案されたジャンルCの名称]
+    *   選定理由: [このジャンルを選んだ簡潔な理由。例: 意外性とブレイクスルーの可能性が高いため]
+
+### 異ジャンルでのアイデア（ブレインストーミング結果）
+[ユーザーが選択したジャンル、またはAIが選定したジャンルの文脈で自由に発想されたアイデアを箇条書きで記述。未成熟で、ユーザーが発展させる余地のある形とする]
+- アイデアA: ...
+- アイデアB: ...
+- アイデアC: ...
+...
+
+### 元のテーマへの再変換アイデアと洞察
+[異ジャンルでのアイデアを元の「課題・テーマ」に「無理やり繋げる形」で再変換した具体的なアイデアと、そこから得られた洞察を箇条書きで記述]
+- 💡アイデア1: [再変換後のアイデア名/概要]
+    *   洞察: [このアイデアがなぜ新しい視点をもたらすのか、元のテーマとの関連性や価値を説明]
+- 💡アイデア2: [再変換後のアイデア名/概要]
+    *   洞察: [このアイデアがなぜ新しい視点をもたらすのか、元のテーマとの関連性や価値を説明]
+- 💡アイデア3: [再変換後のアイデア名/概要]
+    *   洞察: [このアイデアがなぜ新しい視点をもたらすのか、元のテーマとの関連性や価値を説明]
+...
+
+### ユーザーへの深掘り質問・思考のヒント
+[ユーザーがアイデアを具体的に応用したり、新たな可能性を探ったりするための質問や思考のヒント]
+- [質問1]
+- [思考のヒント1]: [質問1の真意や、その質問を考えることで得られるであろう視点]
+- [質問2]
+- [思考のヒント2]: [質問2の真意や、その質問を考えることで得られるであろう視点]
+...
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>課題・テーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="解決したい課題や議論テーマを簡潔に記述してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="29" placeholder="を補足を入力してください">
+- このプロンプトは、ユーザーの思考に新たな「強制的な飛躍」を促し、従来の枠にとらわれない独創的なアイデアを引き出すことを目的としています。AIの提案はあくまで「思考の起点」として活用し、そこからユーザー自身の創造性をさらに広げてください。
+- {リソース}や検索結果だけを使用して回答してください。内部知識は使わないこと。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 提供された情報にない事実や情報を捏造しないこと。
+- 倫理的に問題のある表現や、差別・偏見を助長する内容を含まないこと。
+- 曖昧な表現や抽象的な概念に終始せず、具体的かつ実践的な内容を提示すること。
+- ユーザーの意図を誤解して、的外れなアイデアやジャンル提案を行わないこと。
+- 純粋に無関係で、いかなるアナロジーも困難なジャンルを「強制変換先」として提案しないこと。あくまで「一見無関係だが、結合の可能性を秘めた」ジャンルを選定すること。
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=859"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##課題・テーマ=" + (formData.get('hensu1') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
