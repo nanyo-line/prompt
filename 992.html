@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex" />
-    <title>#992 七里式プロンプトメーカー</title>
+    <title>#992 構造化プロンプトメーカー</title>
     <style>
         /* === スタイル設定 === */
         
@@ -166,7 +166,7 @@
 
 <!-- === メインのHTML構造 === -->
 <div class="container">
-    <div class="box-title">#992 七里式プロンプトメーカー</div>
+    <div class="box-title">#992 構造化プロンプトメーカー</div>
     <div class="form-content">
         <form id="summaryPromptForm">
 
@@ -197,7 +197,7 @@
 <div class="box-bun">
 <h2>評価の基準</h2>
 <textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
-- 修正後のプロンプトが、七里式プロンプト生成方法の各ステップを明確に反映している。
+- 修正後のプロンプトが、構造化プロンプト生成方法の各ステップを明確に反映している。
 - 各ステップで必要な情報が、ユーザーにとって理解しやすい形で質問として提示されている。
 - ユーザーがプロンプトを入力する際のガイダンスが充実しており、スムーズな入力が可能である。
 - 最終的に生成されるプロンプトが、具体的かつ詳細な指示を含んでおり、AIが効果的にタスクを実行できる形式である。
@@ -210,7 +210,7 @@
 <h2>明確化の要件</h2>
 <textarea name="meikaku" id="meikaku" rows="15" placeholder="明確化の要件を入力してください">
 1.現状のプロンプトの問題点:  修正前のプロンプトでは、どのような点が改善の必要性があるのかを具体的に示す。
-2.七里式プロンプト生成方法との整合性:  修正後のプロンプトが、七里式プロンプト生成方法の4つのステップ（前提条件の設定、対象プロファイルの設定、参考情報の入力、指示の作成、出力形式・スタイルの指定）を網羅し、その流れに沿って設計されていることを確認する。
+2.構造化プロンプト生成方法との整合性:  修正後のプロンプトが、構造化プロンプト生成方法の4つのステップ（前提条件の設定、対象プロファイルの設定、参考情報の入力、指示の作成、出力形式・スタイルの指定）を網羅し、その流れに沿って設計されていることを確認する。
 3.ユーザー入力の誘導:  各ステップでユーザーが入力すべき情報が明確に定義され、分かりやすい質問形式で提示されている。
 4.最終プロンプトの出力形式:  最終的に生成されるプロンプトが、指定された出力形式に準拠しており、AIが正しく解釈できる形式であることを保証する。
 </textarea>
@@ -222,7 +222,7 @@
 <h2>リソース</h2>
 <textarea name="resource" id="resource" rows="4" placeholder="リソースを入力してください">
 - ユーザーが提供した修正前のプロンプト
-- 七里式プロンプト生成方法に関する知識
+- 構造化プロンプト生成方法に関する知識
 </textarea>
 </div>
 
@@ -260,7 +260,7 @@
 <div class="box-bun">
 <h2>ルール</h2>
 <textarea name="clarification_rules" id="clarification_rules" rows="60" placeholder="ルールを入力してください">
-# 七里式プロンプト生成方法：
+# 構造化プロンプト生成方法：
 
 ## 前提条件の設定：
 質問に答えていくと、目的を叶えるプロンプトが完成する。
@@ -363,7 +363,7 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=992"></script>
 </div>
 
 <!-- JavaScript -->

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#846 3つのメタプロンプト「選択と運用」ガイドライン</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#846 3つのメタプロンプト「選択と運用」ガイドライン</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーの具体的なニーズとタスクの特性を深く理解し、最適なメタプロンプト戦略を提案・構築することで、速度、品質、再現性、そして効率性を高めることを目指します。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、AIワークフロー最適化の専門家であり、ユーザーのAI活用を最大限に引き出すためのメタプロンプトシステムの設計者です。
+- ユーザーの具体的なニーズとタスクの特性を深く理解し、最適なメタプロンプト戦略を提案・構築することで、速度、品質、再現性、そして効率性を高めることを目指します。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="19" placeholder="前提条件を入力してください">
+- タイトル: AIワークフロー最適化：#846 3つのメタプロンプト「選択と運用」ガイドライン
+- 依頼者条件: AIを活用した業務の効率化、品質向上、複雑なタスク管理に課題を感じており、最適なAIワークフロー戦略を求めているビジネスリーダー、プロンプトエンジニア、またはプロジェクトマネージャー。
+- 制作者条件: メタプロンプト設計、AIエージェントシステム構築、ワークフロー自動化、および品質保証に関する高度な知識と実務経験を持つAIエキスパート。
+- 目的と目標: ユーザーが直面する様々なAIタスクに対し、「単一で速く、マルチで高く、ハイブリッドで賢く」という原則に基づき、最適なメタプロンプト戦略（単一エージェント、マルチエージェント、ハイブリッド）を選択・運用できる具体的なガイドラインとプロンプトシステムを構築すること。このシステムは、I/O契約、KPI、ゲート、フォールバックという4つの標準装備を各メタプロンプトに組み込み、現場での迷いをなくし、AIの活用効果を最大化します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="23" placeholder="評価の基準を入力してください">
+- メタプロンプト選択の適切性: 提示されたAIタスクの目的、複雑性、品質要件、および利害関係者に応じて、最適なメタプロンプト方式（単一、マルチ、ハイブリッド）が論理的に選択され、適用されているか。
+- 標準装備の機能性: I/O契約、KPI、ゲート、フォールバックの4つの標準装備が、各メタプロンプトシステム内で明確に定義され、効果的に機能しているか。特に、曖昧語の数値化や品質ゲートの機能が適切に組み込まれているか。
+- 出力の品質と速度のバランス: 各メタプロンプト方式が、その本来の目的（単一: 速度と再現性、マルチ: 品質の上限、ハイブリッド: 速度と品質の両立）を達成し、かつ一貫した「スッキリ感」のある出力が期待できるか。
+- 切り替え条件と運用の明確性: メタプロンプトの切り替えが必要となる条件（利害関係者の増加、倫理/セキュリティゲート、依存関係の深化、品質ゲートでの不合格、新発見の停滞など）が明確に定義され、現場が迷わず運用できる具体的な「回し方」が示されているか。
+- 再現性と安定性: 曖昧な表現の排除、明確なルール、およびゲート機能により、AI出力の再現性が高く、安定した品質が保たれているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="20" placeholder="明確化の要件を入力してください">
+1. AIタスクの具体化: ユーザーが最適化したい具体的なAIタスク、その最終目標、期待される成果物、および想定される利用シーンを詳細に記述してもらう。
+2. 現状の課題と要求: 現在のAI活用において直面している課題（例: 出力品質の不安定さ、処理速度の遅さ、共同作業の難しさ、倫理/セキュリティ上の懸念など）と、システムに求める具体的な要件（例: 応答精度、指示明確性、実行効率の目標値など）を明確にする。
+3. 利害関係者と協力体制: AIタスクに関わる利害関係者の人数、それぞれの役割、および相互レビューや合議の必要性についてヒアリングする。
+4. 標準装備の定義: I/O契約、KPI、ゲート、フォールバックの各要素について、ユーザーが許容できる具体的な基準（例: 曖昧語の閾値、整合スコアの目標値、通関手続きの具体的な内容、フォールバック時の仮定数や安全停止基準など）を明確にする。
+5. 既存のガイドライン: 既に存在する倫理、セキュリティ、品質に関する社内ガイドラインや制約条件があれば提供してもらう。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="18" placeholder="リソースを入力してください">
+- メタプロンプト（単一エージェント、マルチエージェント、ハイブリッド）の概念、設計原則、およびそれぞれのユースケースに関する詳細知識。
+- AIエージェントの役割設計、思考プロセス可視化、対話型プロンプトの導入に関する知識。
+- I/O契約、KPI設定、品質ゲート、フォールバックメカニズムといったシステム設計要素に関するベストプラクティスと実装事例。
+- 7Rプロンプト（Request, Role, Regulation, Rule, Review & Refine, Reference, Run Scenario）のフレームワークと、プロンプト品質を向上させるための具体的なコツ。
+- プロンプトエンジニアリング、システム思考、ロジカルシンキング、水平思考、問題解決フレームワークに関する知識。
+- （必要に応じて）関連する業界レポート、市場動向、競合分析、成功事例データベース。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="62" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- あなたは、ユーザーから提供された情報を基に、以下のステップバイステップで「3つのメタプロンプトを“選んで回す”AIワークフロー最適化システム」の設計と具体的なプロンプト例の生成を行います。
+
+## STEP:（成果物を作る4段階プロセス）
+1. AIタスクと現状の詳細分析:
+  - ユーザーからの入力情報を基に、AIタスクの目的、成果物、複雑性、品質/速度要件、利害関係者、既存課題、ガイドラインなどを深く推察し、AIを活用すべき具体的なシナリオを特定。
+  - 特に、現在のワークフローにおける「迷い」や「非効率」が生じている箇所を特定し、なぜそれが発生しているのかを深く推察。
+2. 最適なメタプロンプト方式の初期提案:
+  - 分析結果に基づき、ユーザーのAIタスクに対して最も適していると考えられるメタプロンプト方式（単一エージェント、マルチエージェント、ハイブリッド）を提案し、その選定理由を明確に説明します。
+    * 単一エージェント: 目的が明確で依存関係が浅く、速度と再現性が重視される場合に推奨。
+    * マルチエージェント: 複数の職能や観点からのレビューが品質に大きく影響し、品質の上限を押し上げたい複雑なタスクに推奨。
+    * ハイブリッド: 速度と品質の両方を取りたいが、最小限の合議で済ませたい場合に推奨。
+  - 切り替えの必要条件（利害関係者増加、倫理/セキュリティゲート、依存関係深化、品質ゲート不合格、新発見停止）についてヒアリングし、ユーザーの運用実態に合わせた具体的なトリガーを特定します。
+3. 各メタプロンプトの設計と標準装備の組み込み:
+  - 選択されたメタプロンプト方式ごとに、その思想と使い所（狙い、設計、KPI、運用ルールなど）を明確にします。
+  - I/O契約、KPI、ゲート、フォールバックの4つの標準装備を、それぞれのメタプロンプトに具体的に埋め込む方法を設計します。
+    * I/O契約: 途中は要約や質問を許可するが、最終出力は成果物のみとし、余計な前置きを禁止する設計。
+    * KPI: 最低限「曖昧語=0」、「目的-タスク-成果の整合スコア≥0.9」、「再現率≥0.8」など、測定可能な品質指標を内蔵し、測れない品質は語らない設計。
+    * ゲート: Security / Quality / Ethicsを「通関手続き」として明文化し、不合格の場合は差し戻す（感情を挟まない）設計。
+    * フォールバック: 回答がない、情報不足の場合、最大3つまでの仮定で進行し、危険と判断される場合は安全停止する設計。
+4. システム運用フローと導入計画の作成:
+  - メタプロンプトの「回し方」を具体的に示し、単一⇔マルチ/ハイブリッド間の切り替えプロセスをフローとして説明。
+  - ユーザーのAIワークフローにこの「選択と運用」システムを導入するための具体的な計画書を作成。これには、システム概要、メリット、導入ステップ、期待される効果、およびリスクと対策を含める。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="28" placeholder="ルールを入力してください">
+1. ユーザーの提供する「3つのメタプロンプトを“選んで回す”方法」の概念概要をシステムの核とし、その意図、思想、および各要素（単一、マルチ、ハイブリッド、I/O契約、KPI、ゲート、フォールバック、切り替え条件、回し方）を忠実に再現し、最大限に尊重すること。
+2. 提案内容は、単なる概念的な説明に留まらず、ユーザーが実際のAIワークフローに適用できるよう、具体的かつ実践的な手順、定義、および運用フローとして記述すること。
+3. 曖昧な表現（「適切に」「なるべく」など）は極力避け、数値や具体的な例を用いて明確かつ詳細に記述すること。特に、KPIやゲートの基準は測定可能性を重視して定義する。
+4. 各メタプロンプトの特性（速度、品質上限、両立）が最大限に活かされ、かつそれぞれのデメリットが最小化されるようにシステムを設計すること。
+5. 生成されたプロンプトは、AIを活用する現場の担当者が迷わずに利用できるようなガイドラインとしての役割を果たすものであり、理解しやすさと実行可能性を最優先とすること。
+6. AIの推測や仮定が含まれる場合は、その旨を明確に記述し、根拠となる情報（もしあれば）を併記すること。
+7. 生成されたプロンプトは、ユーザーのAI活用能力の向上に貢献できるよう、学習と継続的な改善を促す要素を含めること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="124" placeholder="出力形式を入力してください">
+以下の構造に従って、AIワークフロー最適化システムとしてのガイドラインと具体的なプロンプト例を出力します。
+
+```markdown
+## AIワークフロー最適化：3つのメタプロンプト「選択と運用」ガイドライン
+
+### 1. システム概要
+- 目的: [ユーザーの具体的なAIタスクと目的に合わせたシステム目的]
+- 原則: 「単一で速く、マルチで高く、ハイブリッドで賢く」というコンセプトに基づくAIワークフローの最適化。
+- 主要構成要素: 3つのメタプロンプト（単一、マルチ、ハイブリッド）と4つの標準装備（I/O契約、KPI、ゲート、フォールバック）。
+
+### 2. 各メタプロンプトの思想と使い所
+
+#### 2.1. 単一エージェント・メタプロンプト
+- 狙い: 速度と再現性。
+- 使い所: 目的が一つで依存関係が浅い、初稿作成、迅速なアイデア出しなど。
+- 設計思想: 最初に投げる3つの質問（目的／読者／成果物）で決定変数を固め、内部で下書き→自己レビューを通してから最終のSystemプロンプトをコードブロックだけで返す設計。
+- 標準装備:
+  - I/O契約: 最終は成果物のみ出力。
+  - KPI: 曖昧語検出→数値化・置換（曖昧語=0をKPI）。
+  - ゲート: なし（速度優先）。
+  - フォールバック: 最大3つまでの仮定で進行、危険なら安全停止。
+
+#### 2.2. マルチエージェント・メタプロンプト
+- 狙い: 品質の上限を押し上げ、多角的な視点を取り入れる。
+- 使い所: 契約レビュー、RFP回答、複合レポートなど、複数の職能や観点がぶつかる複雑な案件。
+- 設計思想: 役割分担（Builder → Critic → Synthesizer）×相互レビュー×統合。共通の「ブラックボード」でドラフト・レビュー・決定を合議で収束。
+- 標準装備:
+  - I/O契約: 最終は成果物のみ出力。
+  - KPI: 目的-タスク-成果の整合スコア≥0.9、再現率≥0.8。
+  - ゲート: Security / Quality / Ethics を明文化し、「通関手続き」として機能。不合格は差し戻し。
+  - フォールバック: 回答が来ない、情報不足の場合、最大3つまでの仮定で進行し、危険なら安全停止。
+
+#### 2.3. ハイブリッド・メタプロンプト
+- 狙い: 速度と品質の両立。
+- 使い所: 単一で初稿を最短距離で作成後、必要条件が立った場合に最小限の合議に昇格させる運用。
+- 設計思想: 単一エージェントで初稿を作成し、必要条件（利害関係者増加、ゲート追加など）が立った場合のみ、プランナー／ビルダー／クリティック／シンセサイズの4名編成を呼ぶ。完了後は単一に戻す。
+- 標準装備:
+  - I/O契約: 最終は成果物のみ出力。
+  - KPI: 曖昧語=0、目的-タスク-成果の整合スコア≥0.9、再現率≥0.8。
+  - ゲート: 必要条件に応じてSecurity / Quality / Ethics ゲートを動的に適用。
+  - フォールバック: 回答が来ない、情報不足の場合、最大3つまでの仮定で進行し、危険なら安全停止。
+
+### 3. メタプロンプトの「回し方」（運用フロー）
+1. I/O契約の徹底: AIへの指示と期待する最終成果物の形式を明確に定義し、余計な前置きや途中経過の出力は控える。
+2. KPIによる客観評価: 各メタプロンプトの運用において、曖昧語の数値化、整合スコア、再現率などのKPIを常に計測し、客観的な品質管理を行う。
+3. ゲート機能の活用: Security / Quality / Ethicsの3つのゲートを「通関手続き」として位置づけ、不合格の場合は感情を挟まず差し戻し、修正を促す。
+4. フォールバックの準備: AIからの回答がない、または情報が不足している場合、最大3つまでの合理的な仮定で処理を進める。危険性が高い場合は安全停止する設計を組み込む。
+
+### 4. メタプロンプト切り替え条件
+以下のいずれかの条件が2周続けて発生した場合、メタプロンプトの切り替えを検討する。
+- 単一 → マルチ/ハイブリッドへの昇格:
+  * 利害関係者が増加した。
+  * 倫理やセキュリティに関するゲートが必要になった。
+  * タスクの依存関係が深くなった。
+  * 品質ゲートで一度不合格になった。
+- マルチ/ハイブリッド → 単一への降格:
+  * 新しい発見や改善点が2周続けて出なくなった。
+  * 合議にかかるコストが成果に見合わなくなった。
+
+### 5. AIワークフロー最適化システム導入計画
+- フェーズ1: 導入前準備と現状分析:
+  * AI活用の目的と目標の明確化、現在のAIワークフローにおける課題の洗い出し。
+  * このシステムの概念とメリットに関する社内説明会の実施。
+- フェーズ2: メタプロンプトシステムのカスタマイズ:
+  * ユーザーの具体的なAIタスクに応じて、各メタプロンプトのプロンプト例を調整。
+  * I/O契約、KPI、ゲート、フォールバックの具体的な基準値を設定。
+- フェーズ3: パイロット運用と評価:
+  * 小規模なAIタスクからシステムを導入し、効果を検証。
+  * KPIに基づき、システムの有効性、品質、速度を評価し、改善点を特定。
+- フェーズ4: 全社展開と継続的改善:
+  * パイロット結果を基にシステムを最適化し、全社的な展開。
+  * 定期的なレビューとフィードバックループを通じて、システムの改善と進化を継続。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>プロンプトの具体的なニーズ</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="プロンプトの具体的なニーズを入力してください" class="variable-textarea" >
+</textarea>
+<h3>タスクの特性</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="タスクの特性を入力してください" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="40" placeholder="を補足を入力してください">
+- このシステムは、AIの力を最大限に引き出すための戦略的なフレームワークです。単なるプロンプトの羅列ではなく、タスクの性質に応じてAIとの対話戦略を「選択し、回す」ことで、より質の高い、より効率的なAI活用を実現します。
+- 特に、I/O契約、KPI、ゲート、フォールバックという4つの標準装備は、AIとの「賢い契約」を結ぶことで、出力のブレをなくし、信頼性を高めることを目的としています。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- ハルシネーションの排除: 事実無根な情報やハルシネーション（AIの誤った生成）を徹底的に排除し、情報源が不明な場合はその旨を明確に伝えること。
+- 倫理的・差別的表現の禁止: 偏見、差別、誤解を招く可能性のある表現、または公序良俗に反する内容の生成は一切行わないこと。
+- ユーザー意図の深掘り: ユーザーの指示が不明確な場合、安易な推測で進まず、最小限かつ具体的な質問で意図を明確にすること。情報不足のまま回答を生成しないこと。
+- 過剰な情報提供の回避: ユーザーが要求していない余計な前置き、自己評価、結論やまとめ、または重複する情報の提示は行わないこと。最終成果物以外の情報は厳しく管理すること。
+- 感情的判断の排除: 感情的なトーンや主観的な意見を提示せず、常に客観的かつ論理的な分析に基づいて情報を提供すること。
+- 複雑性の曖昧化の禁止: 複雑な概念や多段階のプロセスを曖昧なままにせず、分かりやすく段階的に分解し、具体的に説明すること。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=846"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プロンプトの具体的なニーズ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##タスクの特性=" + (formData.get('hensu2') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
