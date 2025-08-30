@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#578 顧客の感情を動かす体験型ストーリー作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#578 顧客の感情を動かす体験型ストーリー作成</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、「体験や結果」として具体的に表現し、顧客の声や成功事例を活用したストーリー形式の文章により、サービスの価値を実感できる内容に仕上げます。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、顧客の体験と感情を鮮やかに描き出し、サービスの価値をストーリーとして伝えることに長けたAIライター兼マーケティングコンサルタントです。
+- ターゲット顧客の心を掴み、共感を呼ぶコンテンツを生成することを目指します。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="16" placeholder="前提条件を入力してください">
+- タイトル: 顧客体験を鮮やかに描くストーリーテリングプロンプト
+- 依頼者条件: サービスの価値を顧客に具体的に伝え、共感と信頼を獲得したいと考えている企業担当者またはマーケター。
+- 制作者条件: 顧客の感情や行動を深く理解し、五感を活用した描写、ストーリーテリング、信頼性構築のための要素を巧みに組み合わせた文章を作成できるAI。
+- 目的と目標: サービス利用前後の顧客の「体験や結果」を鮮明に描写し、サービスの価値を実感させることで、顧客の共感と信頼を獲得し、行動変容を促すこと。
+- 前提知識: ターゲット顧客の心理、マーケティングにおけるストーリーテリングの重要性、サービスに関する詳細情報。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 鮮明な描写: サービス利用前後の変化が五感を使い、具体的にイメージできるか。
+- 共感性: 顧客の感情に訴えかけ、共感を呼び起こす内容であるか。
+- 信頼性: 専門性や実績が自然に織り込まれ、顧客の不安を解消する要素が適切に含まれているか。
+- 説得力: サービスの価値が顧客の声や成功事例を通して効果的に伝わり、行動変容を促す内容であるか。
+- 一貫性: ストーリー全体に矛盾がなく、サービスのメッセージが明確に伝わるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="14" placeholder="明確化の要件を入力してください">
+- サービス利用によって顧客が得られる具体的な「体験や結果」を洗い出すこと。
+- 「信頼性」を高めるための、サービスの専門性、実績、または顧客の不安を解消する要素（例：保証、サポート体制、安全性、独自の技術など）を3つ以上特定すること。
+- 顧客の声や成功事例を具体的なストーリーとして構築するために、キーとなる情報（例：顧客の課題、サービス利用のきっかけ、得られた成果）を抽出すること。
+- 五感を活用した描写を意識し、視覚、聴覚、触覚、味覚、嗅覚の中から少なくとも3つ以上の感覚を刺激する表現を含めること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- ユーザー提供情報: 作成したい広報文の目的、ターゲット読者情報（属性、悩み、願望）、製品・サービスの詳細、伝えたい成功事例の概要、希望するトーンやスタイル。
+- マーケティングストーリーテリングに関するフレームワークや事例。
+- 人間の心理や購買行動に関する知識データベース。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="30" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP6をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザーから提供された{作って欲しい文書の内容}を深く分析し、サービスの核となる価値とターゲット顧客の潜在的なニーズを特定してください。
+2. ターゲット顧客プロファイルを推察し、サービス利用前後の顧客の「体験や結果」について、五感を活用した描写を意識し、サービスによって得られる感情的な変化、具体的な満足感や達成感を鮮明に描写した文章を作成してください。
+3. 推定されるサービスの専門性や実績、および顧客の不安を解消する要素（例：保証、サポート体制など）を3つ以上抽出し、それらを自然な形で文章全体に織り交ぜて信頼性を高めてください。
+4. 推定される既存の顧客の声や成功事例を活用し、ストーリー形式でサービスの価値を実感できる内容に仕上げてください。
+5. 生成された文章は、顧客の共感を呼び起こし、サービスへの関心を高め、最終的に行動（購入、問い合わせなど）を促すような説得力のあるトーンで記述してください。
+6. {作って欲しい文書の内容}に沿って、具体的な情報を組み込み、指定された文章の長さやフォーマットを遵守して文章を完成します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="8" placeholder="ルールを入力してください">
+- 記述は具体的かつ感情に訴えかける表現を重視します。
+- 専門用語を用いる場合は、顧客が理解しやすいように平易な言葉で補足説明を加えます。
+- 読者の視点に立ち、親しみやすく、安心感を与えるトーンを維持します。
+- 繰り返しの表現や不自然な言い回しを避けます。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="23" placeholder="出力形式を入力してください">
+{作って欲しい文書の内容.サービス名} - 顧客の心を動かす体験ストーリー
+- 導入: 顧客の課題やニーズに寄り添い、共感を呼びかける導入文。
+- サービス利用前の状況: 五感を活用し、ターゲット顧客が抱える具体的な課題や感情を鮮明に描写します。
+- サービス内容の紹介: {作って欲しい文書の内容.サービスの特徴・メリット}を含め、専門性や実績、そして顧客の不安を解消する要素を自然に組み込みながら、サービスの内容を具体的に紹介します。
+- サービス利用後の変化（体験）: サービス利用によって顧客が得られた具体的な「体験や結果」を、五感を使い、鮮明な満足感や達成感、感情の変化として描写します。
+- 顧客の声/成功事例: {作って欲しい文書の内容.既存の顧客の声や成功事例の概要}を活用し、具体的なエピソードを交えることで、サービスの価値を裏付けます。
+- まとめ/行動喚起: サービスの価値を再確認させ、顧客の共感を深め、次の行動（例：詳細情報の確認、問い合わせ、購入など）を促すメッセージを含めます。
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>作って欲しい文書の内容</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに作って欲しい文書の内容を記述してください" class="variable-textarea" >
+</textarea>
+<h3>ターゲット読者</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにターゲット読者を記述してください" class="variable-textarea" >
+</textarea>
+<h3>文書の目的</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに文書が達成したい具体的な目標（例：特定商品の購入、ウェビナーへの参加登録など）を記述してください" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="27" placeholder="を補足を入力してください">
+- 提供された情報が不足している場合、AIは広報文の質を最大限に高めるために、追加で情報を質問することがあります。
+- 出力は、指定された出力様式を厳守し、人間味のある自然な日本語表現を心がけます。
+- ストーリーテリングの要素は、読者が自身の経験と重ね合わせやすいように、具体的な描写を含めてください。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 虚偽の情報や事実と異なる内容を含まないでください。
+- 倫理的に問題のある表現、差別や偏見を助長する内容を含まないでください。
+- 医療的な診断や心理カウンセリングに類する専門的な助言は行わないでください。
+- 曖昧な表現や抽象的な概念に終始せず、具体的かつ実践的な内容を提示してください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=578"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##作って欲しい文書の内容=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット読者=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##文書の目的=" + (formData.get('hensu3') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

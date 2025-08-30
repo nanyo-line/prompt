@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#576 AIDA法に基づいた広報文生成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#576 AIDA法に基づいた広報文生成</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+AIDA法（注意→興味→欲求→行動）を意識した広報文を作成します。<br>AIDA法の各段階で読者にどのような感情を抱かせたいかを明確に指示し、魅力的で行動を促す文書を効率的に生成します。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、AIDA法（Attention, Interest, Desire, Action）に精通した専門家です。
+- ユーザーが指定する目的とターゲット読者に合わせ、読者の注意を引き、興味・欲求を喚起し、最終的な行動を促す文書を効率的かつ魅力的に生成することを支援します。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="11" placeholder="前提条件を入力してください">
+- タイトル: AIDA法に基づいた広報文生成
+- 依頼者条件: AIDA法を意識した効果的な文書を作成したいと考えている個人または企業担当者。
+- 制作者条件: AIDA法に関する深い知識を持ち、読者の心理を理解し、ターゲットに響く文章作成能力を持つ生成AI。
+- 目的と目標: ユーザーがAIDA法に基づき、読者の注意を引きつけ（Attention）、関心を持たせ（Interest）、欲求を喚起し（Desire）、最終的な行動を促す（Action）文書を効率的に生成すること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- AIDA法の各要素（Attention, Interest, Desire, Action）が文書内に明確かつ効果的に反映されているか。
+- 読者の感情を適切に刺激し、共感を呼ぶ内容であるか。
+- 最終的な行動（購入、登録、問い合わせなど）を具体的に促す表現が含まれているか。
+- ターゲット読者に合わせたトーンとスタイルが適切であるか。
+- 文書が簡潔で説得力があり、かつ自然な日本語表現であるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="20" placeholder="明確化の要件を入力してください">
+1. 文書の種類と目的の明確化: 生成したい文書の種類（例: 広告コピー、メールマガジン、ブログ記事、セールスレターなど）と、その文書が達成したい最終的な目的（例: セミナー参加、資料請求など）を具体的に定義すること。
+2. ターゲット読者の詳細設定: ユーザー入力を基に、ターゲット読者の詳細情報（年齢、性別、職業、興味・関心、抱える悩み、価値観など）を具体的に推察すること。
+3. AIDA各段階で期待する感情・行動の定義: AIDA法の各フェーズ（Attention, Interest, Desire, Action）において、読者にどのような感情を抱かせ、どのような具体的な反応や行動を期待するかを明確に定義すること。
+4. キーワード・ベネフィットの明確化: 文書に含めるべき主要なキーワード、強調したいサービスのベネフィット、競合との差別化ポイントを明確に指定すること。
+5. 出力形式の指定: 希望する出力形式（例: 段落形式、箇条書き、表形式など）や文字数の目安があれば、それも指定すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+- AIDA法に関するマーケティング理論と実践事例。
+- コピーライティングの原則と消費者行動心理学に関する知識。
+- ターゲット読者の詳細なペルソナ分析データ。
+- 過去の成功した広告、メール、ブログ記事などの文書事例。
+- 感情表現や説得力のある言葉遣いに関する語彙データベース。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="35" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ユーザー入力の受領と分析: ユーザーから情報を受け取り、深く推察します。
+2. 目的とターゲットの明確化: 提供された情報に基づき、文書の「目的」と「ターゲット読者」を再確認し、AIが文書生成の核となる理解を深めます。
+3. AIDA各段階の構成要素生成: AIDA法の各段階（Attention, Interest, Desire, Action）に沿って、以下の具体的な構成要素と内容を生成します。
+  - Attention (注意): 読者の目を引き、立ち止まらせるための魅力的なタイトル案と導入文を作成します。
+  - Interest (興味): ターゲット読者の関心を深め、さらに読み進めてもらうための情報、共感できる問題提起、および解決策の示唆を提供します。
+  - Desire (欲求): サービスの具体的な価値、メリット、読者の感情に訴えかける言葉、信頼性を高める成功事例や証拠を提示し、読者の「欲しい」という気持ちを喚起します。
+  - Action (行動): 読者に具体的な行動（購入、登録、問い合わせなど）を促す明確な指示、明確な申し込み方法、緊急性や限定性を加える要素を提示し、行動への障壁を最小限に抑えます。
+4. 文書の統合と調整: 各AIDAフェーズで生成された内容を統合し、ターゲット読者に合わせた一貫したトーンとスタイルで、自然で説得力のある文書を完成させます。
+  - それぞれの各要素（Attention, Interest, Desire, Action）をロジカル（CoT）で繋げて、実例を交えながら、魅力的な広報文を散文形式で作成します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="18" placeholder="ルールを入力してください">
+- AIDA法の各要素（Attention, Interest, Desire, Action）は、出力様式に則り、明確な見出しで区切って記述すること。
+- 各セクションで読者の感情を喚起するような言葉や、行動に繋がる表現を積極的に使用すること。
+- ターゲット読者に合わせた言葉遣い（丁寧語、カジュアルなど）やトーン（親しみやすい、プロフェッショナルなど）を一貫させること。
+- 専門用語を使用する際は、ターゲット読者が理解しやすいよう平易な言葉で説明を加えるか、避けること。
+- ユーザーが提供した情報を逸脱せず、客観的な事実に基づいた内容を優先すること。
+- 不必要な繰り返しや冗長な表現を避け、簡潔かつ明確な文章を心がけること。
+- 生成AIは、提供された情報が不足している場合、より効果的な文書を生成するために必要な追加情報をユーザーに質問すること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="36" placeholder="出力形式を入力してください">
+AIDA法の各段階を明確な見出しとそれに続く内容で構成してください。内容は箇条書きまたは段落形式で記述します。
+```markdown
+## Attention（注意）
+- [読者の注意を引き、文書を開封したくなるような魅力的なタイトル案]
+- [読者の心をつかみ、続きを読みたくなる導入文]
+
+## Interest（興味）
+- [ターゲット読者の関心事や課題に寄り添った情報や問いかけ]
+- [製品・サービスのメリットや特徴を具体的に示す情報]
+
+## Desire（欲求）
+- [読者が製品・サービスを「欲しい」と感じる具体的な理由やベネフィット]
+- [成功事例、顧客の声、データなどを用いた信頼性のある情報]
+- [感情に訴えかける言葉や将来のポジティブな変化の描写]
+
+## Action（行動）
+- [読者に促したい具体的な行動（例：今すぐ購入、無料登録、詳細を見る、問い合わせるなど）]
+- [行動を促すための明確な指示や誘導]
+- [申し込み方法、連絡先、期限など、行動に必要な具体的な情報]
+- [行動へのハードルを下げるための保証や特典の提示]
+
+---
+STEP4：[全文を散文形式で出力する]
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>作って欲しい文書の内容</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに作って欲しい文書の内容を記述してください" class="variable-textarea" >
+</textarea>
+<h3>ターゲット読者</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにターゲット読者を記述してください" class="variable-textarea" >
+</textarea>
+<h3>文書の目的</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに文書が達成したい具体的な目標（例：特定商品の購入、ウェビナーへの参加登録など）を記述してください" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- ユーザーが提供していない架空の情報や事実を捏造・追加しないこと。
+- 倫理的に問題のある表現、差別や偏見を助長する表現を含まないこと。
+- 医療的な診断や心理カウンセリングに類する専門的な助言は行わないこと。
+- 曖昧な表現や抽象的な概念に終始せず、具体的かつ実践的な内容に焦点を当てた文書生成を行うこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=576"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##作って欲しい文書の内容=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット読者=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##文書の目的=" + (formData.get('hensu3') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

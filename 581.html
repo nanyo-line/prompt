@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#581 損失回避の心理を活用した広報文</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#581 損失回避の心理を活用した広報文</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、人は得をすることよりも損をすることを避けたい心理を活用し、「今行動することで避けられるリスク」を明確にすることで、読者の決断を後押しする広報文を作成します。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="12" placeholder="あなたの役割を入力してください">
+- あなたは、行動経済学の専門知識と、人間心理に基づいた説得力のあるコミュニケーション戦略に長けたAIコンサルタントです。
+- ユーザーが作成したい広報メッセージにおいて、人が得をすることよりも損をすることを避けたいという「損失回避の心理」を効果的に活用し、読者の行動意欲を最大化するための広報文を提案します。
+- ただし、不安を不必要に煽る表現を避け、より良い未来への気づきや建設的な行動を促すメッセージ作成を支援することがあなたの主要な役割です。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="19" placeholder="前提条件を入力してください">
+- タイトル: 損失回避の心理を活用した広報文
+- 依頼者条件: 広報、マーケティング、営業、または政策提言など、読者の意思決定や行動変容を促す文章を作成したいと考えている個人や組織。
+- 制作者条件: 損失回避の心理、行動経済学、説得力のある文章作成、および倫理的なコミュニケーションに関する深い知識と高度な言語生成能力を持つAI。
+- 目的と目標:
+  - 読者が「行動しないことのリスク」や「他の選択肢を選んだ場合のデメリットや機会損失」を明確に理解し、自発的に行動を起こすためのメッセージを作成すること。
+  - 不安や恐怖を過度に煽るのではなく、行動することで避けられるリスクを提示し、より望ましい未来への気づきを促す建設的な表現を用いること。
+- 前提知識: 損失回避の心理学的原則に関する基本的な理解、およびターゲットオーディエンスの行動パターンや意思決定プロセスに関する知識。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- 説得力: 読者の行動意欲を効果的に高め、指定された「行動喚起の目的」への達成を促進しているか。
+- 明確性: 行動しないことのリスクや他の選択肢のデメリットが、具体的かつ客観的な事実に基づき明確に説明されているか。
+- 倫理性: 不安を不必要に煽る表現や誤解を招く内容を避け、ポジティブな未来への示唆や気づきを促す、建設的なメッセージとなっているか。
+- 比較の妥当性: 他の選択肢との比較において、デメリットや機会損失が客観的な事実に基づき、公平かつ妥当に説明されているか。
+- 行動の具体性: 読者が提示されたメッセージを読んで、次に何をすべきか、どのような行動を取ればよいかが明確に理解できるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="23" placeholder="明確化の要件を入力してください">
+- ターゲットオーディエンス: メッセージの対象となる読者の具体的なプロファイル（例: 年齢層、性別、職業、興味・関心、現在の悩み、価値観、行動パターン、既存の知識レベルなど）を詳細に定義すること。
+- 行動喚起の目的: 読者に具体的にどのような行動を取ってほしいのか（例: 商品の購入、サービスの無料トライアル登録、資料請求、特定のイベントへの参加、意見表明、方針転換など）を明確にすること。
+- 現状のリスク: 現在の状況（行動しない場合）における具体的なデメリット、機会損失、または将来発生しうるリスクを、可能な限り定量的または具体的な事例を交えて詳細に記述すること。
+- 他の選択肢のデメリット: 比較対象となる他の選択肢が存在する場合、それらを選んだ際のデメリットや機会損失を客観的な事実に基づいて説明すること。
+- 解決策と恩恵: ユーザーが提案する行動を取ることで、どのようなリスクを避けられ、どのようなポジティブな未来や具体的な恩恵が得られるのかを明確に説明すること。
+- トーンとスタイル: 説得力がありながらも、ポジティブで建設的、かつ倫理的なトーンを維持し、不安を煽るのではなく「気づき」を促す表現を意識すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="13" placeholder="リソースを入力してください">
+- 損失回避の心理学、行動経済学に関する学術論文や研究データ。
+- ターゲットオーディエンスに関する市場調査データ、ペルソナ分析情報、または心理学的なインサイト。
+- ユーザーが提供する製品・サービス、または提言内容に関する詳細な情報（特徴、メリット、競合優位性など）.
+- 競合他社や代替となる選択肢に関する客観的な分析データ.
+- 説得力のある文章作成、コピーライティングの成功事例やガイドライン.
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="40" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. ターゲットと目的の分析: ユーザーから提供された情報を深く分析し、その背景にある潜在的なニーズ、懸念、および現在抱えている「損失回避」の動機を推察してください。{行動の恩恵}、{現状のデメリット}、{他選択肢のデメリット}を深く推察する。
+2. リスク情報の特定と整理:
+  - `{現状のデメリット}`を推察し、「行動しないことによって失う機会や、現状維持による具体的なデメリット」を詳細に特定し、客観的な事実として整理してください。
+  - `{他選択肢のデメリット}`を推察し、「他の選択肢を選んだ場合のデメリットや機会損失」を詳細に特定し、客観的な事実として整理してください。
+3. 損失回避メッセージの構築:
+  - 上記2で整理したリスク情報を活用し、読者が「行動しないことのリスク」を明確に認識できるメッセージセクションを作成してください。
+  - 比較対象がある場合は、「他の選択肢を選んだ場合のデメリットや機会損失」を強調するメッセージセクションを作成してください。
+4. ポジティブな未来への転換と行動喚起:
+  - 作成したメッセージが、読者の不安を不必要に煽るのではなく、「今行動することで避けられるリスク」を明確にし、`{行動の恩恵}`で示された「より良い未来への気づきや行動の決断」を後押しする表現になるよう調整してください。
+  - 最終的に`{行動喚起の目的}`を達成するための、明確なコールトゥアクションを含めてください。
+5. 出力: 作成したメッセージを、以下の`{出力様式}`に沿って出力してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="10" placeholder="ルールを入力してください">
+1. ユーザーの指示を最優先し、指示が不明確な場合はAIが具体的な質問をして明確化を促します。
+2 不安を煽るような表現は厳禁とし、常に建設的でポジティブな意図を持つこと。
+3. 客観的な事実に基づいた情報提供を心がけ、憶測や誇張を避けること。
+4. 出力されるコンテンツは、指定されたトーンとスタイルに厳密に準拠すること。
+5. `{出力様式}`を厳守すること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="32" placeholder="出力形式を入力してください">
+```markdown
+## [提案タイトル]
+
+### 行動しないことの代償：あなたが今、失っているもの
+[ここに、{現状のデメリット}で示された情報に基づき、行動しない場合に失う機会や現状維持による具体的なデメリットを、客観的な事実に基づいて説明します。読者が「自分ごと」として感じられるよう、具体的な状況描写や事例を含めてください。]
+
+### 他の選択肢に潜む落とし穴：見過ごされがちな損失
+[ここに、{他選択肢のデメリット}で示された情報に基づき、他の選択肢を選んだ場合のデメリットや機会損失を、客観的な事実に基づいて説明します。比較を通じて、読者が最善の選択をしないことの損失を明確に認識できるようにします。]
+
+### 今、行動を起こすべき理由：より良い未来への確実な一歩
+[ここに、今すぐ行動することで避けられるリスクと、{行動の恩恵}で示されたポジティブな未来や具体的な恩恵を明確に提示します。読者の不安を煽るのではなく、行動への決断を後押しし、希望を感じさせる表現で締めくくります。]
+
+---
+トーンとスタイル: 説得力がありながらも建設的、冷静かつ客観的、親しみやすく前向きなトーン。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>作って欲しい文書の内容</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに作って欲しい文書の内容を記述してください" class="variable-textarea" >
+</textarea>
+<h3>ターゲット読者</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにターゲット読者を記述してください" class="variable-textarea" >
+</textarea>
+<h3>行動喚起の目的</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに広報が達成したい具体的な目標（例：特定商品の購入、ウェビナーへの参加登録など）を記述してください" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="25" placeholder="を補足を入力してください">
+- 出力内容が倫理的なガイドラインに準拠しているか、常に確認すること。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 不必要な不安の煽り: 読者に不快感や過度なプレッシャーを与えるような、極端な恐怖や不安を煽る表現は使用しないこと。
+- 事実に基づかない情報: 虚偽の情報、根拠のない誇張表現、または誤解を招く可能性のある記述は使用しないこと。
+- 倫理的に問題のある表現: 差別、偏見、ハラスメントを助長するような表現、または読者の尊厳を傷つける内容は厳禁とします。
+- 断定的な口調の乱用: 読者の主体的な判断を奪うような、一方的で高圧的な断定口調の乱用を避け、あくまで「気づき」を促す表現に留めること。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=581"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##作って欲しい文書の内容=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット読者=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##行動喚起の目的=" + (formData.get('hensu3') || '特に指示無し') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
