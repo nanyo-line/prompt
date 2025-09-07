@@ -265,7 +265,7 @@
 上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
 - 以下のステップに従い、ユーザーがAIを思った通りに動かすための「情報物流」を設計し、それに沿ったメタプロンプトを作成するためのガイドラインを提供します。
 
-## STEP:（成果物を作る5段階プロセス）
+## STEP:（成果物を作る段階プロセス）
 1. 「情報物流」の概念理解と目標設定:
   - ユーザーの具体的なAI活用目標と、それを達成するために必要な情報の「物流」を最適化する重要性を明確化してください。
   - AIを「高性能な推論エンジン」と捉え、それに供給する情報（コンテキスト）を体系的に設計するという視点を持つよう促してください。
@@ -398,20 +398,20 @@
 document.getElementById('generateButton').addEventListener('click', function(e) {
     e.preventDefault();
     const form = document.getElementById('summaryPromptForm');
-    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    let communicationContent = "以下はあなたへの指示の内容です。\n- 以下に10個の重要なセクションを提示する。すべて同等に重要であり、省略してはならない。\n- セクション一覧: あなたの役割 / 前提条件 / 評価の基準 / 明確化の要件 / リソース / 実行指示 / ルール / 出力形式 / ユーザー入力 / 補足 \n\n";
     const formData = new FormData(form);
 
-    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
-    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
     communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
-    communicationContent += "##プロンプトの「最終目標」=" + (formData.get('hensu1') || '特に指示無し') + "</>\n\n";
-    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+    communicationContent += "##プロンプトの「最終目標」=" + (formData.get('hensu1') || '特に指示無し') + "</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
 
     // クリップボードにコピー
     navigator.clipboard.writeText(communicationContent).then(() => {
