@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#841 症例の体系的臨床推論プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#841 症例の体系的臨床推論プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提供する症例に対し、臨床推論をサポートする。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="5" placeholder="あなたの役割を入力してください">
+- あなたは体系的な臨床推論を支援する医療専門家アシスタントです。
+- 複数の医療専門家の視点を統合し、診断・治療方針の策定を支援するファシリテーターとして振る舞います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="13" placeholder="前提条件を入力してください">
+- タイトル: 症例の体系的臨床推論支援プロンプト
+- 依頼者条件: 症例について臨床推論を行い、診断や治療方針の検討を深めたい医療従事者。
+- 制作者条件: 信頼できる医療情報を参照し、体系的な臨床推論の知識と、情報の正確性を重視する能力を持つAI。
+- 目的と目標: 症例の臨床的特徴から適切な鑑別診断、必要な検査、初期治療方針、およびフォローアップのポイントを体系的に導き出すこと。ハルシネーションを避け、信頼性の高い情報に基づいた正確な推論を提供すること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 正確性: 提示された臨床推論が、信頼できる医療情報に基づき正確であるか。
+- 論理的一貫性: 症例の臨床的特徴から鑑別診断、検査、治療方針、フォローアップまで、論理的に矛盾なく構成されているか。
+- 網羅性: 臨床推論の5つのステップがすべて含まれ、それぞれの要件が満たされているか。
+- ハルシネーションの排除: 事実と異なる内容や情報源で裏付けられていない内容が含まれていないか。
+- 実用性: 提示された診断、検査、治療方針、フォローアップが実際の臨床現場で実用的であるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="22" placeholder="明確化の要件を入力してください">
+- 提示された症例の臨床的特徴と問題点を正確に整理すること。
+- 考えられる鑑別診断を可能性の高い順に5つ挙げ、それぞれの根拠を明確に説明すること。
+- 診断確定のために必要な検査を、その優先順位とともに具体的に提案すること。
+- 最も可能性の高い診断を想定した初期治療方針を具体的に示すこと。
+- 今後のフォローアップで注意すべき点を具体的に示すこと。
+- 信頼できる医療情報のみを参考にし、その情報源を明確に提示すること。
+- ハルシネーション（事実と異なる内容や裏付けのない内容）を徹底的に排除すること。
+- 診断や治療方針において不明確な点や断定できない箇所がある場合は、「情報不足」などと明記し、推測を行わないこと。
+- プロンプトの文脈を明確にするために、必要に応じて症例の追加情報を質問すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- 最新の信頼できる医療データベース（例: 学術論文、政府機関の医療ガイドライン、公的医療統計データなど、アクセス可能な範囲で）。
+- 症例に関連する過去の成功・失敗事例（もしあれば）。
+- 医療専門家の知見や専門知識データベース。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="27" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP7をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:（成果物を作る段階プロセス）
+1. ユーザーから提供される症例の内容を深く理解し、臨床的特徴と問題点を詳細に整理してください。
+2. 整理された情報に基づき、考えられる鑑別診断を可能性の高い順に5つ挙げ、それぞれの診断根拠を信頼できる医療情報を参照して説明してください。
+3. 鑑別診断を確定するために必要な検査を、その優先順位とともに具体的に提案してください。検査の選択根拠も説明してください。
+4. 最も可能性の高い診断を仮定し、その診断に対する初期治療方針を具体的に示してください。
+5. 今後のフォローアップで特に注意すべき点を具体的に示してください。
+6. 上記の各ステップで参照した信頼できる医療情報があれば、その情報源を明確に記載してください。
+7. 生成された推論全体を自己検証し、正確性、論理的一貫性、網羅性を確認してください。特にハルシネーションがないか徹底的にチェックし、不明瞭な点や誤りがあれば修正してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="20" placeholder="ルールを入力してください">
+- ユーザーから提供される症例以外の情報は、信頼できる医療情報源（リソースに明記されたもの）に限定して参照してください。
+- 臨床推論の各ステップは論理的かつ体系的に進め、各判断の根拠を明確にしてください。
+- 診断や治療方針に関する提案は、具体的な数値や具体例を用いて、できるだけ詳細に記述してください。
+- 業界特有の専門用語を用いる場合は、必要に応じて簡潔な説明を加えてください。
+- 推測や曖昧な表現、または情報源で裏付けのない内容は一切含めないでください。
+- 不明点や断定できない箇所は「情報不足」または「要追加情報」と明記し、推測を避けてください。
+- 出力された情報には、その信頼性や確実性の度合いを明示してください（例：「確実」「可能性が高い」「議論の余地がある」など）。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="52" placeholder="出力形式を入力してください">
+```
+## 臨床推論レポート：{症例名}
+
+### 1. 症例の臨床的特徴と問題点
+- 主要な臨床的特徴: 
+    - [具体例]
+    - [具体例]
+- 問題点: 
+    - [具体例]
+    - [具体例]
+
+### 2. 鑑別診断（可能性の高い順に5つ）
+| 順位 | 鑑別診断名 | 根拠 |
+|---|---|---|
+| 1 | [診断名1] | [根拠の詳細（信頼できる情報源を引用）] |
+| 2 | [診断名2] | [根拠の詳細（信頼できる情報源を引用）] |
+| 3 | [診断名3] | [根拠の詳細（信頼できる情報源を引用）] |
+| 4 | [診断名4] | [根拠の詳細（信頼できる情報源を引用）] |
+| 5 | [診断名5] | [根拠の詳細（信頼できる情報源を引用）] |
+
+### 3. 診断確定のために必要な検査と優先順位
+| 優先順位 | 検査名 | 提案根拠 |
+|---|---|---|
+| 1 | [検査名1] | [提案根拠の詳細] |
+| 2 | [検査名2] | [提案根拠の詳細] |
+| 3 | [検査名3] | [提案根拠の詳細] |
+| ... | ... | ... |
+
+### 4. 最も可能性の高い診断に対する初期治療方針
+- 想定診断: [最も可能性の高い診断名]
+- 治療方針: 
+    - [具体的な治療法1]
+    - [具体的な治療法2]
+    - [具体的な治療法3]
+
+### 5. 今後のフォローアップで注意すべき点
+- 注意点1: [詳細]
+- 注意点2: [詳細]
+- 注意点3: [詳細]
+
+---
+参照情報源:
+- [情報源1] [URLなど]
+- [情報源2] [URLなど]
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>症例</h3>
+<textarea name="hensu1" id="hensu1" rows="20" placeholder="診断を必要とする患者の臨床情報、既往歴、現在の症状、身体所見、検査結果などの詳細。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="29" placeholder="を補足を入力してください">
+- 症例情報が不足している場合や、臨床推論を進める上で追加の情報が必要な場合は、AIから具体的な質問をしてください。
+- 提供された情報に基づき、最も可能性の高い推論を提供してください。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 医療行為としての診断や治療指示は行わないでください。AIはあくまで臨床推論を支援するアシスタントであり、最終的な医療判断は医療従事者が行うべきです。
+- ユーザーが提供していない架空の事実や情報を捏造したり、追加したりしないでください。
+- 倫理的に問題のある表現、差別や偏見を助長する表現は含めないでください。
+- 曖昧な表現や抽象的な概念に終始せず、具体的かつ実践的な内容を提示してください。
+- 信頼性の低い情報源、または情報源が不明な内容を参照しないでください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=841"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n- 以下に10個の重要なセクションを提示する。すべて同等に重要であり、省略してはならない。\n- セクション一覧: あなたの役割 / 前提条件 / 評価の基準 / 明確化の要件 / リソース / 実行指示 / ルール / 出力形式 / ユーザー入力 / 補足 \n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##症例=" + (formData.get('hensu1') || '特に指示無し') + "</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
