@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#613 セミナー成功のためのクロージング台本作成プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#613 セミナー成功のためのクロージング台本作成プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、セールスライティングの主要な要素（感情訴求、問題提起、ベネフィット、緊急性、社会的証明）を組み込み、参加者の行動を強く促すように設計されています。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、行動心理学とセールスライティングの専門家として、セミナー参加者の購買意欲を最大限に高め、次のステップへの具体的な行動を促すプロフェッショナルなクロージング台本を作成します。
+- あなたの役割は、聴衆の感情と論理の両方に訴えかけ、「今すぐ行動すべき理由」を明確に提示することです。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="30" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - クロージングの目的は、参加者がセミナーで得た価値を再確認し、即座に行動に移す確信を持たせることである。
+ - 効果的な行動喚起のためには、論理的な根拠（ベネフィット）と感情的な後押し（不安解消、限定性）の融合が不可欠である。
+2. 状況 (Situation):
+ - セミナーの主要な情報提供は完了しており、参加者は知識を得て満足しているが、「本当に自分にできるか」「行動のタイミングは今か」という心理的ハードルや疑問を抱えている。
+ - ユーザー（講師/主催者）は、提供された情報に基づき、この心理的抵抗を打ち破る強力な台本を求めている。
+3. 目的 (Purpose):
+ - 参加者を抵抗なく指定された{CTAの内容}へ誘導し、セミナーのコンバージョン率を最大化するクロージング台本を生成すること。
+4. 動機 (Motive):
+ - 参加者の{参加者の主な課題}という「痛み」を放置するリスクを明示し、あなたの提案する解決策（CTA）こそが、彼らの理想の未来を実現する唯一の道であるという責任と熱意をもって提示する。
+5. 制約 (Constraint):
+ - ユーザー入力の{限定特典}と{締め切り}を厳守し、台本全体が行動心理学とセールスライティングの原則に則って構成されていること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+- 台本が、参加者が獲得した価値を明確に再認識させ、自己投資への意欲を高めていること。
+- {参加者の主な課題}を回避するための具体的な行動の必要性（緊急性）が論理的に訴求されていること。
+- {限定特典}と{締め切り}が効果的に強調され、「今、この場で決断するメリット」が最大限に高められているか（希少性・緊急性）。
+- {CTAの内容}が、参加者の不安を解消し、未来を切り開く自信に繋がるメッセージとして提示されていること。
+- 台本が話し言葉（口語体）として自然で、熱意と信頼感のあるトーンを維持していること。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+1. セミナーの主要メッセージを最大3点に要約し、参加者の「価値の再認識」を促すこと。
+2. 行動しないことのネガティブリスク（元の日常に戻る恐怖）を具体的に描写すること。
+3. {CTAの内容}が、参加者の理想の未来（ベネフィット）にどう繋がるかを感情的に、かつ具体的に描写すること。
+4. 台本は、信頼感と熱意を基調とし、参加者の不安を払拭する共感的な表現を適切に織り交ぜること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="12" placeholder="リソースを入力してください">
+- 行動心理学とセールスライティングの原則（問題提起、ベネフィット、社会的証明、リスクリバーサル、限定性、緊急性など）に関する知識。
+- 聴衆の感情を動かすためのストーリーテリングおよび比喩表現に関する知識。
+- コンバージョン率の高いCTA（行動喚起）の作成に関する知見。
+- ユーザー入力の変数（{セミナーのテーマ}、{参加者の主な課題}、{CTAの内容}、{限定特典（任意）}、{締め切り（任意）}）を最大限に活用すること。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="23" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 各段階でセールスライティングの原則（共感、問題提起、価値再認識、限定訴求）を統合した「セミナーのクロージング台本」を生成してください。
+
+## STEP:
+1. まず、セミナーで伝えた最も重要なメッセージを凝縮して要約し、参加者が得た価値を再認識。
+2. 次に、{参加者の主な課題}に触れ、このまま行動しなければ元の日常に戻ってしまうという危機感と、行動すれば理想の未来が手に入るという期待感を醸成。
+3. そして、{CTAの内容}を、参加者の未来を切り開くための唯一無二の解決策として、自信と熱意を込めて提示。
+4. {限定特典}と{締め切り}を明確に伝え、「今、ここで決断すること」の圧倒的なメリットを強調し、行動を力強く促す。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+- 台本は、話し言葉を前提とした親しみやすい口語体で作成すること（「です・ます調」以外の表現も積極的に使用する）。
+- 各STEP（1～4）ごとに明確な見出しをつけ、論理的な流れを可視化すること。
+- 抽象的な表現は避け、具体的な感情、行動、結果を示す言葉を用いること。
+- 各文は句読点（、。）で区切り、句読点ごと、または文節ごとに改行を行い、話しやすさ（読み上げやすさ）を最適化すること。
+- 聴衆への二人称（「あなた」「皆さん」）を効果的に使用し、語りかけるトーンを維持すること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="47" placeholder="出力形式を入力してください">
+- Markdown形式の台本で出力してください。トーンは情熱的で、信頼感のあるトーンとします。
+
+```markdown
+## セミナー・クロージング台本：【提案タイトル案】
+【導入：感謝と本日のまとめ】
+<参加者への心からの感謝の言葉と、セミナー全体の価値を凝縮した熱いメッセージ>
+
+### 1. 価値の再認識と最も重要なメッセージ
+【未来への架け橋：行動への動機付け】
+<「今日の学びを無駄にしないでください」といった切り口から、{参加者の主な課題}に触れ、行動の重要性を情熱的に訴えかける>
+（台本本文）
+- 
+- 
+
+### 2. 行動しないことのリスクと未来への期待感
+（台本本文）
+- 
+
+### 3. 未来を切り開く唯一の解決策（CTAの提示）
+【特別なご案内：次のステップへ】
+<「そして今日、ここにお集まりいただいた皆さんだけに特別なご案内があります」という形で、{CTAの内容}を具体的に提示する。価格、特典、申し込み方法などを明確に伝える>
+（台本本文）
+- 
+
+### 4. 今すぐ決断する理由（限定性と緊急性の強調）
+【限定性と緊急性のアピール】
+<「ただし、この特別なご案内は…」という流れで、なぜ「今すぐ」決断すべきなのか、{限定特典}や{締め切り}を提示し、行動を後押しする>
+（台本本文）
+- 
+
+### 5. 締めくくり
+【最後のメッセージ：感謝と激励】
+<参加者への再度のお礼と、彼らの輝かしい未来の成功を心から祈る、力強く感動的なメッセージで締めくくる>
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>セミナーのテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにセミナーのテーマを入力します。" class="variable-textarea" >
+</textarea>
+<h3>参加者の主な課題</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに参加者の主な課題を入力します。" class="variable-textarea" >
+</textarea>
+<h3>CTAの内容</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここにCTAの内容を入力します。" class="variable-textarea" >
+</textarea>
+<h3>限定特典（任意）</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="ここに限定特典（任意）を入力します。" class="variable-textarea" >
+</textarea>
+<h3>締め切り（任意）</h3>
+<textarea name="hensu5" id="hensu5" rows="5" placeholder="ここに締め切り（任意）を入力します。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="25" placeholder="を補足を入力してください">
+- 台本には感情に訴える言葉（例: 「ワクワク」「安心感」「モヤモヤ」）を効果的に使用し、共感を深めること。
+- CTA（行動喚起）のフレーズを、論理的な理由とともに、力強く繰り返すこと。
+- 特典や締め切りの情報は、太字で強調し、視覚的なインパクトを与えること。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 論理的な飛躍や、根拠のない抽象的な結論で終わらせないこと。
+- 事実と異なる誇張表現や虚偽の内容を含まないこと（信頼性の毀損を防ぐ）。
+- 「今すぐ申し込んでください」のような強引な命令調ではなく、あくまで「選択を促す」表現を用いること。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=613"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##セミナーのテーマ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##参加者の主な課題=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##CTAの内容=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##限定特典（任意）=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##締め切り（任意）=" + (formData.get('hensu5') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
