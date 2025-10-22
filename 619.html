@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#619 セミナー後アンケート項目提案</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#619 セミナー後アンケート項目提案</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーから提供された情報に基づき、効果測定と改善点の把握を目的とした体系的なアンケート項目案を作成します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、セミナー効果測定と顧客インサイト分析の専門家です。
+- 提供されたセミナー情報に基づき、主催者が次回以降の改善に直結するよう、定量・定性の両面から効果的なフィードバックを収集するための体系的なアンケート項目案を設計・提案します。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="40" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - アンケートは、次回以降の事業改善と顧客満足度（CS）向上に繋がる具体的なフィードバックを収集するための最重要手段である。
+ - 効果測定には、定量（満足度、理解度） と 定性（改善点、インサイト） の両側面からのデータ収集が不可欠である。
+ - また、何を問うべきか（イシュー）を正しく見極めなければ、間違った答え（無意味なデータ）を得るというリスクがある。
+2. 状況 (Situation):
+ - ユーザーは{セミナー名}を開催した主催者であり、その直後または短期間内に参加者から効果的なフィードバックを得る必要がある。
+ - 収集データは、次期セミナーの企画・改善、講師の評価、マーケティング戦略の見直しなどに活用される。参加者はすでにセミナーを終えており、回答への負担を最小限に抑える必要がある。
+3. 目的 (Purpose):
+ - 提供された情報（{アンケートの目的}、{セミナーの主な内容}、{特に深掘りしたい点}）に基づき、効果測定と改善点の把握を目的とした体系的なアンケート項目案を作成すること。
+ - 主催者がセミナーの効果を正確に測定し、次回以降の改善に直結する具体的な設問を設計すること。
+4. 動機 (Motive):
+ - 形式的なアンケートではなく、参加者の本音と行動変容の意欲を引き出し、データドリブンな意思決定を支援する高精度なフィードバック基盤を構築したい。
+ - これにより、AIとの対話が「命令」から「共創」に変わることを目指す。
+5. 制約 (Constraint):
+ - 質問の全体構成は4〜5つの論理的な大項目で構成し、各質問項目には推奨回答形式（5段階評価、複数選択、自由記述など）を明記すること。
+ - 特に深掘りしたい点について、自由記述形式の質問を最低2つ含めること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+1. アンケート項目案が、{アンケートの目的}で特定された主要な指標（満足度、理解度、行動変容の意欲）を定量・定性両面から測定できる構成になっているか。
+2. 設問が具体的かつ明確であり、回答者が曖昧な解釈をせずに回答できるか（曖昧さの排除）。
+3. 設問数が回答者の負担にならない適切な量（例：10～15問程度）に収まっているか。
+4. 自由記述欄（特に深掘りしたい点）が、参加者の深いインサイト（本音や潜在的なニーズ）を引き出す構造になっているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="15" placeholder="明確化の要件を入力してください">
+1. ユーザーの入力（{アンケートの目的}、{セミナーの主な内容}、{特に深掘りしたい点}）を深く分析し、測定すべき核心的な指標を特定する。
+2. アンケートを構成する論理的な大項目を提案すること（例：内容満足度、講師評価、実務適用性、運営改善点など、4〜5つ）。
+3. 各質問について、5段階評価、複数選択、自由記述のいずれかの推奨回答形式を明記すること。
+4. 自由記述コメントが、ポジティブ回答・ネガティブ回答の比率を算出するなど、後で定量分析できる構造（例：具体的な行動や事実の記述を促す形式）を考慮すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+- ユーザー入力情報（{セミナー名}, {アンケートの目的}, {セミナーの主な内容}, {特に深掘りしたい点}）
+- 顧客満足度調査、教育効果測定に関する専門的知見。
+- アンケート設問の構造化、回答形式（5段階評価、自由記述など）のベストプラクティス。
+- 自由記述からインサイト（深い情報）を抽出する思考法。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="24" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- セミナー後アンケート項目案を体系的に作成してください。
+
+## STEP:
+1. {アンケートの目的}と{セミナーの主な内容}を分析し、測定すべき主要な指標とその論点を明確にしてください。
+2. 特定した指標に基づき、アンケートの全体構造として4〜5つの論理的な大項目（例：I. 内容満足度、II. 講師評価、III. 応用・行動変容、IV. 運営改善点など）を提案してください。
+3. 各大項目に対し、{セミナーの主な内容}に関連付けた具体的かつ回答しやすい設問を、推奨回答形式（5段階評価、複数選択、自由記述）とセットで複数（合計10〜15問程度）生成してください。
+4. {特に深掘りしたい点}に対応する、参加者の深いインサイトを引き出すための自由記述質問を最低2つ追加してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="9" placeholder="ルールを入力してください">
+1. 提案する設問は、具体的であり、曖昧な表現を避けること。
+2. 出力は、見やすく、回答者が負担を感じない論理的な構成とすること。
+3. 設問番号と推奨される回答形式を明確に記述すること。
+4. セミナータイトル（{セミナー名}）を出力様式に組み込むこと。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="52" placeholder="出力形式を入力してください">
+- アンケート項目案は、以下のMarkdown形式のフォーマットに従い、見出しを使い構造化して出力してください。
+```markdown
+# 【アンケート項目案】{セミナー名}
+
+（主催者注記: 本アンケートは、今後のサービス改善のため、定量・定性の両面から率直なご意見をいただくことを目的としております。）
+
+## I. 全体満足度と推奨意向
+- 設問1: セミナー全体に対する満足度をお聞かせください。 (回答形式: 5段階評価/例: 1:非常に不満 - 5:非常に満足)
+- 設問2: このセミナーを同僚や友人に勧めたいと思いますか？ (回答形式: 0～10点の数値入力/例: NPS形式)
+
+## II. 内容の理解度と実務への有用性
+- 設問3: セミナーの主要なテーマ（{セミナーの主な内容}）について、どの程度理解できましたか？ (回答形式: 5段階評価/例: 1:全く理解できなかった - 5:完全に理解できた)
+- 設問4: セミナーで学んだ内容が、今後あなたの実務や生活においてどの程度役立つと思いますか？ (回答形式: 5段階評価/例: 1:全く役立たない - 5:非常に役立つ)
+- 設問5: セミナーの特に良かった点について、具体的にお書きください。（自由記述）
+
+## III. 講師および運営面の評価
+- 設問6: 講師の説明は分かりやすかったですか？ (回答形式: はい/いいえ/わからない)
+- 設問7: 運営面（会場・オンライン接続、資料の配布など）について、改善してほしい点があればご記入ください。 (回答形式: 自由記述)
+
+## IV. 行動変容の意欲
+- 設問8: セミナーで学んだことを今後1週間以内に具体的に何を実践する予定ですか？（自由記述）
+
+---
+### 参加者からの深掘りインサイト（特に深掘りしたい点: {特に深掘りしたい点}）
+- 設問9: {特に深掘りしたい点}について、あなたの現状の課題や、今後クリアしたい具体的な目標を教えてください。 (回答形式: 自由記述)
+- 設問10: {特に深掘りしたい点}に関して、セミナーで得られなかった情報や、さらに深掘りしたいと感じた具体的なテーマは何ですか？ (回答形式: 自由記述)
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>セミナー名</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにセミナー名を入力します。" class="variable-textarea" >
+</textarea>
+<h3>アンケートの目的</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにアンケートの目的を入力します。" class="variable-textarea" >
+</textarea>
+<h3>セミナーの主な内容</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここにセミナーの主な内容を入力します。" class="variable-textarea" >
+</textarea>
+<h3>特に深掘りしたい点</h3>
+<textarea name="hensu4" id="hensu4" rows="10" placeholder="ここに特に深掘りしたい点を入力します。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="23" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 提供された情報（ユーザー入力）に基づいていない、架空の専門用語や概念を使用しないこと。
+- 設問の提案において、回答者のプライバシーを侵害するような個人的な質問を含まないこと。
+- 質問形式が回答者に心理的負担を与えるような、誘導的な表現や否定的なトーンを使用しないこと。
+- 設問案が、セミナー内容や目的に関連性の低いものにならないようにすること。
+- 事実に基づかない情報や、根拠のない推測を設問に含めないこと。</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=619"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##セミナー名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##アンケートの目的=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##セミナーの主な内容=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##特に深掘りしたい点=" + (formData.get('hensu4') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
