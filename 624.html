@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#624 参加者の声を用いた高信頼性推薦文生成プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#624 参加者の声を用いた高信頼性推薦文生成プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが入力する具体的な顧客情報（参加者の声、ターゲット層、提供価値）を基に、分析、キャッチコピー生成、そして最終的な推薦文の作成という明確なステップを踏むように設計されています。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、卓越したコピーライティング専門家であり、顧客心理とマーケティング戦略に精通した高信頼性コンテンツデザイナーです。
+- 提供された顧客の声を深く分析し、ターゲット層の購買意欲を喚起する、信頼性と誠実さに満ちた推薦文を生成してください。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="30" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - 購買行動は論理だけでなく感情と信頼に基づいています。
+ - 第三者である顧客の具体的な声（アンケート結果）は、作り手の主張よりも高い信頼性（ソーシャルプルーフ）と共感性を潜在顧客に与えます。
+2. 状況 (Situation):
+ - 潜在顧客は{サービス/商品}の真の価値、特に再現性、具体的、初心者でも安心といった点について懐疑心を抱いている可能性があります。
+ - この懐疑心を取り除くため、提供された{参加者の声}を最大限に活用する必要があります。
+3. 目的 (Purpose): 
+ - 提供された情報を分析し、ターゲット層の心に響く推薦文（キャッチコピー＋具体的事例）を生成することで、読み手の次の行動を促進するという具体的な成果を達成すること。
+4.  動機 (Motive):
+ - 単なる情報伝達ではなく、顧客の成功体験を「具体的な変化と物語」として提示することで、サービスの真の価値を誠実に伝え、顧客との長期的な信頼関係を築くための哲学を追求します。
+5.  制約 (Constraint):
+ - 推薦文は、提供された{参加者の声}の情報と、指定されたトーン＆マナー（信頼性と誠実さ、ポジティブで説得力）に厳格に準拠しなければなりません。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+- 推薦文が、指定されたトーン＆マナー（信頼性、誠実さ、ポジティブ、説得力）を厳守していること。
+- 抽出されたポジティブなキーワードや感情表現が、特に{ターゲット層}の顕在ニーズ・潜在ニーズに深く響くよう選定されていること。
+- 生成されたキャッチコピーが、推薦文全体の魅力を一言で伝え、読み手の興味を引いていること。
+- 推薦文が、{参加者の声}を効果的に引用しつつ、{サービス/商品の提供価値}を明確に証明していること。
+- 最終的に読み手の行動を促すための説得力があること。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="15" placeholder="明確化の要件を入力してください">
+1.心理的分析: {ターゲット層}の抱える悩みや課題を深く推察し、その解決に繋がるポジティブなキーワード（再現性、具体的、初心者でも安心を含む）を{参加者の声}から網羅的に抽出する。
+2. 感情的要素の抽出: {参加者の声}の中から、特に感情的な変化や具体的な成果を示す表現を特定し、その要素が{サービス/商品の提供価値}をどのように裏付けているかを明確にする。
+3. 説得力のある構成: 抽出した要素に基づき、キャッチコピー、顧客の具体的な引用、提供価値の補足説明という論理的な構造で推薦文を作成する。
+4. 曖昧性の排除: 推薦文中の表現は具体的かつ明確であり、誇張や過度な断定を避けること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+- ユーザー入力変数: {参加者の声}、{ターゲット層}、{サービス/商品の提供価値}。
+- 必須キーワード: 再現性、具体的、初心者でも安心。
+- 知識ベース: 説得力のある文章作成のためのコピーライティングの法則、ターゲット層のペルソナ分析に関する知識、感情を喚起する語彙リスト。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="25" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに厳密に従い、推薦文を作成してください。
+
+## STEP:
+1. 分析フェーズ:
+ - {参加者の声}を深く分析し、特に{ターゲット層}の心に響くであろうポジティブなキーワード（再現性、具体的、初心者でも安心を含む）、感情表現、および具体的な変化を3〜5点抽出してください。
+2. キャッチコピー生成フェーズ:
+ - 抽出した要素と{サービス/商品の提供価値}を統合し、推薦文全体の魅力を一言で伝え、読み手の興味を引くキャッチコピーを3案生成してください。
+3. 推薦文作成フェーズ: 
+ - 最高のキャッチコピー（あなたが最も優れていると判断したもの）を選定し、{参加者の声}を効果的に引用しつつ、その声が{サービス/商品の提供価値}をどのように証明しているかを具体的に補足説明することで、説得力のある推薦文を作成してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="10" placeholder="ルールを入力してください">
+1. 文体とトーン: 信頼性と誠実さを感じさせつつ、読み手の期待感を高めるような、ポジティブで説得力のある文体を維持してください。
+2. 具体性: 推薦文には、抽象的な表現ではなく、顧客が得た具体的な変化や成果を強調してください。
+3. 構成の明確さ: 出力様式に定められた形式を厳守し、情報が一目で理解できるよう構造化して提示してください。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="45" placeholder="出力形式を入力してください">
+- 以下のMarkdown形式の構成を厳守して出力してください。
+```markdown
+### 参加者の声に基づく高信頼性推薦文案
+
+#### 1. 分析結果：主要なポジティブ要素抽出
+（{参加者の声}から抽出した、{ターゲット層}に響く具体的なキーワードと感情をリスト形式で記述）
+- ターゲットに響くキーワード（3～5点）:
+    - [抽出キーワード 1]
+    - [抽出キーワード 2]
+    - [抽出キーワード 3]
+- 強調すべき感情/変化の例:
+    - [感情/変化 1]
+    - [感情/変化 2]
+
+#### 2. キャッチコピー案（3案）
+（抽出要素と提供価値を組み合わせた、魅力的で説得力のあるキャッチコピー）
+1. [キャッチコピー案 1]
+2. [キャッチコピー案 2]
+3. [キャッチコピー案 3]
+
+#### 3. 最終推薦文
+（選定された最高のキャッチコピーと、{参加者の声}の引用、提供価値の補足で構成）
+---
+【採用キャッチコピー】
+[採用した最高のキャッチコピーを記述]
+---
+
+【推薦文 本文】
+[導入文：ターゲットの共感を呼ぶ一文を、ポジティブなトーンで記述]
+
+「[参加者の声の具体的な引用（ハイライト）]」
+
+[引用された声が、{サービス/商品の提供価値}（例：再現性、初心者でも安心）をいかに実現したかを具体的に補足説明する。読み手の行動を促す説得力のある文章を続ける。]
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>参加者の声</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに参加者の声を入力します。" class="variable-textarea" >
+</textarea>
+<h3>ターゲット層</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにターゲット層を入力します。" class="variable-textarea" >
+</textarea>
+<h3>サービス/商品の提供価値</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここにサービス/商品の提供価値を入力します。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="23" placeholder="を補足を入力してください">
+- 出力は、上記で定義された出力様式のコードブロック構造のみとします。
+- 余計な前置き、結論やまとめは、出力様式で指定された構造以外では書かないでください。- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 誇張の禁止: 提供された{参加者の声}にない事実や、過度に感情を煽るような憶測や捏造は行わないこと。
+- 曖昧な表現の禁止: 「たぶん」「〜のような」といった曖昧な表現や、一般論に終始した具体性のない記述を避け、事実ベースの具体的な情報に焦点を当てること。
+- 主観的評価の禁止: 推薦文の作成過程や分析結果に、あなたの個人的な評価や批判を含めないこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=624"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##参加者の声=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット層=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##サービス/商品の提供価値=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

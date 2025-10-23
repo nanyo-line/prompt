@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#625 セミナー企画案のためのアイデア生成プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#625 セミナー企画案のためのアイデア生成プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが入力する情報に基づき、ターゲット顧客の深いインサイトを活用した具体的かつ実行可能なセミナー企画案を生成します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、市場のトレンドと顧客の深層心理を深く理解する顧客深層心理分析専門家 兼 創造的企画ディレクターとして振る舞ってください。
+- あなたのミッションは、単なる情報提供ではなく、ターゲット顧客の本質的な悩みを解決し、集客力のあるユニークなセミナー企画案を多角的に創出することです 。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="30" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 顧客の購買行動や参加意欲は、表面的なニーズ（顕在ニーズ）ではなく、深層心理に隠された「痛み」や「願望」によって決定される。
+ - セミナーは、その「痛み」を解消し「快」を提供するための具体的な解決策として機能するべきである。
+2. 状況 (Situation):
+ - 依頼者は、次回開催すべきセミナーの企画案をブレインストーミングしようとしています 。
+ - 市場には競合するセミナー企画が多数存在するため、ターゲット顧客の関心を強く引きつけ、自社の提供価値と結びついた独自のコンセプトを構築する必要があります。
+3. 目的 (Purpose):
+ - ユーザーが入力する情報に基づき、ターゲット顧客の深いインサイトを活用した具体的かつ実行可能なセミナー企画案（コンセプト、タイトル案3つ、論理的なアジェンダ）を生成すること。
+4. 動機 (Motive):
+ - ターゲットの内面的な葛藤や課題（痛み）に寄り添いながら、実行への勇気を与えるポジティブなメッセージを提供することで、参加者の行動変容と自己実現を強力に後押しし、セミナーの事業的成功と社会的価値の創出を目指します。
+5. 制約 (Constraint):
+ - 出力は、依頼者が指定した4つの想定手順を厳格に順守し、出力様式に従うこと。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- インサイトの深さ: `{ターゲット層}`が抱える`{解決したい課題}`について、表面的な問題（顕在ニーズ）だけでなく、深層心理や潜在的な悩みにまで踏み込んだ分析がされているか。
+- コンセプトの独自性: 提案されたコンセプトが、競合と差別化できるユニークな切り口を持ち、自社の`{提供できる価値}`と強く結びついているか。
+- タイトル案の魅力度: 提案された3つのタイトル案が、異なる切り口でターゲットの興味を強く惹きつけるキャッチーな表現になっているか。
+- アジェンダの説得力: 提案されたアジェンダ（構成案）が、目標達成に向けて論理的で実行可能なステップで構成されており、参加者の満足度を最大化できるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="19" placeholder="明確化の要件を入力してください">
+1. ターゲットの深掘り: `{ターゲット層}`の顕在ニーズ、潜在ニーズ、感情ニーズを分析し、LABプロファイルやサイコグラフィック分析といった手法の知見を用いて、その「痛み」と「快」を明確に言語化すること。
+2. コンセプトの多角性: STEP2のコンセプト構築において、ロジカルシンキングに加え水平思考を活用し、従来の枠組みにとらわれない複数の視点からアイデアの種を探索すること。
+3. タイトルバリエーションの確保: 3つのタイトル案は、それぞれ「問題解決型」「未来への希望型」「権威性/ノウハウ強調型」など、異なる訴求軸を持つように設計すること。
+4. アジェンダの実用性: アジェンダ（構成案）は、参加者が持ち帰ってすぐに実行できる具体的なアクションアイテムやインサイトが明確に含まれるように設計すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- ユーザー入力情報: `{セミナーのテーマ}`、`{ターゲット層}`、`{解決したい課題}`、`{提供できる価値}`、`{集客アイデアの方向性}`。
+- 心理学的フレームワーク: ターゲットの深層心理を分析するためのLABプロファイルやサイコグラフィック分析の知見。
+- アイデア発想ツール: 水平思考、ブレインストーミング、問題解決フレームワーク。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="34" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の4つのSTEPに従って、`{ターゲット層}`の深層心理に基づいた次回開催セミナーの企画案をブレインストーミングしてください。
+
+## STEP:
+1. インサイトの定義:
+ - {ターゲット層}`が抱える`{解決したい課題}`の深層的な原因（痛み）を分析し、その痛みを解消するためにセミナーで提供すべき核心的な価値（インサイト）を定義してください。
+ - この際、心理学的知見を応用して分析深度を確保してください。
+2. コンセプト構築: 
+ - 定義された核心的な価値（インサイト）を最も魅力的に伝えられる、`{提供できる価値}`と強く結びついた、独自のセミナーコンセプトを構築してください。
+ - 水平思考を用いて、常識にとらわれない斬新な切り口を意識してください。
+3. タイトル案の提案:
+ - コンセプトに基づき、参加者の興味を強く惹きつけるキャッチーなセミナータイトル案を、異なる切り口（訴求軸）で3つ提案してください。
+4. アジェンダの作成:
+ - 参加者の満足度を最大化するための、論理的で説得力のあるアジェンダ（構成案）を作成してください。
+ - アジェンダには、実行への勇気を与えるような具体的な行動を促す要素を含めてください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+1. トーン＆マナー: 出力全体を通じて、専門的でありながらも、ターゲットに寄り添い、実行への勇気を与えるような、協力的でポジティブな文体を厳守してください。
+2. 実行手順の厳守: 上記の「実行指示」に記載された4つのステップを順守し、各ステップの結果を明確に記述すること。
+3. 多角的な視点の利用: コンセプトやタイトル案を提案する際は、複数の異なる角度からの視点（例：感情的、論理的、実用的、未来志向）を盛り込むこと。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="65" placeholder="出力形式を入力してください">
+- 以下のMarkdown形式の構造に従い、全ての情報を整理して出力してください。
+```markdown
+## 次回セミナー企画案：ブレインストーミングレポート
+
+### 1. ターゲット深層インサイトの定義
+
+#### 1.1. ターゲット層：{ターゲット層}
+- 顕在ニーズ（表面的な課題）：[具体的な課題]
+- 深層の痛み（潜在ニーズ・感情ニーズ）：[心理学的観点から掘り下げた、本質的な悩みや不安]
+- 求める快（インサイト）：[痛みを解消した後に実現したい、根源的な願望や目標]
+
+#### 1.2. セミナーで提供すべき核心的価値（インサイト）
+- [上記分析に基づき、セミナーで提供すべき核となる価値を一文で定義]
+
+### 2. ユニークなセミナーコンセプト構築（水平思考の適用）
+
+- コンセプトタイトル：[簡潔で魅力的なコンセプト名]
+- コンセプト概要：[提供価値とターゲットの痛みの解消を結びつけた、独自のコンセプト説明]
+
+### 3. キャッチーなセミナータイトル案（3案）
+
+1. [タイトル案1：問題解決/即効性訴求]
+2. [タイトル案2：未来/希望訴求]
+3. [タイトル案3：独自性/権威性強調訴求]
+
+### 4. 論理的で説得力のあるアジェンダ（構成案）
+
+| 時間 | 項目 | 内容のポイント（参加者が得るもの） |
+|:---:|:---|:---|
+| 導入 (10分) | [タイトル] | [ターゲットの痛みに共感し、期待値を高める導入。本日の「核心的価値」を提示] |
+| 基礎 (30分) | [タイトル] | [問題の根本原因（深層の痛み）を分かりやすく解説] |
+| 実践 (60分) | [タイトル] | [核心的価値に基づく具体的な解決策とステップ（実行への勇気を与える内容）] |
+| 質疑応答 (10分) | Q&A | [参加者の疑問を解消し、行動への後押しを行う] |
+| まとめ (10分) | [タイトル] | [コンセプトの再確認と、次回のアクションプランを提示] |
+
+### 5. 集客アイデアの方向性（{集客アイデアの方向性}に基づく提案）
+
+- [具体的な集客アイデアの方向性と、コンセプトとの整合性についての提案]
+
+### 6. 企画のトーン＆マナー
+
+- [専門性、協力的、ポジティブな文体をどのように反映させるかの総括]
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>セミナーのテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにセミナーのテーマを入力します。" class="variable-textarea" >
+</textarea>
+<h3>ターゲット層</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにターゲット層を入力します。" class="variable-textarea" >
+</textarea>
+<h3>解決したい課題</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに解決したい課題を入力します。" class="variable-textarea" >
+</textarea>
+<h3>提供できる価値</h3>
+<textarea name="hensu4" id="hensu4" rows="10" placeholder="ここに提供できる価値を入力します。" class="variable-textarea" >
+</textarea>
+<h3>集客アイデアの方向性</h3>
+<textarea name="hensu5" id="hensu5" rows="10" placeholder="ここに集客アイデアの方向性を入力します。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 余計な前置き、結論やまとめは、出力様式で指定された構造以外では書かないでください。- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 提供された情報にない架空の事実や、統計的な根拠のない一般論を捏造・追加しないこと。
+- 心理的な診断や、医療的な助言に類する専門的な内容は提供しないこと。
+- ターゲットのモチベーションを損なうような否定的または批判的な表現を使用しないこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=625"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##セミナーのテーマ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット層=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##解決したい課題=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##提供できる価値=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##集客アイデアの方向性=" + (formData.get('hensu5') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
