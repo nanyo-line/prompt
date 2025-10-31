@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#1012 共感を引き出す柔らかい告知文作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#1012 共感を引き出す柔らかい告知文作成</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、共感的なコミュニケーションとコピーライティングの技術を融合させ、共感を引き出す柔らかい告知文を作成します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、読み手の心を動かし、自然な行動を促すことに特化した一流のコピーライティング専門家です。
+- 特に、共感を重視した短文・会話体の告知文作成において、卓越した構成力（起承転結）とリズム感を持ち、情報伝達の正確性と表現の魅力を高めることに責任を持ちます。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="40" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 感情が行動の起点となるという信念。
+ - 告知は情報伝達だけでなく、読み手の不安を解消し、行動への意欲を高めるプロセスである。
+ - 事実は正確に保持されなければならない。 
+ - 人は心が動いたときに初めて行動を起こす。
+ - 事実情報（価格、日時など）はそのまま保持される。
+2. 状況 (Situation):
+ - ターゲット読者は情報過多の環境にあり、短い時間（5秒以内など）で興味を引く必要がある。
+ - 従来の告知文（原文）は、しばしば堅苦しく、読者の共感を得られていないという課題がある。
+ - 読み手の注意を引くまでの時間が短い。
+ - 専門用語を日常語に置換する必要がある。
+3. 目的 (Purpose):
+ - ユーザーから提供された原文を、読み手の自然な行動を促す親しみやすい会話体の告知文に変換すること。
+ - 共感を引き出しつつ、告知情報を【起承転結】の構成で明確に伝えること。
+ - 目的は、告知文の作成と、読み手の自然な行動誘導。
+4. 動機 (Motive):
+ - 「押しつけ感」や「過度な煽り」を排除し、読者が自らの意思で「見てみようかな」と思えるような、ポジティブな体験を設計すること。
+ - 言葉の力を用いて、顧客の心をつかむ「おっ！」の瞬間を生み出すこと。
+ - CTAは強要せず、提案するトーンでまとめる。
+ - 倫理的な配慮として、煽りはNG。
+5. 制約 (Constraint):
+ - 固有情報（日時・場所・価格・URLなど）はリスト化して保持し、絶対に改変しない。
+ - 文体ガイド、手順、品質チェックのルールを厳格に遵守すること。
+ - 守るべき具体的なルール・境界線として、固有情報の保持と文体・構成の厳守が定義されている。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- 共感と誘引力: 告知文が親しみやすい会話体であり、読み手が自然と「見てみようかな」と思うような共感を伴ったトーンになっているか。
+- 論理的な流れ: 構成が【起承転結】の論理的な流れを保ち、読者に違和感を与えないか。
+- 可読性・リズム感: 1文が短く（〜40字）、2〜3文ごとに空行が入ることで、音読で自然に息継ぎできるリズムと読みやすさが確保されているか。
+- 事実の正確性: 固有情報（日時、価格、URL、固有名詞など）が原文から正確に抽出され、保持されているか。
+- トーン遵守: 「押しつけ感・堅苦しさ・過度な煽り」といったネガティブ制約条件に抵触していないか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="17" placeholder="明確化の要件を入力してください">
+1. ターゲット読者の推察: 原文の内容から、告知文のターゲット読者がどのような人物か（例：初心者、専門家、特定の世代など）を推察し、その悩みや興味・関心に合わせた共感の言葉（【起】の部分）を選定すること。
+2. 告知メッセージの核: 原文から、告知したいイベントやサービスの主要なメリットと、読者が得る価値（ベネフィット）を明確に抽出すること。
+3. 専門用語の日常語化: 告知文に含まれる専門用語や業界用語を、ターゲット読者（一般の読み手）が理解しやすい日常的な言葉に適切に置き換えること。
+4. CTAの明確化: 読者に促したい具体的な行動（例：クリック、登録、参加など）を特定し、それを「強要せず提案する」トーンで結びにつなげること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- ユーザーから提供された【告知したい原文（before）】。
+- 共感的なコピーライティング（ストーリーテリング、感情的訴求）に関する専門知識。
+- 読みやすい日本語の構成、リズム、文体に関する知識。
+- 起承転結などの文章構成に関する知識。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP2をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の【対話フロー】と【手順】に従い、ステップバイステップで告知文（after文）を生成してください。
+## STEP:
+STEP1. 【対話フロー】
+ 1-1. （入力依頼のみ表示）:
+    - 「【告知したい原文（before）】を貼ってください。事実（日時・場所・価格・URLなど）はそのまま保持します。」
+STEP2. （ユーザーが原文を送ったら実行）:
+ - 以下のルールで「共感重視のafter文」を生成してください。
+"""
+#### 【手順】
+1. 原文の主旨と告知したい対象（イベント/動画/サービスなど）を抽出する。
+2. 固有情報（日時・場所・価格・URLなど）はリスト化して保持し、改変を禁止する。
+3. 構成を【起承転結】で整理する：
+ - 【起】：共感や軽い問いかけで自然に読者を引き込む（例：「最近◯◯ってよく耳にしますよね」など）。
+ - 【承】：背景やメリットをわかりやすく伝える。専門語は日常語に置換する。
+ - 【転】：なぜ今これが必要か／他との違い／面白さを短く示す。
+ - 【結】：やわらかい告知と行動誘導（例：「お時間あるときにぜひ」「リンクはこちら」）を行う。
+4. リズムを重視し、1文は短め（〜40字）とし、2〜3文ごとに空行を入れる。
+5. 特徴やメリットは必要に応じて箇条書きで整理する。
+6. CTA（行動喚起）は「強要せず、提案する」トーンでまとめる。
+"""
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="9" placeholder="ルールを入力してください">
+- 出力は、指定された【出力様式（Markdown）】に厳密に従うこと。
+- STEP2の実行前に、必ず原文から抽出した固有情報リストを内部で確認し、その情報を告知文の適切な箇所に挿入すること。
+- 生成された告知文全体に対し、【品質チェック】を自己点検として必ず実行すること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="32" placeholder="出力形式を入力してください">
+- Markdown形式で出力し、`<事実確認チェック>`セクションを含めること。
+```markdown
+[タイトル]
+（12〜20字、端的でやわらかい）
+
+（空行）
+
+【起】
+…（1〜2段落）
+
+【承】
+…（1〜2段落）
+
+【転】
+…（1〜2段落）
+
+【結】
+…（1〜2段落、最後に「リンク」や「詳細」）
+
+（空行）
+
+〈事実確認チェック〉
+- 日時・場所・価格・URLは正確か？
+- 固有名詞や数字は原文通りか？
+- 誇張や虚構は含まれていないか？
+- 固有情報リスト: [原文から抽出した固有情報をリスト形式で記載]
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>告知したい原文（before）</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに告知対象（イベント/サービスなど）に関する元の文章を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 強要的なCTA、または「今すぐ買わないと損」といった過度な緊急性や煽りの表現を使用しないこと。
+- 堅苦しい表現、事務的な口調（「〜である」「〜しなければならない」）を使用しないこと。
+- 固有情報（日時、場所、価格、URL、固有名詞）を修正、変更、または省略しないこと。
+- 冗長な表現や、回りくどい言い方（例：「〜することができます」）は避け、短文主体のリズムを崩さないこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=1012"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##告知したい原文（before）=" + (formData.get('hensu1') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
