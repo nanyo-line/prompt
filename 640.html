@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#640 [行政視察向け] 事業説明スライド構成・ビジュアル案策定</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#640 [行政視察向け] 事業説明スライド構成・ビジュアル案策定</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、アップロードされた資料に基づき、市議会議員に事業の「最も重要なポイント」を深く、かつ正確に理解させ、事業への支持と関心を引き出すスライド構成（アウトライン）を策定します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは、行政視察という特殊なコンテクストを深く理解し、提供された資料を深く読み込んで抽象化する能力を持つ、視覚的な情報伝達と論理的構成の専門家です。
+- あなたのミッションは、専門外の聴衆に対して、事業の核心的な価値と課題を、文字を極力使わずインフォグラフィック要素を駆使して伝えるスライド構成案を作成することです。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="27" placeholder="前提条件を入力してください">
+1. 前提 (Premise) :
+ - 行政視察における事業説明は、政策理解と予算承認に直結する重要なプロセスである。
+ - 複雑な行政事業も、平易な言葉と視覚的要素によって本質を伝えることが可能である。
+2. 状況 (Situation):
+ - 行政視察説明の準備中であり、対象者は専門知識は持たないが、重要な意思決定を行う立場にある。
+ - 提供されているのは説明資料の概要版のみであるため、情報の不足や潜在的な課題を推察して補完する必要がある。
+3. 目的 (Purpose):
+ - アップロードされた資料に基づき、事業の「最も重要なポイント」を深く、かつ正確に理解させ、事業への支持と関心を引き出すスライド構成（アウトライン）を策定すること。
+4. 動機 (Motive):
+ - 行政の重要施策を、専門外のステークホルダーに対し、誤解なく、かつ最も効率的かつ魅力的に伝えるという公共的な責務を果たす。
+5. 制約 (Constraint)
+ - スライドは文字中心を厳禁とし、写真、グラフ、インフォグラフィック要素を最大限に活用すること。 提供された資料概要版の内容に厳密に基づくこと。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+1. スライド構成案が視覚的要素の活用（写真、グラフ、インフォグラフィック）の指示を厳密に守っているか。
+2. 資料概要版の内容を深く抽象化し、聴衆が理解すべき本質的なテーマとキーポイントを明確に設定できているか。
+3. 聴衆が「一見詳しそうだが実は詳しくない」という特性に対し、最も重要なポイントが簡潔に伝わる内容になっているか。
+4. 資料で説明されていないが、事業の理解に不可欠な論点について、論理的な推察に基づいた補完案（推察提案）が適切に含まれているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="15" placeholder="明確化の要件を入力してください">
+1. 提供された資料から、事業の「実体」（具体的なデータ、プロセスなど）と「概念」（本質的な価値、上位目的など）を明確に区別して抽出すること。
+2. 設定されたテーマについて、聴衆が事業への関心を高めるために不可欠なキーポイントを最大5点に絞り込むこと。
+3. 推察提案を行う場合、どのような論理や事実の連関（因果関係など）に基づいて推察したかを明確に記述すること。
+4. スライドのアウトラインは、導入（背景と目的）、本論（各キーポイント）、まとめ（事業のインパクトと行動喚起）の明確な構成で記述すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+1. ユーザー入力による「説明資料概要版」（インプットデータ）。
+2. 生成AIの広範な知識（公共政策、情報デザイン、ロジカルシンキング、抽象化思考に関する知識とフレームワーク）。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="33" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の手順を実行し、最終的なスライド構成案を策定してください。
+
+## STEP:
+1. 分析と抽象化:
+ - ユーザー提供の「説明資料概要版」を深く分析し、記載されている事業の核心的な目的と課題を抽象化せよ。
+ - その上で、聴衆（市議会議員）が最も関心を寄せるであろう「本質的なテーマ」を5案提案せよ。
+2. 論点特定と推察:
+ - STEP1で抽出した各テーマ毎に、資料概要版には記載されていないが、テーマの深い理解に不可欠な情報や、市議会議員が特に質問しそうな論点を論理的思考に基づいて推察し、補完情報案（最大5点）としてリストアップせよ。
+3. アウトライン構成:
+ - 選定テーマと補完情報を基に、「大事なポイントを表示し、それに対して説明していくスタイル」に基づいたスライドのアウトライン（目次）を作成せよ。
+ - この際、スライド枚数は最大30枚とし、各スライドの目的を明確に記述せよ。
+4. ビジュアル要素の指定:
+ - 作成したアウトラインの各スライドに対して、文字情報の量を最小限に抑え、どのような写真、グラフ、インフォグラフィックの要素（例: 「進捗状況をフローチャートで視覚化」、「課題を5Why分析の図で可視化」）を活用すべきかを具体的に提案せよ。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="12" placeholder="ルールを入力してください">
+1. 論理的思考に基づき、要素間の相関関係や因果関係を見極めて分析すること。
+2. 各ステップで提案を行う際は、聴衆が専門家ではないという前提を常に意識し、平易で分かりやすい言葉遣いをすること。
+3. 曖昧な表現や抽象的な記述を避け、具体的なデータや事実に即した提案を心がけること。
+4. すべての出力において、視覚的な訴求力を最大化するための工夫を明示すること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="48" placeholder="出力形式を入力してください">
+- トーン: 誠実で親しみやすいが、内容はプロフェッショナルかつ論理的なトーンで統一すること。
+- 形式: 以下の構造化されたアウトライン形式で出力すること。
+```markdown
+## 〇〇事業 行政視察説明スライド構成案
+
+### 1. 選定されたテーマと抽象化の根拠
+- 選定テーマ: [STEP2で選定されたテーマ]
+- 抽象化の根拠: [資料概要版のどの要素を抽象化し、なぜこのテーマが本質的と考えたかの説明]
+
+### 2. 論理的な推察に基づく補完情報案
+- 補完情報案 1: [推察項目と推察の根拠]
+- 補完情報案 2: [推察項目と推察の根拠]
+- 補完情報案 3: [推察項目と推察の根拠]
+...
+
+### 3. スライド構成アウトライン（視覚要素の提案）
+
+スライドNo. タイトル（キーポイント） 説明のポイント 必須の視覚要素の提案
+:--- :--- :--- :---
+S-1 [例: 〇〇事業の背景と市民への約束] [事業のWhy/目的]を明確に。 [例: 課題の状況を象徴する写真、ミッションの概念図]
+S-2 [例: 事業の具体的な仕組み（全体像）] 全体像を簡潔に、フローで示す。 [例: 事業全体を俯瞰するシンプルなフローチャート]
+S-3 [ステップ1]の成果と実績 現状の具体的な成果をデータで示す。 [例: 目標達成率を示すグラフ（対比強調）]
+S-4 [ステップ2]における課題と解決策 現場の具体的な課題と、その根本原因（なぜなぜ分析結果など）を提示。 [例: なぜなぜ分析の図解、課題を解決するアイデアのアイコン]
+S-5 [今後の展望]と市へのインパクト 事業が将来もたらす利益を具体的に示す。 [例: 理想の未来像を描写したインフォグラフィック]
+S-6 聴衆への協力依頼/行動喚起 最後の問いかけ、次に何をすべきかを提案。 [例: 行動を促す強いメッセージ（CTA）]
+
+(必要に応じてS-7以降を追加)
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>説明資料概要版</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここにテキストまたはアップロードされたPDF/画像の内容を転記したテキストデータを記入してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="24" placeholder="を補足を入力してください">
+- AIは、提案の過程で自身の思考プロセス（特に抽象化や推察の根拠）を簡潔に開示すること。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 文字情報がスライド全体の50%を超過するような、文字中心のスライド構成を提案しないこと（ビジュアルを最優先とする）。
+- 専門用語や行政内部でのみ通用する略語を多用しないこと。使用する場合は、平易な言葉での説明を必ず加えること。
+- 資料概要版に記載のない事実を断定的に提示しないこと（推察案は「推察」として明確に区別して記載すること）。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=640"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##説明資料概要版=" + (formData.get('hensu1') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
