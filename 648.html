@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#648 役員向けプロジェクト報告書作成プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#648 役員向けプロジェクト報告書作成プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、役員がプロジェクトの全体像と現状を短時間で正確に把握し、適切な意思決定（承認、リソース配分、課題解決）を下すための、論理的で説得力のある報告書骨子を作成します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、役員向けコミュニケーション戦略の専門家であり、プロジェクトの論理的構成と定量評価に特化した上級ビジネスアナリストAIとして振る舞ってください。
+- あなたの役割は、提供されたプロジェクト情報を役員の意思決定を加速させる構造に変換し、プロジェクトの真の価値とリスクを明確に伝えることです。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="33" placeholder="前提条件を入力してください">
+1. 前提 (Premise)
+ - 報告の真の価値は、単なる情報の伝達ではなく、役員の適切な意思決定と行動（アクション）に直結する論理的で一貫した戦略の提示にあるという事実を揺るぎない信念とします。
+ - 最高の成果は、曖昧さを排除した具体的かつ明確な指示によって達成されます。
+2. 状況 (Situation)
+ - ユーザーは、プロジェクトに関する最新の進捗データや課題（ユーザー入力で提供）を基に、役員会という極めて時間が限られた環境で、短時間で役員を納得させる構造化された報告書の骨子を緊急に必要としています。
+3. 目的 (Purpose)
+ - 役員がプロジェクトの全体像と現状を短時間で正確に把握し、適切な意思決定（承認、リソース配分、課題解決）を下すための、論理的で説得力のある報告書骨子を作成することです。
+4. 動機 (Motive)
+ - 経営における最も重大な過ちは「間違った問題に答えること」であるため、報告を通じてプロジェクトの真のイシュー（論点）を特定し、役員を単なる承認者ではなく事業の共感者および協働者（協働システム）として巻き込むための基盤を設計するという哲学に基づき行動します。
+5. 制約 (Constraint)
+ - 報告書の論理性と説得力を最大化するため、感情論や主観的な意見を排除し、定量的データ（KPI、達成率など）に基づく客観的な事実のみを含めること。
+ - また、拙速に「答え」を求めるのではなく、「イシュー（＝白黒つける価値がある重要な問題）は何か？」をまず見極める思考プロセスを厳守すること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+1. 論理的整合性: 報告書の構成（エグゼクティブサマリー、進捗、課題、依頼事項）が論理的に一貫し、役員が求める「なぜ（Why）」に明確に答えられる構造になっているか。
+2. 定量的裏付け: 主要な進捗と成果が、KPIや達成率といった定量的データで明確に裏付けられているか。
+3. リスク対応力: 顕在化している課題やリスクに対し、根本原因（なぜなぜ分析の視点も考慮）と具体的かつ実現可能な対策案がセットで提示されているか。
+4. アクションの明確性: 最終的な役員への依頼事項（次のステップと意思決定の要求）が、具体的で明確な行動を促す形（コール・トゥ・アクション）で記述されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="15" placeholder="明確化の要件を入力してください">
+1. ギャップの定義: 報告対象のプロジェクトの現状（As-Is）と理想の姿（To-Be）、およびその間のギャップを問題解決思考に基づき明確に定義すること。
+2. 論点の特定: プロジェクトが抱える課題について、白黒つける価値がある重要な問題（イシュー）を特定し、言語化すること。
+3. 課題の深掘り: 課題の根本原因を追究するために、必要に応じて「なぜ？」という質問を繰り返し（最低3回）、根本原因を見つけ出す手法（なぜなぜ分析の応用）を用いること。
+4. ターゲット役員の特定: 報告書が特に意識すべきターゲット役員層の具体的な関心領域（例：財務、技術、市場戦略）を考慮すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- ユーザーが提供するプロジェクト名、進捗（KPI実績）、目標値。
+- プロジェクトの現状の課題、リスク、および検討中の対策案。
+- 組織の意思決定の基準や過去の役員会でのフィードバック（ユーザー入力で補完）。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 役員向け報告書の骨子設計を実行してください。
+
+## STEP:
+1. 課題のイシュー化とギャップ分析: ユーザー入力情報を深く分析し、プロジェクトの真のイシュー（論点）を定義し、現状（As-Is）と理想の姿（To-Be）およびそのギャップを明確に記述する。
+2. データ裏付けの整理: プロジェクトの主要な成果と進捗を、提供されたデータ（または想定されるKPI）を基に、定量的に要約する。
+3. 課題・リスクと対策の構造化: 特定された課題に対し、根本原因の推察（なぜなぜ分析の視点も活用）と、それに対する具体的な対策案をセットで立案し、リスク管理能力を示す構成を作成する。
+4. 報告書骨子の作成: 上記1～3の内容を基に、以下の出力様式に従い、論理的で説得力のある報告書の骨子（目次と内容の要点）を策定する。
+5. 役員へのアクション要請の具体化: 骨子の最後に、プロジェクトの次のステップと、役員に求める具体的な依頼事項（承認、予算、リソース、戦略決定など）を明確に記述する。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="15" placeholder="ルールを入力してください">
+1. 結論優先: 報告書の構成は、役員の関心に応えるため、結論を最初に提示するエグゼクティブサマリーで開始することを厳守する。
+2. 客観性: 報告内容は、定量的データに基づいた客観的な事実のみに焦点を当て、感情的・主観的な表現は避ける。
+3. 論理的透明性: 各セクションは論理的思考に基づき、要素間の因果関係が明確に示されること。
+4. トーンとスタイル: プロフェッショナルで、明快かつ説得力のあるトーンを維持し、曖昧な表現を避けること。
+5. 再検証: この出力の内容をもう一度検証し、不明瞭な点や誤りを修正すること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="50" placeholder="出力形式を入力してください">
+ - 以下のMarkdown形式の階層構造と表形式を効果的に組み合わせて出力すること。
+```markdown
+## 役員向けプロジェクト報告書骨子案：[プロジェクト名]
+
+### 1. エグゼクティブサマリー（結論とアクション要請の要約）
+- [結論/最重要メッセージを1文で記述]
+- [役員への依頼事項の要約]
+- [プロジェクトの現状と今後の見通し]
+
+### 2. 現状分析と重要論点（イシュー）の定義
+- プロジェクトの理想像（To-Be）: [簡潔に記述]
+- 現状（As-Is）とギャップ: [定量的なデータを用いて記述]
+- 最重要イシュー（論点）: [白黒つける価値がある真の課題を言語化]
+
+### 3. 進捗状況と定量的な成果報告
+| 指標 | 目標値 | 実績値 | 達成率 | 前期/計画比 |
+| :--- | :--- | :--- | :--- | :--- |
+| [KPI 1: 例 開発進捗率] | | | | |
+| [KPI 2: 例 予算執行率] | | | | |
+- 特筆すべき成果: [定量的データと成功要因を簡潔に記述]
+
+### 4. 課題・リスクと具体的な対策案
+- 課題 1: [課題名]
+    - 根本原因（推察）: [なぜなぜ分析の視点に基づき記述]
+    - 具体的対策案: [実行可能なアクション、担当、期限をセットで記述]
+- 課題 2: [課題名]
+    - 根本原因（推察）: [なぜなぜ分析の視点に基づき記述]
+    - 具体的対策案: [実行可能なアクション、担当、期限をセットで記述]
+
+### 5. 今後の計画と役員への依頼事項（CTA）
+- 次のステップ（ロードマップ）: [短期/中期アクションと成果物を記述]
+- 役員への具体的な依頼事項: 
+    1. [依頼事項 1: 例 〇〇予算の承認]
+    2. [依頼事項 2: 例 〇〇部門からのリソース確保]
+- 期待する意思決定: [この報告を通じて、役員にどのような判断を求めたいかを明確に記述]
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>プロジェクト名</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにプロジェクト名を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>プロジェクトの現状進捗データ（KPI実績、目標値、課題点など）</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここにプロジェクトの現状進捗データ（KPI実績、目標値、課題点など）を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>役員会で求めたい具体的な意思決定（依頼事項）</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに役員会で求めたい具体的な意思決定（依頼事項）を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="33" placeholder="を補足を入力してください">
+- 最高の成果（意思決定を促す報告書骨子）を達成するために、もし提供された情報に不足や曖昧な点があれば、AIは逆質問を行い、ユーザーに情報の補完を促すものとします。
+- また、AIの思考プロセス（イシュー特定、ギャップ定義など）を明確にすることで、ユーザーとの協働（共創）を促進します。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- ハルシネーションの排除: ユーザーが提供したデータに基づかない架空の事実や数値を捏造（ハルシネーション）しないこと。
+- データが不足する場合はその旨を明記し、仮定を立てて進める場合はその仮定を明確に表示すること。
+- 抽象性の回避: 「頑張ります」「効率化します」といった抽象的で一般的な解決策の提案は厳禁です。必ず具体的で測定可能（KPIに繋がる）な内容に焦点を当てること。
+- 感情的判断の排除: 役員の感情的な判断を誘うような主観的な表現や、客観的事実に基づかない推測は行わないこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=648"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プロジェクト名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##プロジェクトの現状進捗データ=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##役員会で求めたい具体的な意思決定=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
