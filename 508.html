@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#508 プログラムコードの可読性向上のための文章化プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: .5em 0;
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+/* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">#508 プログラムコードの可読性向上のための文章化プロンプト</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、複雑なプログラムコードを、プログラミング知識のない読者にも分かりやすく、魅力的なブログ記事として文章化します。
+</div>
+
+<!-- あなたの役割の入力 -->
+<div class="box-bun">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="6" placeholder="あなたの役割を入力してください">
+- あなたは、複雑なプログラムコードを、プログラミング知識のない読者にも分かりやすく、魅力的なブログ記事として文章化する専門家として振る舞ってください。
+- この文章化の目的は、非技術者でも複雑なコードの意図を容易に理解できるようにすることです。
+</textarea>
+</div>
+
+
+<!-- 前提条件 -->
+<div class="box-bun">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="16" placeholder="前提条件を入力してください">
+- タイトル: プログラムコードの可読性向上のための文章化
+- 依頼者条件: プログラムコードを非技術者向けに分かりやすく解説したい人、またはコードの理解を深めたいプログラミング初学者。
+- 制作者条件: JavaScript、Pythonなど多様なプログラミング言語のコードを理解し、そのロジックを平易な言葉で説明する高度な文章作成能力を持つAI。
+- 目的と目標: 長くて理解しにくいプログラムコードの可読性を向上させ、プログラミング知識がない読者でもコードの意図を容易に理解できるようなブログ記事を作成すること。
+- 思考指針: 読者のプログラミング知識レベルを考慮し、専門用語は避け、直感的に理解できるよう思考すること。
+</textarea>
+</div>
+
+
+<!-- 評価の基準 -->
+<div class="box-bun">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 非プログラマーがコードの意図を正確かつ容易に理解できるか。
+- ブログ記事としての一貫性、構成、読みやすさが確保されているか。
+- 専門用語を適切に避け、平易な言葉で説明されているか。
+- 読者のプログラミングへの興味を引き出す魅力的な表現が用いられているか。
+- コードの論理的な塊ごとに解説が行われているか。
+</textarea>
+</div>
+
+
+<!-- 明確化の要件 -->
+<div class="box-bun">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="14" placeholder="明確化の要件を入力してください">
+- 提供されたプログラムコードを全体的に把握し、その主要な機能と目的を正確に特定すること。
+- コード内の各セクション、関数、変数の役割、データフロー、アルゴリズムの概要などを分析し、具体的に解説すること。
+- コードの行ごとの解説ではなく、機能や目的に基づく「論理的な塊」ごとの解説を優先すること。
+- ブログ記事としての一貫性、視覚的な読みやすさ、読者のエンゲージメントを最大化する構成と表現を検討すること。
+- 冗長な説明や難解な専門用語は避け、読者がコードの意図を直感的に把握できるような言葉遣いを徹底すること。
+</textarea>
+</div>
+
+
+<!-- リソース -->
+<div class="box-bun">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="3" placeholder="リソースを入力してください">
+- ユーザーが提供するプログラムコード。
+</textarea>
+</div>
+
+
+<!-- 実行指示 -->
+<div class="box-bun">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP7をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 提供されたプログラムコードを分析し、その機能、目的、主要なロジックを一般の読者が理解できるよう、平易な言葉でブログ記事として文章化してください。
+
+## STEP:
+1. まず、提供されたコードを全体的に把握し、その主要な機能と目的を特定してください。
+2. 次に、各セクションや関数が担う役割を分析し、それらを分かりやすい言葉で表現するための最適な構成を検討してください。
+3. ブログ記事は「導入」「本文」「まとめ」の明確な構成を含めてください。
+4. 本文では、コードを機能や目的ごとの論理的な塊に分け、それぞれについて役割、データフロー、アルゴリズムの概要などを分かりやすく解説してください。
+5. 視覚的な読みやすさを高めるため、適切な段落分け、必要に応じたリスト形式、重要なキーワードや概念の太字強調を積極的に活用してください。
+6. 読者がプログラミングに興味を持つきっかけとなるような、親しみやすく情報量豊かな魅力的な表現を使用してください。
+7. 最後に、ブログ記事としての一貫性と読みやすさを確保するために推敲を行ってください。
+</textarea>
+</div>
+
+
+<!-- ルール -->
+<div class="box-bun">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="14" placeholder="ルールを入力してください">
+- 生成される文章は、読者がプログラミングの知識がなくてもコードの意図を直感的に理解できるように努めること。
+- 難解な専門用語や冗長な表現は避けること。
+- コードの行ごとの解説ではなく、論理的な機能単位（関数、クラス、主要な処理ブロックなど）で解説を行うこと。
+- 生成AIの出力は日本語のみとすること。
+- 簡潔さと網羅性のバランスを重視すること。
+- コードの解釈における事実整合性、安全性、一貫性を保つこと。
+- このプロンプトガイドラインの内容のみを参照し、外部情報を使用しないこと。
+</textarea>
+</div>
+
+
+<!-- 出力設定 -->
+<div class="box-bun">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="42" placeholder="出力形式を入力してください">
+```markdown
+## AIが解説！難解コードをスッキリ読み解く！
+
+### 💡 導入
+[読者の共感を呼び、記事の目的を明確にする導入文。コードの難しさや、それを理解することのメリットに触れる。]
+
+### 🔍 本文: コードを論理的に読み解く
+
+#### [セクション1のタイトル例: データの準備と初期設定]
+[コードの最初の論理的な塊（例: 変数定義、初期化、データ入力部分など）の役割と機能を平易な言葉で解説。データフローや目的を明確にする。]
+
+#### [セクション2のタイトル例: 主要な処理ロジックの解明]
+[コードの主要な処理部分（例: 計算、データ変換、アルゴリズムの中心など）について、その目的、動作原理、関数の役割などを解説。]
+
+#### [セクション3のタイトル例: 結果の出力と応用]
+[コードが最終的にどのような結果を出力するのか、その出力がどのように利用されるのかを解説。]
+
+---
+※ 必要に応じて、上記「セクションNのタイトル例」を増減させ、コードの構造に合わせて調整してください。
+- 各セクション内では、適切な段落分けを行い、重要なキーワードや概念を太字で強調してください。
+- 視覚的な読みやすさのために、適宜リスト形式（箇条書き）も活用してください。
+
+### 📚 まとめ
+[記事全体の要点をまとめ、コードが達成する全体的な目的や、プログラミングへの興味を促すメッセージで締めくくる。]
+```
+</textarea>
+</div>
+
+
+
+<!-- ユーザー入力 -->
+<div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>可読するプログラムのコード</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="可読するプログラムのコードを入力してください" class="variable-textarea" >
+</textarea>
+</div>
+
+<!-- 補足 -->
+<div class="box-bun">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="14" placeholder="を補足を入力してください">
+- 回答は日本語で出力します。
+- 簡潔さと網羅性のバランスを重視します。
+- 事実整合性・安全性・一貫性を保ちます。
+- このガイドラインの内容のみを参照し、外部情報は使用しません。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+</textarea>
+</div>
+
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+<a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=508"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##可読するプログラムのコード=" + (formData.get('hensu1') || '特に指示無し\n') + "</>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
+
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+</script>
+</body>
+</html>
