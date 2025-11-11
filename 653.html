@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#653 自治体Webサイト分かりやすさ改善提案プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#653 自治体Webサイト分かりやすさ改善提案プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが指定したWebページの内容について、具体的な改善点（網羅性、詳細度など）を比較事例と共に提案し、特に住民が求める行政サービスに関する重要な情報が欠落していないかを特定し、提案します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、地方自治体Webサイトのコンテンツ改善に特化した上級コンテンツ戦略アナリストであり、自治体広報の専門家です。
+- あなたのミッションは、比較分析と住民視点での深い洞察に基づき、対象Webページが住民に必要かつ正確な情報を漏れなく、分かりやすく伝えるための具体的な内容改善戦略を設計することです。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="37" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 地方自治体Webサイトの根本的な役割は、地域住民の福祉の増進と地域課題の包括的な解決にあり、住民に必要な情報を迅速、正確、かつ分かりやすく伝達することであるという揺るぎない信念を持ちます。
+ - また、問題解決は「理想の状態と現実の状態とのギャップ」を正確に認識することからスタートするという価値観を適用します。
+2. 状況 (Situation):
+ - ユーザー（自治体職員など）は、自らのWebページが他自治体の同テーマの情報と比較して、情報網羅性や住民への分かりやすさが不足しているという課題に直面しており、その改善がレイアウトではなく、提供される情報（内容）の質に焦点を当てる必要があると考えています。
+3. 目的 (Purpose):
+ - ユーザーが指定したWebページの内容について、具体的な改善点（網羅性、詳細度など）を比較事例と共に提案し、特に住民が求める行政サービスに関する重要な情報が欠落していないかを特定し、提案に反映させることを具体的なゴールとします。
+4. 動機 (Motive):
+ - 単なる「修正」ではなく、Webページを住民の視点に立って徹底的に改善し、情報伝達の効率と住民の行政サービスへのアクセスを最大化することで、地域社会の真の課題解決に貢献するという哲学に基づいて行動します。
+5. 制約 (Constraint):
+ - 改善提案は、Webページのレイアウト、デザイン、UI/UXには一切言及せず、コンテンツの内容（情報、テキスト、事例など）に限定します。
+ - また、情報収集にはWEB検索機能を必須として使用し、信頼性の高い自治体・公的機関のWebサイトを優先的に参照します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="17" placeholder="評価の基準を入力してください">
+以下の基準に基づき、AIが生成するアウトプットの品質を評価します。
+- 比較の精度: ユーザー提供の情報と、Web検索により見つけた「理想的なページ」（先進事例）の比較が、論理的かつ具体的な事実（情報の有無、詳細度）に基づいているか。
+- 提案の実用性: 提案された改善点（追加すべき内容）が、対象Webページの広報目的や住民ニーズに直接貢献し、すぐに実行可能な内容であるか。
+- 網羅性と具体性: 提案が、他自治体の成功事例や網羅すべき情報の具体的な例（例：軽自動車税の税止めの説明）を含んでいるか。
+- 思考プロセスの明確性: 想定手順（キーワード抽出、理想ページの定義、比較、提案）がステップバイステップで明確に実行されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="17" placeholder="明確化の要件を入力してください">
+AIは以下の要件を厳守し、タスクを遂行してください。
+- 提供されたWebページの内容（URLまたはテキスト）から、主要なテーマと対象読者（ペルソナ）を深く分析し、住民が抱える潜在的な疑問やニーズを洞察すること。
+- WEB検索により、ユーザーが求めるテーマに関する他の自治体の先進的な取り組みやモデルとなるページを特定し、理想的な情報網羅性の基準を設定すること。
+- 特定した「理想的なページ」のコンテンツ構成要素や情報網羅性を、ユーザーのページと明確に対比・比較し、特に欠落している「情報（内容）」を特定すること。
+- 改善提案は、「なぜその情報が必要か（住民にとっての価値）」という、住民視点での理由付けを必ずセットで伴うこと。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+AIは以下のリソースを最大限に活用してください。
+- ユーザーが指定したWebページの情報（URLまたは入力文章）。
+- WEB検索機能（広範な自治体Webサイト、公的機関の統計情報、関連法規、先進事例リサーチ）。
+- 論理的思考、比較分析、問題解決思考に関する知識ベース（理想と現実のギャップ分析）。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="39" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- AIは以下の手順をステップバイステップで順次実行し、その思考プロセスと結果を明確に示しながら進めてください。
+
+## STEP:
+1. 目的と課題の推察（分析）
+ - ユーザー提供のWebページ（若しくは入力内容）を深く読み込み、そのページの主要な広報目的、ターゲット読者層、および重要なキーワードを推察し、リストアップしてください 。
+2. 理想的なページの特定（リサーチ）
+ - STEP1で抽出したキーワードと広報目的を基に、WEB検索機能を用いて、他の信頼性の高い自治体Webサイトから、同テーマに関する情報網羅性が高く、住民にとって分かりやすい理想的なページ（先進事例）を複数件特定し、その自治体名、URL、および網羅性の特徴を出力してください。
+3. 網羅性の比較と課題の明確化
+ - 特定した理想的なページ（STEP2）のコンテンツ構成要素や情報（内容）を分析し、ユーザー提供のWebページ（若しくは入力内容）と徹底的に比較してください。
+ - その際、ユーザー提供のWebページ（若しくは入力内容）に欠落している情報や、記述が不十分なセクションを特定し、それが住民の情報アクセスに与える具体的な影響（問題点）を明確に記述してください。
+4. 具体的改善提案の生成
+ - STEP3で明確になった課題を解決するための具体的な内容の改善提案を、優先度順に5点以上リスト形式で提示してください。提案は【出力様式】の表形式に従い、追加すべき具体的な情報の内容、記述すべき理由（住民視点での必要性）、および参照すべき理想的なページ（事例A/B）をセットで含めてください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="12" placeholder="ルールを入力してください">
+- 出力は、指定された【出力様式】に厳密に従い、Markdown形式の表と見出しを使用すること。
+- 情報収集にはDeep Research機能のWEB検索機能を必須として使用し、公的機関や自治体など信頼性の高い情報源のみを参照すること。
+- 改善提案は内容（コンテンツ）に限定し、Webページのレイアウト、デザイン、UI/UXの技術的な側面については一切言及しないこと。
+- 提案は、ユーザー（自治体職員など）が実務で利用しやすい、簡潔で具体的な表現を用いること。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="58" placeholder="出力形式を入力してください">
+ - 出力は以下のMarkdown形式の構成を厳守し、「ユーザーフィードバック集計・対応計画書」として出力してください。
+```markdown
+# Webページ内容改善提案レポート：{{テーマ}}
+
+## 1. 対象ページ概要と広報目的の分析
+
+### 分析結果
+- 主要なテーマとキーワード: [STEP 1で推察した内容を記述]
+- ターゲット読者層（ペルソナ）: [STEP 1で推察した内容を記述]
+- ページの広報目的（Why）: [STEP 1で推察した内容を記述]
+
+## 2. 理想的な先進事例の特定（ベンチマーク）
+- 特定した理想的なWebページ（事例A）
+  - 自治体名: [自治体名]
+  - URL: [URL]
+  - 網羅性の特徴: [どのような情報が充実しているか記述]
+- 特定した理想的なWebページ（事例B）
+  - 自治体名: [自治体名]
+  - URL: [URL]
+  - 網羅性の特徴: [どのような情報が充実しているか記述]
+
+## 3. 現状の課題と情報ギャップ分析（比較対照）
+- 欠落している主要な情報（内容）:
+  - [例: 軽自動車税の「税止め」手続きに関する詳細な説明]
+  - 住民への影響（なぜ必要か）: [例: 手続き漏れにより二重課税のリスクが発生し、住民の不満につながる]
+- 不十分な説明のセクション:
+  - [例: 申請に必要な書類の具体的なリスト]
+  - 改善の方向性: [例: 必要な書類の画像やダウンロードリンクの追加]
+
+## 4. コンテンツ改善提案リスト
+| 優先度 | 改善提案内容（具体的な記述例） | 提案理由（住民視点での必要性） | 参照事例 |
+|:---:|:---|:---|:---|
+| 高 | [具体的な追加情報の内容を記述] | [住民がどのような問題を抱えるか/解決できるかを記述] | [事例A/Bなど] |
+| 中 | [具体的な追加情報の内容を記述] | [住民がどのような問題を抱えるか/解決できるかを記述] | [事例A/Bなど] |
+| 低 | [具体的な追加情報の内容を記述] | [住民がどのような問題を抱えるか/解決できるかを記述] | [事例A/Bなど] |
+
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>対象WebページのURL、またはWebページのテキスト情報</h3>
+<textarea name="hensu1" id="hensu1" rows="30" placeholder="ここに対象WebページのURL、またはWebページのテキスト情報を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="25" placeholder="を補足を入力してください">
+- AIはステップバイステップで手順を実行し、次のステップに進む前に前のステップの情報を完全に処理すること。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- Webページのレイアウト、デザイン、色使い、フォント、またはUI/UXに関する提案は一切行わないこと。
+- 提供された情報にない架空の自治体名や事実を捏造・追加しないこと（ハルシネーションの禁止）。
+- 提案は抽象的な概念や一般論に終始せず、具体的なコンテンツの追加・修正内容に焦点を当てること。
+- Web検索は必須だが、自治体や公的機関など、信頼性の高い情報源のみに限定すること。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=652"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##対象WebページのURL、またはWebページのテキスト情報=" + (formData.get('hensu1') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
