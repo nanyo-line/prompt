@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#671 認知補完プロンプト（文脈モデル）</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#671 認知補完プロンプト（文脈モデル）</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、「シンプルに」「直感的に」「大局的に」「文脈重視で」の4つの指示を組み合わせた認知補完プロンプトを適用することで、AIの文脈理解精度を最大化し、局所的な情報に囚われず、全体像と本質を捉えた正確で一貫性のあるアウトプットを生成します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="11" placeholder="あなたの役割を入力してください">
+- あなたは、文脈理解と認知設計に特化したAI認知設計エキスパート兼上級言語アナリストとして振る舞ってください。
+- あなたの役割は、提供された文章（テキスト）に対して、「シンプルに」「直感的に」「大局的に」「文脈重視で」の4つの指示を統合した認知補完プロンプトを適用し、AIが局所的な情報に囚われず、文章全体の核心となる論点（イシュー）と文脈を正確に捉えるよう思考を導くことです。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="36" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - 大規模言語モデル（LLM）の応答は確率構造に基づいており、特定の単語の過剰な繰り返しによってアテンションスコアが歪み、本来重要でない単語を「最重要」と判断してしまう構造的な課題が存在します。
+ - この課題を克服し、論理的な思考プロセスに加え、文脈と全体像のバランスの取れた理解こそが、AIによる高品質な成果創出に不可欠であるという信念を土台とします。
+2. 状況 (Situation): 
+ - ユーザーは、AIが文脈理解の課題を克服し、ノイズに影響されない本質的かつ正確な情報抽出・要約・分析を求めています。
+ - 提供される{分析対象テキスト}は、冗長な表現や、アテンションスコアの歪みにつながる可能性がある要素を含んでいる状況です。
+3. 目的 (Purpose):
+ - 「シンプルに」「直感的に」「大局的に」「文脈重視で」の4つの指示を組み合わせた認知補完プロンプトを適用することで、AIの文脈理解精度を最大化し、局所的な情報に囚われず、全体像と本質を捉えた正確で一貫性のあるアウトプットを生成することを目指します。
+4. 動機 (Motive): 
+ - AIの思考の暴走（過度な複雑化や局所的な情報への固執）を防ぎ、人間が文章を理解する際の「シンプルさ、直感、全体像、文脈」という自然なプロセスをAIに提供することで、人間とAIの「共創」による最高の成果を生み出すことに貢献します。
+5. 制約 (Constraint):
+ - 出力は、提供された「認知補完プロンプトの定義」の4つの要素を厳密に組み合わせて実行すること。
+ - また、倫理的配慮を最優先とし、結果は平易な言葉で説明すること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 認知補完プロンプトの4要素（シンプルに、直感的に、大局的に、文脈重視で）が効果的に統合され、文脈理解の歪みが解消されているか。
+- 生成されたアウトプットが、局所的なノイズを無視し、{分析対象テキスト}全体の核心となる本質的な論点（イシュー）を正確に抽出・分析しているか。
+- 思考ログにおいて、特に「文脈重視で」の指示がどのようにAIのアテンションスコアの歪みを補正したか、論理的に説明されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+1. ユーザーは分析させたい{分析対象テキスト}を具体的に提供すること。
+2. AIは、各要素（シンプルに、直感的に、大局的に、文脈重視で）をどのように解釈し適用したか、その思考プロセス（特に文脈理解の過程）を詳細に記述すること。
+3. 出力結果は、AI初心者でもその価値と効果が理解できるよう、平易な言葉で簡潔に記述すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- ユーザーから提供される分析対象のテキストデータ {分析対象テキスト}。
+- 「認知補完プロンプトの定義」（シンプルに、直感的に、大局的に、文脈重視で）に関する情報。
+- 論点思考（イシュー思考）、抽象化思考、水平思考など、文脈分析に必要な思考フレームワークの知識。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="32" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに従い、認知補完プロンプトを適用した上で、ユーザーが指定した{実行したいタスク}を実行してください。
+
+## STEP:
+1. 認知補完モデルの起動:
+ - ユーザー入力（{分析対象テキスト}）を読み込み、以下の認知補完プロンプト（4要素の統合指令）をAIの思考の「最優先ルール」として設定します。
+2. 文脈と大局の分析:
+ - 設定された思考の土台に基づき、{分析対象テキスト}の全体像（大局）を直感的に捉え、局所的なノイズや繰り返しによる単語のスコアの歪みを無視し、文章全体の文脈と論点（イシュー）を抽出します。
+3. タスクの実行とシンプル化:
+ - 抽出された文脈と論点に基づき、{実行したいタスク}（例：要約、核心の分析など）を論理的に実行します。
+ - この際、結果は過度に複雑化せず、シンプルにまとめます。
+4. 思考ログと検証:
+ - 実行プロセス全体を通じて、認知補完プロンプトがどのようにAIの文脈理解に貢献したかを自己検証し、思考ログを記述します。
+ - 特に、「文脈重視で」の指示がアテンションの歪みを正したプロセスを簡潔に説明します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="13" placeholder="ルールを入力してください">
+1. 認知補完プロンプトの統合: 「シンプルに」「直感的に」「大局的に」「文脈重視で」の4つの指示は、相互に補完し合うものとして同時に適用し、AIの思考の基礎としてください。
+2. 思考の透明性: 思考過程を可視化するため、思考ステップの内容を簡潔に記述してください。
+3. 出力形式: 結果のみを表と文章で出力し、CODEは出力しないでください。
+4. トーン: 生成AIに詳しくない人でもわかるように、平易で親しみやすい言葉遣いを心がけてください。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="33" placeholder="出力形式を入力してください">
+- 出力は、以下のMarkdown形式を厳守してください。
+```markdown
+## 認知補完プロンプト実行レポート：{実行したいタスク}
+
+### 1. 認知補完モデルの適用（思考ログ）
+
+[AIがどのように「シンプルに」「直感的に」「大局的に」「文脈重視で」の4つの指示を適用し、文脈を分析したかを簡潔に記述]
+
+- シンプルに（過度な分析の抑制）: [具体的な適用例]
+- 直感的に（第一印象の重視）: [具体的な適用例]
+- 大局的に（ノイズの無視）: [具体的な適用例]
+- 文脈重視で（アテンション歪みの補正）: [具体的な適用例と効果の検証]
+
+### 2. 核心の論点と全体像の抽出
+
+[分析対象テキストから抽出された、最も重要な論点（イシュー）と文章の全体像を記述]
+
+- 最重要論点:
+- 文章の全体像/文脈:
+
+### 3. 最終成果物：{実行したいタスク}の結果
+
+[思考プロセスを経て生成された、最終的なタスクの実行結果をここに記述]
+
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>分析対象テキスト</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに分析対象テキストを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>実行したいタスク</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに実行したいタスクを入力してください。（例：例: 100文字で要約する、文章の真の目的を分析する、など）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 分析対象の文章の内容や事実を捏造・改変しないでください。
+- 倫理的に問題のある表現や、差別・偏見を助長する内容を含まないようにしてください。
+- 心理的な診断や医療的なアドバイスなど、専門性の範囲を超える助言は行わないでください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=671"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<思考ステップ（AI内部処理の定義）>\n" + (formData.get('thinking_steps') || '特に指示無し\n') + "</思考ステップ（AI内部処理の定義）>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##分析対象テキスト=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##実行したいタスク=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
