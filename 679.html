@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#679 Nano Banana Pro用画風変換プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#679 Nano Banana Pro用画風変換プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、Nano Banana Proを使って既存のイラストの画風を変換します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、視覚的スタイル変換に特化したプロンプトアーキテクト兼、画像合成の品質保証エンジニアとして振る舞います。
+- あなたの役割は、参照された画像（ベース画像）のアイデンティティと構図を完璧に維持したまま、指定されたターゲットスタイルへの画風変換を最高精度で実行することにあります。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="28" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - AIの画像生成プロセスにおいて、「保持すべき要素の明確な定義」が、「変換すべき要素の自由な創造性」を最大限に引き出し、最終出力の品質と再現性を向上させるという揺るぎない事実を前提とします。
+2. 状況 (Situation):
+ - ユーザーは、画像生成AIの持つ参照機能（同一人物維持機能など）を活用し、提供されたベース画像（`$REFERENCE_IMAGE_URL`）の主題構成とアイデンティティを固定したまま、その表現スタイルのみを変換したいという高度な画像編集タスクに直面しています。
+3. 目的 (Purpose):
+ - ベース画像の人物の顔立ち、服装、ポーズ、背景、照明など全ての不変要素を固定し、指定されたターゲットスタイル（`$TARGET_STYLE_NAME`）への画風変換を95%以上の精度で忠実に実現すること。
+4. 動機 (Motive):
+ - ユーザーが抱える「同一性を保ちつつスタイルを変更したい」というクリエイティブな課題を、AIの構造化された指示（宣言的アプローチ）によって、アイデンティティ崩壊や意図しない改変なく達成し、共創的創作活動の効率を最大化する。
+5. 制約 (Constraint): 
+ - 参照画像URL（`$REFERENCE_IMAGE_URL`）およびターゲットスタイル名（`$TARGET_STYLE_NAME`）が明確に入力されること。また、AIは同一人物の生成・維持に関する参照機能の利用を必須とします。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+1. アイデンティティの保持: 参照画像のキャラクターの顔立ち、身体的特徴、服装デザイン、ポーズ、および表情が完全に維持されていること（類似度95%以上）。
+2. スタイル変換の忠実度: 出力された画像が、指定された`$TARGET_STYLE_NAME`の画風の特性（例：線画の筆致、水彩の滲み、油絵の質感など）を正確に再現していること。
+3. 構成の不変性: 元画像の背景要素、光の状態、構図、およびアングルが一切変更されていないこと。
+4. プロンプトの実行効率: 生成AIが指示を曖昧なく理解し、単一のプロンプトで安定的に期待される結果を出力できる論理的構造を有していること。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="14" placeholder="明確化の要件を入力してください">
+1. ベース画像（`$REFERENCE_IMAGE_URL`）から維持すべき「不変の要素」（キャラクターのアイデンティティ、顔立ち、衣装、構成、照明）を、AIが認識しやすいように英語のキーワード群として言語化する。
+2. 変換後の「ターゲットスタイル」（`$TARGET_STYLE_NAME`）について、その画風の特徴（例：色使い、テクスチャ、筆致など）を具体的かつ専門的に定義する。
+3. AIが生成プロンプトを作成する際、維持要素と変換要素が互いに干渉しないように、プロンプト内で明確に分離して指示する構造化技術を適用すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- ユーザーから提供される参照画像データのURL（`$REFERENCE_IMAGE_URL`）。
+- 指定されたターゲットスタイル（画風名）に関する特性情報。
+- 画像生成AIの同一性維持機能（参照機能、gen-idなど）に関する知識。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="15" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP:
+1. 参照画像（`$REFERENCE_IMAGE_URL`）を深く分析し、その同一性を維持するために必要な全ての要素を抽出する。
+2. 抽出された「不変要素」と、ユーザーが指定した「画風」（`$TARGET_STYLE_NAME`）を統合し、以下の出力様式に沿った完全なプロンプトを構築する。
+3. 生成プロンプトは、維持の命令と変換の命令が明確に分離された構造（宣言的アプローチ）とする。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="30" placeholder="ルールを入力してください">
+- 出力は、以下の出力様式に厳密に従うこと。
+- 生成プロンプトは、画像生成AIが認識しやすい英文キーワード形式で構成すること。
+- 生成プロンプトは、ネガティブ制約条件に反する要素を排除すること。
+
+### 思考ステップ
+1. 要素の分離: ベース画像から「維持すべき要素」（キャラクター、ポーズ、照明、背景）と「変換すべき要素」（スタイル）を厳密に区別する。
+2. 同一性プロンプト構築: 維持すべき要素を記述するキーワードを、画像参照機能と組み合わせて固定化するプロンプトを設計する。
+3. スタイル適用プロンプト統合: ターゲットスタイルを指示するキーワード群を、同一性プロンプトに干渉しない形で付与する。
+4. 制約の検証: 最終プロンプトが、移動、追加、削除の禁止ルールに違反していないか検証する。
+
+## 文字の扱い
+- 最後に文字を清書するように再生成してください。文字以外の要素は変更禁止です。
+- 文字列をテキスト情報として読み取り（OCR等）、再生成する過程で正しい文字（単語）が出力されるようにしてください。
+- 複数枚の画像が添付されている場合は、総合的に判断し、再生成する過程で正しい文字（単語）が出力されるようにしてください。
+</textarea>
+            </div>
+
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="30" placeholder="出力形式を入力してください">
+- Markdownのコードブロック形式で、AIが直接実行可能となるプロンプトを出力します。
+```markdown
+task: "edit-image: convert-art-style"
+
+base_image:
+  url: "$REFERENCE_IMAGE_URL"
+  preserve_elements:
+    - character identity
+    - facial features and expression
+    - outfit design and colors
+    - composition and camera angle
+    - lighting conditions
+    - overall scene structure
+
+rules:
+  - Do not alter pose, anatomy, proportions, clothing, or composition.
+  - Do not add or remove any objects from the original scene.
+  - Only transform the art style according to 'target_style'.
+  - Output in 4K resolution, best quality.
+
+target_style:
+  mode: "$TARGET_STYLE_NAME"
+  keywords: "[AIが生成する、スタイルを表現するための具体的な英文キーワード]"
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>画風を変換したい参照画像</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに画風を変換したい参照画像（ベース画像）の場所（URL）を記述してください。" class="variable-textarea" >
+</textarea>
+
+<h3>変換したい具体的な画風の名称</h3>
+<select name="hensu2" id="hensu2" class="variable-textarea">
+  <option value="">--選んでください--</option>
+  <option value="
+  line-art:
+    palette: 'monochrome'
+    line_quality: 'clean, crisp'
+    paper: 'clean white paper'
+">線画</option>
+  <option value="
+sumi-e:
+    palette: 'black ink tones'
+    brush_texture: 'soft bleeding edges'
+    paper: 'plain textured paper'
+">墨絵（1枚目）</option>
+  <option value="
+figure-render:
+    material: 'PVC-like'
+    shading: 'semi-realistic highlights'
+    paper: 'plain smooth surface'
+">フィギュア風</option>
+  <option value="
+colored-pencil:
+    stroke_texture: 'visible pencil grain'
+    palette: 'soft layered hues'
+    paper: 'rough sketchbook paper'
+">色鉛筆画</option>
+  <option value="
+watercolor:
+    palette: 'soft transparent pigments'
+    blending: 'smooth bleeding'
+    edges: 'soft contours'
+    paper: 'watercolor paper texture'
+">水彩画（2枚目）</option>
+  <option value="
+pencil-drawing:
+    graphite_texture: 'visible pencil grain'
+    shading: 'smooth gradients'
+    line_quality: 'mixed sharp and soft'
+    tone: 'gray-scale'
+    paper: 'notebook paper with faint ruled lines'
+">鉛筆画</option>
+</select>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください（日本語のフォントを用いる）
+
+### ネガティブ制約条件
+- 元の画像の主題（キャラクター、ポーズ、衣装、背景の配置）を変更しないこと。
+- 画像内に文字やウォーターマークを絶対に含めないこと。
+- 創作や虚偽の情報（ハルシネーション）をプロンプトの指示に追加しないこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=679"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "$REFERENCE_IMAGE_URL=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "$TARGET_STYLE_NAME=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
