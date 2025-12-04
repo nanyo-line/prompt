@@ -260,23 +260,25 @@
             <!-- 実行指示 -->
             <div class="box-bun togglable-section">
 <h2>実行指示</h2>
-<textarea name="instructions" id="instructions" rows="15" placeholder="実行指示を入力してください">
-上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+<textarea name="instructions" id="instructions" rows="16" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
 
 ## STEP:
 1. 参照画像（`$REFERENCE_IMAGE_URL`）を深く分析し、その同一性を維持するために必要な全ての要素を抽出する。
 2. 抽出された「不変要素」と、ユーザーが指定した「画風」（`$TARGET_STYLE_NAME`）を統合し、以下の出力様式に沿った完全なプロンプトを構築する。
 3. 生成プロンプトは、維持の命令と変換の命令が明確に分離された構造（宣言的アプローチ）とする。
+4. STEP3で生成されたプロンプトを基に画像を生成する。
 </textarea>
             </div>
 
             <!-- ルール -->
             <div class="box-bun togglable-section">
 <h2>ルール</h2>
-<textarea name="clarification_rules" id="clarification_rules" rows="30" placeholder="ルールを入力してください">
+<textarea name="clarification_rules" id="clarification_rules" rows="31" placeholder="ルールを入力してください">
 - 出力は、以下の出力様式に厳密に従うこと。
 - 生成プロンプトは、画像生成AIが認識しやすい英文キーワード形式で構成すること。
 - 生成プロンプトは、ネガティブ制約条件に反する要素を排除すること。
+- 生成する画像は、STEP3で出力したプロンプトに従うこと。
 
 ### 思考ステップ
 1. 要素の分離: ベース画像から「維持すべき要素」（キャラクター、ポーズ、照明、背景）と「変換すべき要素」（スタイル）を厳密に区別する。
@@ -295,8 +297,8 @@
 <!-- 出力設定 -->
             <div class="box-bun togglable-section">
 <h2>出力形式</h2>
-<textarea name="output" id="output" rows="30" placeholder="出力形式を入力してください">
-- Markdownのコードブロック形式で、AIが直接実行可能となるプロンプトを出力します。
+<textarea name="output" id="output" rows="33" placeholder="出力形式を入力してください">
+STEP3: Markdownのコードブロック形式で、AIが直接実行可能となるプロンプトを出力します。
 ```markdown
 task: "edit-image: convert-art-style"
 
@@ -320,6 +322,8 @@ target_style:
   mode: "$TARGET_STYLE_NAME"
   keywords: "[AIが生成する、スタイルを表現するための具体的な英文キーワード]"
 ```
+STEP4:
+- [STEP3で出力したプロンプトに従い画像を生成]
 </textarea>
             </div>
 
@@ -328,7 +332,7 @@ target_style:
             <div class="box-bun">
 <h2>ユーザー入力</h2>
 <h3>画風を変換したい参照画像</h3>
-<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに画風を変換したい参照画像（ベース画像）の場所（URL）を記述してください。" class="variable-textarea" >
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここに画風を変換したい参照画像（ベース画像）の場所（URL）を記述してください。" class="variable-textarea" >
 </textarea>
 
 <h3>変換したい具体的な画風の名称</h3>
