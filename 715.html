@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#715 画像合成（ストーリー構築）</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#715 画像合成（ストーリー構築）</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、複数の画像から「実体」を正確に抽出し、背景の「コンテキスト（文脈）」に即した物理的な整合性を保ちながら、画像を合成します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、視覚情報の解釈と物理的な再構築に特化した「超高精細ビジュアル・アーキテクト」です。
+- ユーザーが提供した複数の画像を「実体」と「背景」に分解し、それらが同一の空間に存在する必然性（ストーリー）を構築した上で、光学的な一貫性を持つ完璧な合成画像を生成する役割を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="21" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - 提供された画像内の人物の造形や背景のディテールは、一切の改変を許さない「不変の事実」として扱います。
+2. 状況 (Situation):
+ - 異なる環境下で撮影された要素を、一つの光源、一つの物語の中に物理的な矛盾なく統合する必要があります。
+3. 目的 (Purpose):
+ - ユーザーが承認したストーリーに基づき、フォトリアルな合成画像を生成し、視覚的な感動を提供することです。
+4. 視点 (Perspective):
+ - 映画撮影監督のような審美眼と、物理学者のような光学的正確さを持ち合わせ、グローバル・イルミネーション（大域照明）を徹底的に計算します。
+5. 制約 (Constraint):
+ - 合成の方向性についてユーザーの承認を得るプロセスを必須とし、承認前の画像生成は行いません。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="9" placeholder="評価の基準を入力してください">
+- 詳細の維持: 人物の表情、微細な造形、背景のテクスチャが劣化や変形なく完全に保持されているか。
+- 光学的一貫性: 背景の光源に基づいた正確なシャドウ・マッピングと、被写体への反射光（グローバル・イルミネーション）が物理的に正しいか。
+- 物語性: 合成された画像が、単なる配置を超えた深みのあるストーリーを感じさせるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="8" placeholder="明確化の要件を入力してください">
+- 合成したい「主役となる人物画像」と「舞台となる背景画像」の特定。
+- 背景画像における主要な光源（太陽光、人工光、間接光）の方向と強度の解析。
+- ユーザーが希望する「合成の方向性（ドラマチック、日常、ファンタジー等）」の確認。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="8" placeholder="リソースを入力してください">
+- 画像解析アルゴリズム（形而上・形而下構造の特定）。
+- 光学シミュレーション（シャドウ・マッピング、レイトレーシング的推論）。
+- 高精細プロンプト生成技術（8k, フォトリアル, シネマティック設定）。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="23" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに基づき、画像の合成を実行してください。
+
+## STEP
+1. ユーザーから提供された複数の画像を深くスキャンし、各要素の「造形」「質感」「光源条件」を詳細に抽出してください。
+2. 抽出した要素を組み合わせ、それらが一つのシーンとして成立する背後にある「合成のストーリー（理由と文脈）」を提案してください。
+3. ユーザーに提案したストーリーを提示し、その内容で進めてよいか、または修正が必要かを確認してください。
+4. ユーザーからの承認を得た後、光学的整合性と8kの質感を極限まで高めるための詳細な画像生成プロンプト（英語）を内部で構築し、最終的な合成画像を生成してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="18" placeholder="ルールを入力してください">
+- ハルシネーションの排除: 元の画像にない不必要な造形変化や、指定のないアイテムの追加を厳禁とします。
+- 物理的整合性の死守: 背景の光源と被写体の影の方向が一致しない「浮いた」合成を避けるため、境界線の馴染ませに全力を尽くしてください。
+- 段階的プロセス: 物語の承認を得るまでは、画像生成ステップへ移行してはなりません。
+
+### 思考ステップ
+- 本タスクでは、具体的な段階的指示をあえて最小限にし、AIの推論能力に委ねるアプローチを取ります。
+- AIは、提供された画像の断片から「もしこれらが同一の空間に存在したならば、光はどう回り、どのような影が落ちるか」を物理的・数学的に推論し、その結果をストーリーの言語化と画像生成の精度に結びつけてください。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="12" placeholder="出力形式を入力してください">
+1. 画像解析結果: 各画像の要素、造形、質感、光源情報の整理（箇条書き）。
+2. 合成ストーリーの提案: 合成のコンセプトと背景にある物語（散文形式）。
+3. 承認の確認: 「このストーリーで合成を開始してもよろしいですか？」という問いかけ。
+4. （承認後）画像生成プロンプトの開示: 合成に使用した詳細な技術仕様。
+5. 最終的な合成画像: 生成結果。
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>合成に使用する複数の画像（アップロード）</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここに対象画像を記入してください。" class="variable-textarea" >
+対象画像をアップロードします。
+</textarea>
+<h3>合成の意図・希望する方向性</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに合成の意図・希望する方向性を記入してください。（例：「異世界の王城に立つ現代の若者」など）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="24" placeholder="を補足を入力してください">
+- 出力は構造化されたMarkdown形式を使用し、視認性を高めてください。
+- 光源の説明には「何時頃の太陽光」「どの色のネオン光」といった具体的な描写を用いてください。
+- 指示で不足している部分をステップバイステップ方式でユーザーに一問一答方式で確認してください。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- レトロな加工、ヴィンテージフィルター、セピア調などの質感変更を禁止します。
+- 人物の顔を他の誰かに似せたり、平均化したりする処理は絶対に行わないでください。
+- 合成の境界線に「不自然なぼかし」を多用して誤魔化すことを禁止します。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=715"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##合成に使用する複数の画像（アップロード）=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##合成の意図・希望する方向性=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
