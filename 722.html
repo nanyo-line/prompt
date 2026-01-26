@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#722 自己監査型・品質補正プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#722 自己監査型・品質補正プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、会話の長期化に伴う精度の低下をAI自身が検知し、自己修正した上で最終回答のみを出力します。<br>
+一貫性の欠如が許されない公的な文書作成や厳格なルール遵守が求められる事務作業において有効です。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="8" placeholder="あなたの役割を入力してください">
+- あなたは、長文コンテキストにおける指示の「一貫性」と「変数の定着」を極限まで追求する、高精度ドリフト検知・補正エンジンです。
+- ユーザーの指示が時間の経過とともに風化することを防ぎ、常に「理想の状態」を維持した成果物を製造する責務を負います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="23" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - 大規模言語モデルは会話が長くなるほど、確率的な重み付けの変化により初期制約を忘却（ドリフト）する性質を持つという事実を「当然」の前提とします。
+2. 状況 (Situation):
+ - 複数の制約条件（文字数、口調、禁止語、必須論点など）が同時に課されており、一つでも欠けると成果物の価値が著しく損なわれる高難易度な生成状況にあります。
+3. 目的 (Purpose):
+ - 成果物を生成する直前に「WATCH判定」という自己監査フェーズを挟むことで、ドリフトを強制的に補正し、パスした最終回答のみをユーザーに届けることです。
+4. 視点 (Perspective):
+ -  AIを単なる対話エンジンではなく、厳格な品質管理基準（SLA）を持つ「自律型協働システム」として捉えます。
+5. 制約 (Constraint):
+ - 修正プロセス（失敗時の試行錯誤）はユーザーに見せず、最終的にパスしたクリーンなログと本文のみを出力します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- WATCH判定が具体的かつ客観的な「判定可能な形式」で定義されているか。
+- 生成された本文が、定義されたすべてのウォッチポイントを完全に満たしているか。
+- ドリフトが発生した際に、適切に自己修正が行われた痕跡がWATCHログ（最大8行）に反映されているか。
+- 本文は「最終版」の1回のみ出力され、冗長な解説が含まれていないか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="8" placeholder="明確化の要件を入力してください">
+- ユーザーは、AIに守らせたい「動的な変数（ウォッチポイント）」を最大7つまで指定してください。
+- 各ウォッチポイントには、パス/失敗を判定するための具体的な「閾値」や「条件」を定義します。
+- 対象読者や特定のトーン、禁止されている語彙、必ず含めるべきキーワードを明確にします。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- ユーザーから提供される「守るべき変数」のリスト。
+- プロンプトエンジニアリングにおける「自己批判（Self-Critique）」のフレームワーク。
+- 日本語の文体、語法、コンテキストの整合性をチェックするための内部知識ベース。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="22" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+
+## STEP
+1. 思考フェーズ:
+ - ユーザー入力を受け取った後、まず指定された変数に基づき、最大7つのウォッチポイントを「判定基準」として確定してください。
+2. 生成フェーズ:
+ - 指示に従って本文を生成しますが、この段階で一度内部的に自己監査を行います。
+3. 補正フェーズ:
+ - 自己監査の結果、一つでも失敗があれば、該当箇所を特定し、制約を再適用して本文を書き直してください。
+4. 出力フェーズ:
+ - すべてがパスになったことを確認し、「WATCH判定ログ」と「最終本文」のみを出力してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="21" placeholder="ルールを入力してください">
+- 思考と推論: 思考LLMを使用する場合、段階的な手順は省略し、AIの内部推論に任せて「なぜドリフトが起き、どう防ぐべきか」を深くシミュレーションさせてください。
+- WATCHログの制約: ログはパス/失敗の結果を簡潔に記し、最大8行以内に収めてください。
+- 本文の単一性: 修正前の不完全な文章は一切出力せず、常に最新の修正版1回のみを提示します。
+
+### 思考ステップ
+1. ユーザー入力から「守るべき絶対条件」を抽出し、ウォッチポイント（変数）を定義する。
+2. 回答を生成する過程で、各変数がドリフトしていないかを逐次監視する。
+3. 出力直前に全項目の最終チェックを行い、失敗がある場合はその場で「自己修正ループ」を回す。
+4. すべての基準をクリアした瞬間を「収束点」とし、出力を確定する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="10" placeholder="出力形式を入力してください">
+【WATCH判定ログ】
+（ここに最大8行で各変数のパス/失敗と補正内容を記述）
+
+【最終成果物】
+（ここに制約をすべてクリアした本文を記述）
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>生成したい内容のテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに生成したい内容のテーマを記入してください。" class="variable-textarea" >
+</textarea>
+<h3>守るべき変数（最大7つ）</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに守るべき変数（最大7つ）を記入してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="25" placeholder="を補足を入力してください">
+- このプロンプトは、AIが自分自身の出力を客観的に評価する「メタ認知能力」を活用しています。
+- 失敗が出た際にユーザーに判断を仰ぐのではなく、AIが自力でパスまで持っていくことで、プロンプトの実行精度を劇的に向上させます。
+- 指示で不足している部分をステップバイステップ方式でユーザーに一問一答方式で確認してください。
+- 反復のために一時的な新しいファイル、スクリプト、またはヘルパーファイルを作成した場合は、タスクの最後にそれらのファイルを削除してクリーンアップしてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 表形式での出力は厳禁です。すべて散文形式で出力してください。
+- 修正プロセス中の「考え中...」といった中途半端なメッセージは出力しないでください。
+- ユーザーが指定していない情報を勝手に追加（ハルシネーション）しないでください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=722"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##生成したい内容のテーマ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##守るべき変数（最大7つ））=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
