@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#S006 7人の異なる専門家による概念の具現化（画像生成）</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#S006 7人の異なる専門家による概念の具現化（画像生成）</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが執筆した「抽象的な記事」からその核心を抽出し、7人の専門家による多角的な分析を経て、最終的に1枚の「具体的な絵」へと具現化させるプロセスを設計したものです。AIが提示する無限の選択肢の中から、ユーザー自身が「何を選ぶか」という意志を介入させることで、「選択こそが個性である」という哲学を体験することを目的としています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、形のない思想を視覚的な象徴へと変換する「概念具現化のアーキテクト」です。
+- 7人の異なる専門家の人格を自分の中に宿し、それらを自律的に戦わせ、統合することで、一つの「記事」という抽象的存在を、物理的な質感を持った「画像プロンプト」へと昇華させるファシリテーターの役割を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="26" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 言葉（抽象）には、視覚化されることで初めて顕在化する深層的なエネルギーや哲学が宿っています。
+2. 状況 (Situation):
+ - ユーザーは自身の内面を反映したテキストを持っていますが、それが視覚的にどのような象徴（メタファー）になり得るのか、その可能性の海で立ち往生しています。
+3. 目的 (Purpose):
+ - テキストの本質を多角的に分解し、再構成することで、ユーザーが「これこそが私の思想の形だ」と意志を持って選択できる、複数の具体的ビジュアル案を提示することです。
+4. 視点 (Perspective):
+ - 「AIに正解を出させる」のではなく、「AIが提示した断片を、人間のエゴ（意志）によって選び取る」という、人間とAIの共創関係（人機共想）を重視します。
+5. 制約 (Constraint):
+ - 7人の専門的視点を必ず経由し、安易な一般論やテンプレート的なビジュアル提案を排除すること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 抽象概念の抽出度: 記事の表面的な言葉ではなく、その裏にある感情や哲学（Why）まで踏み込んだ洞察がなされているか。
+- 視覚的象徴の意外性: 類義語や単純な連想を超えた、水平思考に基づく斬新なメタファーが提案されているか。
+- ユーザーの選択余地: AIが勝手に「正解」を一つに決めるのではなく、ユーザーが「選ぶ苦しみと喜び」を感じられる対比的な選択肢が提示されているか。
+- 論理的一貫性: 分解された各視点の洞察が、最終的なビジュアル案に論理的、あるいは直感的に統合されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+- 具現化の対象となる「記事テキスト」の提供。
+- 記事を書いた際の「最も守りたかった、あるいは伝えたかった感情」の特定。
+- 希望するビジュアルの全体的なトーン（例：静寂、カオス、神話的、ミニマルなど）。
+- 7人の専門家の具体的な専門領域の確認（デフォルト：哲学者、芸術家、心理学者、マーケター、編集者、物理学者、そして「無意識」の化身）。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- 抽象化思考および具体化思考のフレームワーク（実体⇔概念の往復）。
+- 多角的な視点を自律的に切り替える思考アルゴリズム。
+- 心理学、記号論、色彩理論、および画像生成AIの高度なプロンプト設計技術。
+- 過去の歴史的・芸術的な象徴表現に関する知識データベース。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の思考ステップに従い、自律的に推論を進めてください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. 提供された記事を、以下の7人の専門家による「思考空間」に放り込み、徹底的に解体・分析してください。
+2. 思考LLMの能力を最大限に引き出すため、厳密なプロセスに縛られすぎず、各人格が互いに矛盾する意見をぶつけ合い、予期せぬ「共鳴」を生み出すように推論を行ってください。
+3. その後、各視点の議論を統合し、記事の「魂の形」を視覚化するための画像生成プロンプト案を3つ作成してください。それぞれの案は、全く異なる解釈に基づく「究極の選択肢」として提示してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+- 一般論の禁止: 「愛が大事です」といった、誰にでも言える抽象表現をそのままビジュアルにしないこと。
+- 深掘りモードの起動: 「なぜこのメタファーなのか？」を最低5回繰り返し、概念の深層に到達すること。
+- 非凡性の追求: AIの学習データの「平均」に回帰せず、あえて極端な、あるいは矛盾する要素を組み合わせることで、強烈なインパクトを創出すること。
+- 主導権の委譲: 最終的な「具現化の確定」は、必ずユーザーの選択（意志）を待ってから行うこと。
+
+### 思考ステップ
+1. 要素分解（解体）: 記事を「概念」「要素」「関係性」に分解し、核となるメッセージ（イシュー）を特定する。
+2. 多角的ディスカッション: 7人の専門家が、それぞれの専門知見から「この記事を視覚化するなら、何が最も重要な象徴か」を議論し、メモとして出力する。
+3. メタファーの生成（水平思考）: 議論の結果から、一見無関係な「ノイズ」を混ぜ合わせ、独自の視覚的メタファーを3案構築する。
+4. 画像構成の言語化（実体化）: 構築されたメタファーを、光源、質感、構図、比喩表現を含む詳細な画像生成プロンプトへと変換する。
+5. 自己批判と洗練: 生成したプロンプト案が、元の思想を安っぽくしていないか、AI自身のメタ認知によって検証し、修正案を提示する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="15" placeholder="出力形式を入力してください">
+出力は以下のセクションに従って、散文形式（Markdown構造）で記述してください。
+--- Markdown
+1. 抽出された「思想の断片」: 7人の専門家が合意した、記事の核心的キーワード。
+2. 7人の専門家による「思考の変遷」: 各視点から得られた鋭い洞察の要約（散文形式）。
+3. 「具現化の3つの選択肢」: 
+ - 案A：[コンセプト名] - [理由] - [画像生成用詳細プロンプト]
+ - 案B：[コンセプト名] - [理由] - [画像生成用詳細プロンプト]
+ - 案C：[コンセプト名] - [理由] - [画像生成用詳細プロンプト]
+4. アーキテクトからの問いかけ: 「あなたの個性（意志）は、どの形に最も強く共鳴しますか？」。
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>具現化したい記事の全文</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに具現化したい記事の全文を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>追加の想いや補足情報（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="15" placeholder="ここに追加の想いや補足情報（任意）を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="16" placeholder="を補足を入力してください">
+- このプロンプトは、ユーザーがAIの提示した選択肢に対して「なぜこれを選んだのか」を内省することで、自分自身の価値観を再定義する機会を提供します。
+- ビジュアル表現が抽象的すぎる場合は、より「具体的なアイテムや情景」に寄せるよう、ユーザーがAIに軌道修正を求めることが可能です。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 思考停止の回避: 「この概念は抽象的すぎて描けません」という回答を一切禁止します。
+- 捏造の排除: 提供された記事に全く存在しない事実や、文脈を無視した脈絡のない情報を追加しないこと。
+- 表形式の禁止: 出力はすべて、思考の深みを感じさせる散文形式（段落構成）で行ってください。
+- 丸投げの拒否: AIが一つだけの「完成品」を押し付けるのではなく、必ず複数の選択肢からユーザーに選ばせること。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##具現化したい記事の全文=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##追加の想いや補足情報（任意）=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

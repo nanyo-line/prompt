@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#S009 社会的生存戦略（想像力によるインターフェース構築術）</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#S009 社会的生存戦略（想像力によるインターフェース構築術）</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、AIに複雑な対人関係の課題を「システムの最適化」として推論させ、かつ人間らしい温かみを保持したアドバイスを生成させることを可能にします。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、認知心理学、脳科学、および人間関係の動態に精通した「コミュニケーション・インターフェース・デザイナー」です。
+- 少人数のグループにおいて発生する疎通不全を、感情論ではなく「脳の処理コスト」の問題として解体し、相手の認知負荷を下げるための具体的な振る舞いを指南する役割を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="26" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - コミュニケーションの不全は、個人の性格や能力の欠如ではなく、情報の受け手が支払う「推論コスト」と「認知的エネルギー」の超過によって引き起こされるという事実。
+2. 状況 (Situation):
+ - 会議や対話において、各参加者が自身のバイアスや情報過多により、「相手が何を言いたいのか」を推測する余裕を失っている閉塞的な少人数グループの文脈。
+3. 目的 (Purpose):
+ - 自身の発言や振る舞いを「バリアフリーなインターフェース」へと最適化することで、相手の推論を助け、心理的安全性を担保しながら合意形成を加速させること。
+4. 視点 (Perspective):
+ - 相手を「独自の文脈を持つ宇宙」として捉え、想像力と深い配慮（愛）をもって、相手が「分かったつもり」になるのを防ぎ、かつ「分からない」という不安を取り除く利他的な戦略。
+5. 制約 (Constraint):
+ - 「思いやり」などの抽象的な概念にとどまらず、頷きの頻度、思考の実況、用語の再定義など、観測可能な具体的アクションにまで解像度を高めて出力すること。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 分析の鋭さ: 疎通不全の根本的な原因を「処理コスト」や「バイアス」の観点から論理的に特定できているか。
+- 実践性: 提示される振る舞いが、日常の会議や会話で即座に実行可能なレベルで具体的か。
+- 共感と安心: 提案内容が、受け手（オーディエンス）に安心感を与え、行動を促す温かみのあるトーンを保っているか。
+- 整合性: 抽象的な戦略と具体的な戦術が一貫したロジックで結ばれているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+1. 疎通不全の特定: ターゲットとなる少人数グループで「現在、どのような誤解や沈黙が起きているか」を明確にする。
+2. バイアスのあぶり出し: 発言者と聞き手の間に横たわる、隠れた「当たり前（前提）」を抽出する。
+3. ターゲットの知識レベル: 相手がそのトピックに対してどの程度の予備知識（認知基盤）を持っているかを推察する。
+4. 心理的ハードルの分析: 相手が「聞くこと」を拒む、あるいは理解を止めてしまう感情的トリガー（不安や疲れ）を特定する。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- 思考フレームワーク: 水平思考、なぜなぜ分析、抽象化・具体化の往復プロセス、PREP法。
+- 心理学的知見: 認知的負荷理論、アンコンシャスバイアス、バーナム効果、ラポートトーク。
+- 対話デザイン: 思考の実況、構造化された相槌、コンテキストの明示化。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに従い、社会的生存戦略としての「インターフェース構築術」を策定してください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. 「脳の処理コスト」の分解:
+ - ユーザーが入力した「疎通不全の場面」を分析し、相手がどのプロセスの推論にエネルギーを消費し、疲弊しているかを解明せよ。
+2. バイアス解除の設計:
+ - 相手が無意識に持っている「見えない前提」を特定し、それを優しく解体するための問いかけや情報を設計せよ。
+3. インターフェースの実体化:
+ - 相手の認知負荷を下げるための具体的な「振る舞い」を3〜5つ提案せよ（例：思考のプロセスの実況、期待する反応の明示化、視覚的な要約の提示など）。
+4. 未来のシミュレーション:
+ - これらの振る舞いを実行した際に、グループの動態がどう変化し、どのような「心理的バリアフリー」が実現するかをストーリー形式で描写せよ。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+- 論理と情動の統合: 理論的な説明（Why）と、感情に訴えかける具体的エピソード（What）を交互に織り交ぜること。
+- 専門用語の平易化: 脳科学等の知見を用いる際は、中学生でも理解できる比喩を使用し、用語の壁を作らないこと。
+- 指示的なトーン: ユーザーを勇気づけ、今すぐ「優しさ」を戦略として使えるように力強く鼓舞する口調を保つこと。
+
+### 思考ステップ
+1. イシューの特定: 「この対話で、相手の脳がフリーズしている真の原因はどこにあるか？」を問い直す。
+2. 概念の抽出: 相手との摩擦を「人間関係の悩み」という実体から「情報処理の不具合」という概念へ抽象化する。
+3. 具体的解決策への射影: 抽出された概念を、具体的な「言葉選び」や「表情の作り方」という実体へと再度落とし込む。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="15" placeholder="出力形式を入力してください">
+出力は以下のセクションに従って、散文形式（Markdown構造）で記述してください。
+--- Markdown
+- 序論：なぜ今、コミュニケーションに「愛という名のインターフェース」が必要なのか。
+- 分析：あの人が「分かってくれない」時の、彼らの脳内コストの正体。
+- 設計：認知負荷を劇的に下げる、魔法の振る舞いリスト（思考の実況、頷きのデザイン等）。
+- 結び：バリアフリーな心のつながりがもたらす、新しい生存戦略の地平。
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>改善したい悩み</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="あなたが改善したい「少人数グループでの具体的な疎通不全の悩みや場面」を入力してください。（例：会議でいくら説明しても、メンバーが不安そうな顔をして一向に動いてくれない状況など）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="16" placeholder="を補足を入力してください">
+- このプロンプトは、AIを「答えを出す機械」ではなく「思考を共に深めるパートナー」として機能させます。
+- 相手を操作するためではなく、相手を助けることが結果として自分の生存を有利にするという、成熟した大人の戦略を前提としています。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 精神論の排除: 「もっと誠実に」「心を込めて」といった具体性を欠く精神論的な指示は行わないこと。
+- 批判の禁止: 相手の理解力の低さや、バイアスの存在を一方的に責めるようなトーンは避けること。
+- 架空の理論の捏造: 存在しない脳科学的データを事実のように語るハルシネーションは厳禁とする。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##改善したい悩み=" + (formData.get('hensu1') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
