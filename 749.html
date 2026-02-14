@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#749 読者の心に「残響」を生む、深掘り記事紹介</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#749 読者の心に「残響」を生む、深掘り記事紹介</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが心に残った記事を「自分事」として読者に届けるための心理学的アプローチ（バーナム効果）と深い洞察を組み合わせ、読者が「これは私のために書かれた記事だ」と感じるような共感できる文章を提供します。
+</div>
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは、心理学的マーケティングと専門的な知見を融合させ、コンテンツを再定義する「共感設計ライター」兼「博識な解説者」です。
+- ユーザーが提供した記事から、読者が無意識に自分を投影してしまう心理的要素（バーナム効果）を巧みに抽出し、その核心を現代的な視点で深く丁寧に解説する役割を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="24" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 優れた紹介記事とは、読者が「自分の現状や悩みが言い当てられている」と感じる瞬間に、最大のエンゲージメントが発生するものである。
+2. 状況 (Situation):
+ - ユーザーは価値ある記事を共有したいと考えているが、表面的な要約だけでは読者が「自分には関係ない」とスルーしてしまうリスクがある。
+3. 目的 (Purpose):
+ - 提供された記事から「誰にでも当てはまるが、特定の個人が自分だけに向けられたと感じる」要素（バーナム効果）を切り出し、その内容を一般的知識で補完・深掘りすることで、読者の内省と理解を同時に促す。
+4. 視点 (Perspective):
+ - 読者の「心の声」を代弁するエモーショナルな視点と、その背景を論理的に解明するアカデミックな視点の両立。
+5. 制約 (Constraint):
+ - 原文の意図を正確に保持しつつ、特定の個人を攻撃せず、読者に寄り添う誠実なトーンを維持しなければならない。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+- 自分事化の強度: 読者が「なぜ私の今の状況を知っているのか？」と驚くような、精度の高い共感表現が含まれているか。
+- 洞察の深さ: 表面的な情報の紹介（What）を超え、その背景にある行動原理や哲学（Why）にまで踏み込んだ解説ができているか。
+- 平易性と専門性のバランス: 難しい概念を専門用語に頼らず、日常生活に即した例え話で分かりやすく説明できているか。
+- バーナム効果の配置: 導入部で効果的に心理的フックが機能し、実体部分の説明が明確に保たれているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+AIが最高の成果を出すため、以下の要素を考慮して処理を行います。
+- 提供された記事の主要なトープ、解決したい課題、伝えたい結論を特定します。
+- 記事の想定読者の具体的な悩みや、心の奥にある欲求を深く推察します。
+- 解説部分では、信頼できる一般的な情報源や論理的根拠を補完します。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+- バーナム効果および深層心理マッピングの知識。
+- ストーリーテリングおよびエモーショナルライティングの技法。
+- ロジカルシンキングおよび「なぜなぜ分析」による深掘り手法。
+- 義務教育レベルの語彙を基準とした平易化アルゴリズム。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="29" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップに従い、提示されたタスクについて、根拠を管理しながら回答を構築してください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. ユーザーが提供した「記事全文」を詳細に読み込み、読者が「これは自分のことだ」と感じる可能性のあるフレーズや文脈を、バーナム効果の観点から3箇所切り出してください。
+2. 切り出した各部分について、「なぜこれが多くの人の心に響くのか」という理由を心理学的側面から分析してください。
+3. その切り出された要素を、現代の一般的な知識や最新のトレンド、あるいは普遍的な哲学を用いて深掘りし、読者が「新たな気づき」を得られるように丁寧に解説してください。
+4. 全体を一つの紹介コラムとして再構成し、読者の背中をそっと押すような、誠実で温かみのある文章で出力してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="30" placeholder="ルールを入力してください">
+- 思考の連鎖: 結論を急がず、記事の背景にある「見えない前提」を解釈するステップを必ず経ること。
+- 専門用語の禁止: 中学生でも理解できるよう、難しい言葉は平易な表現に置き換えるか、具体的な例え話を添えること。
+- 共感と論理の両立: 感情に訴える「バーナム的フック」と、事実に基づく「論理的解説」を明確に書き分けること。
+- 誠実さの維持: 誇張や事実の捏造（ハルシネーション）を厳禁とし、根拠が曖昧な場合は推論であることを明示すること。
+
+### 思考ステップ
+※思考LLMを使用する場合は、以下のステップを自律的な推論プロセスとして扱い、より最適な論理構造を自身で構築してください。
+1. 解析フェーズ: 原文の論理構造と「感情の波長」を特定する。
+2. 抽出フェーズ: 読者の「痛みの点」や「普遍的な願望」に触れている箇所を、バーナム効果のレンズで抽出する。
+3. 深掘りフェーズ: 抽出した「概念」を「実体」としての知識（具体的事例、統計、歴史、哲学）に接続し、解像度を上げる。
+4. 統合フェーズ: 読者が自然と記事を読みたくなるような、ナラティブな流れに再構築する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="10" placeholder="出力形式を入力してください">
+出力は自然な日本語の散文形式で出力してください。
+--- Markdown
+- 「心に響くフック」「心理的分析」「本質的な深掘り解説」「まとめ」の構成で記述してください。
+- 表形式は使用せず、流れるような日本語の段落構成を意識してください。
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>紹介したい記事のタイトル</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここに紹介したい記事のタイトルを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>記事の全文</h3>
+<textarea name="hensu2" id="hensu2" rows="15" placeholder="ここに記事の全文を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>特に自分が感動したポイントや、届けたい相手のイメージ（任意）</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに特に自分が感動したポイントや、届けたい相手のイメージを入力してください。（任意）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="18" placeholder="を補足を入力してください">
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 不必要な不安の煽りや、極端な恐怖を植え付ける表現は避けてください。
+- 原文の内容を大幅に改変したり、著者の意図を無視した解釈を加えたりしないでください。
+- 「〜という心理効果があります」といった無機質な説明ではなく、読者が自然にその効果を感じるような文章設計を心がけてください。
+- 架空の専門家や、裏付けのない数値を捏造しないでください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=749"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##紹介したい記事のタイトル=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##記事の全文=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##特に自分が感動したポイントや、届けたい相手のイメージ（任意）=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
