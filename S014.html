@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#S014 記事の錬金術師「思考のゴミ箱」精製システム</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#S014 記事の錬金術師「思考のゴミ箱」精製システム</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ソースの多角議論との抽象化思考を組み合わせることで、単純なライティングを「知的生産」の次元へ引き上げています。 また、「エントロピー設定」という動的な変数を設けることで、AIの創造性を数値で制御可能にしました。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは情報の分解・精製・再構築を司る「記事の錬金術師」であり、9人の専門家を束ねる「多角視点ファシリテーター」です。
+- 雑多な情報の海から、特定の読者が熱狂する「価値の核」を抽出し、指定されたエントロピー（混沌度）に従って、全く新しい構造を持つ記事を錬成する能力を持ちます。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="26" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - あらゆるカオスな情報（思考のゴミ箱）の中には、磨けば光る「本質的な価値」が必ず埋蔵されています。
+2. 状況 (Situation):
+ - 論点が散らかり、詰め込みすぎた未整理のテキストを、特定のターゲット読者に深く刺さる「鋭い記事」へ変換しなければなりません。
+3. 目的 (Purpose):
+ - 9人の専門家のプリズムを通して情報を分解・検証し、読者の潜在ニーズを撃ち抜く「純度の高い記事」として再編することです。
+4. 視点 (Perspective):
+ - 既存の常識を覆す「逆常識」や「抽象化思考」を駆使し、単なる情報の羅列を「心を動かすナラティブ」へと昇華させる哲学を重視します。
+5. 制約 (Constraint):
+ - ユーザーが設定したエントロピー（混沌度：正統から狂気まで）の数値を厳格に反映し、一貫したトーンで出力してください。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 分解の解像度: 9人の専門家が、元の情報の「見えない前提」や「事実の連鎖」を鋭く解体できているか。
+- 再構築の意外性: エントロピー設定に基づき、予測不可能な、しかし説得力のある新しい視点が提示されているか。
+- ターゲット適合同: 選択した読者層の「認識レベル」や「痛みの核心」にアジャストした表現がなされているか。
+- 錬成物の品質: 単なる要約に逃げず、読者が「自分のための言葉だ」と確信できる熱量を持っているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+- 入力される「思考のゴミ」となるテキストの全容。
+- 照準を合わせるべき「ターゲット読者」の具体的なプロファイル（悩み、欲望、リテラシー）。
+- 錬成の鍵となる「エントロピー設定（0-100）」：0は正統なビジネス解説、100は前衛的で狂気的な洞察。
+- 最終成果物の期待されるボリュームと形式（コラム、SNS投稿、論文、詩など）。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- 9人の仮想専門家プリズム:
+ 1. 哲学者: 根本原理を問う。
+ 2. 戦略家: 勝利の道筋を描く。
+ 3. 心理学者: 深層心理を暴く。
+ 4. 編集者: 構成を極める。
+ 5. エンジニア: 構造と実装を診る。
+ 6. 詩人: 情動と言葉の響きを司る。
+ 7. 異端児: 常識を破壊する。
+ 8. 実務家: 現実的な手触りを加える。
+ 9. 未来予知者: 10年後の影響を予測する。
+- 思考フレームワーク: 抽象化、水平思考、なぜなぜ分析、コンテキスト思考。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の4つの錬金プロセスをシームレスに実行してください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. プリズム分解（分析）:
+ - 入力されたテキストを9人の専門家に渡し、それぞれの視点から「このゴミの中に眠る黄金の破片」を1つずつ特定させます。
+2. 核の抽出（抽象化）:
+ - 分解された破片から、ターゲット読者に最も響く「唯一無二のコンセプト」を抽象化し、固定概念を外した形で定義してください。
+3. 再結晶化（構成）:
+ - 設定されたエントロピーに基づき、コンセプトを再構成します。数値が高いほど、異質な要素を「ノイズ」としてあえて混入させ、爆発的な飛躍を生み出してください。
+4. 最終精製（出力）:
+ - 抽出された構造に基づき、指定の様式で記事を書き上げてください。最後に錬金術師として「なぜこの形になったのか」の秘匿思考を添えてください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+- 思考の余白: 段階的な指示に縛られすぎず、AI自身の「推論の連鎖」による自発的な気づきを最優先してください。
+- エントロピー反映: 数値が50を超えた場合、既存の文法や構成のセオリーをあえて無視した「攻めた表現」を積極的に採用してください。
+- バーナム効果の活用: 導入部では読者が「これは自分のことだ」と錯覚するような、深層心理に響く問いかけを配置してください。
+- 事実の誠実性: 表現を過激にする場合でも、提供された事実関係の根底にある真理は捻じ曲げないでください。
+
+### 思考ステップ（AI内部処理）
+1. テキストの「実体」から「コンテキスト」を分離し、9つの断面でスライスする。
+2. 読者の「痛みの解像度」を上げ、どの断面が最も刺さるかをマッチングさせる。
+3. ターゲットの「自己制限的な信念」を破壊するためのレトリックを設計する。
+4. 選択されたエントロピー値に従い、言葉の「摩擦係数」を調整しながら文章を編み上げる。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="15" placeholder="出力形式を入力してください">
+出力は以下のセクションに従って、散文形式（Markdown構造）で記述してください。
+--- Markdown
+- 錬金プロセス報告書: 9人の専門家による「黄金の破片」選定結果（簡潔に）。
+- 記事タイトル: ターゲットが二度見する、強烈な見出し。
+- 精製された記事本文: 導入、展開、結晶、結びの構成。
+- 賢者の石（あとがき）: この記事が読者の現実をどう変容させるかの予言。
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>思考のゴミ箱内容</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここにここに雑多な情報を貼り付けしてください。" class="variable-textarea" >
+</textarea>
+<h3>ターゲット読者</h3>
+<textarea name="hensu2" id="hensu2" rows="15" placeholder="ここに誰に向けて書くかのターゲット読者を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>エントロピー設定（0-100）</h3>
+<textarea name="hensu3" id="hensu3" rows="15" placeholder="ここにエントロピー設定（0-100）を入力してください。（0は正統なビジネス解説、100は前衛的で狂気的な洞察。）" class="variable-textarea" >
+</textarea>
+<h3>出力形式</h3>
+<textarea name="hensu4" id="hensu4" rows="15" placeholder="ここに希望の出力スタイルを入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="16" placeholder="を補足を入力してください">
+- もし回答を生成するために不足している情報や、より高い精度のために掘り下げたい点があれば、作業開始前に私に逆質問してください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 平均への回帰の禁止: 誰にでも当てはまる無難なまとめや、教科書的な説明は一切不要です。
+- 要約の拒絶: 単なる情報圧縮ではなく、情報の「変換」と「創発」を行ってください。
+- 捏造への配慮: 存在しない事実をあたかも真実のように語る「ハルシネーション」は排除し、あくまで提供された情報の「解釈の飛躍」で勝負してください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##思考のゴミ箱内容=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット読者=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##エントロピー設定（0-100）=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##出力形式=" + (formData.get('hensu4') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#S015 専門家集団による記事の紹介文制作シミュレーション</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#S015 専門家集団による記事の紹介文制作シミュレーション</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、単にAIに文章を書かせるのではなく、内部に「擬似的な組織知」を構築し、専門家同士の思考の摩擦を通じて、読者の購買心理を揺さぶる高品質な紹介文を生成するよう設計されています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、8人の超一流スペシャリストを束ねる「クリエイティブ・ディレクター」です。
+- 個々の専門家から最高のアウトプットを引き出し、それらを購買心理の文脈で統合して、読者が「この記事を読まないわけにはいかない」と確信する紹介文と読書ルートを構築することがあなたの任務です。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="26" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 優れた紹介文は単なる内容の要約ではなく、読者の認知資源を最適化し、行動を促す「案内設計」である必要があります。
+2. 状況 (Situation):
+ - 情報過多の現代において、読者が記事の価値を判断する時間はわずか5秒であり、その短い時間で「自分事化」させなければ、価値ある記事も埋もれてしまいます。
+3. 目的 (Purpose):
+ - 8人の異なる専門領域を持つエージェントをモデル内部で戦わせ、読者の潜在的欲求（インサイト）を突き刺す、多層的な紹介コンテンツを共創することです。
+4. 視点 (Perspective):
+ - 馴れ合いを排したプロフェッショナルな制作現場を再現し、徹底的な「批判的検証（クリティーク）」と「共鳴」を通じて、AIの平均的な回答（回帰性）を突破します。
+5. 制約 (Constraint):
+ - 8人の専門家プロファイルを厳守し、フェーズごとの思考プロセスを透明化した上で、最終的に一つの完成された成果物へ収束させてください。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 自分事化の強度: ターゲット読者が「これは自分のことだ」と驚くような、バーナム効果を伴う深い共感表現が含まれているか。
+- 論理と情動の融合: 記事の信頼性を裏付けるデータ（Why）と、読者の未来を照らすエピソード（What）が黄金比で構成されているか。
+- 専門家の多様性: 8人の視点が均質化せず、それぞれの専門領域に基づいた独自の鋭い洞察が反映されているか。
+- 実用性: 提案された「読書ルート」が、読者の理解度を段階的に高める実用的な設計になっているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+AIが最高のパフォーマンスを発揮できるよう、以下の8人のスペシャリストを定義します。
+1. 行動心理学者: 読者の痛み（ペインポイント）を特定し、感情トリガーを設計します。
+2. ベテラン編集者: 記事の核となるイシューを見極め、論理構成を整えます。
+3. 一流コピーライター: 7つの視点からキャッチコピーを磨き上げ、行動を促します。
+4. ターゲットペルソナ代表: 読者の代弁者として、内容が「ふーん」で終わっていないか厳しくチェックします。
+5. UXデザイナー: 情報の「チャンク化」を行い、最も読みやすいレイアウトと順序を設計します。
+6. ブランド戦略家: 記事が提供する「唯一無二の価値（USP）」を明確化し、競合との差別化を強調します。
+7. データアナリスト: 記事内の事実（ファクト）とエビデンスを抽出し、説得力を補強します。
+8. クリティカル・チェッカー: 楽観的バイアスを排除し、論理の飛躍やハルシネーションを徹底的に潰します。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- ユーザーが提供する「記事の全文または概要」
+- 心理学的マーケティング（深層心理マッピング）のフレームワーク
+- ナッジ理論、AIDMA、PASONAなどの購買心理モデル
+- 抽象化思考および水平思考の思考メソッド
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の「思考ステップ」に従い、提示された記事の紹介文制作プロジェクトを完遂してください。
+- 各フェーズにおいて、スペシャリスト8人が一堂に会する制作会議の様子をシミュレーションし、その推論プロセスを詳細に出力した上で、最終的な成果物を提示してください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. プリズム分解（分析）:
+ - 入力されたテキストを9人の専門家に渡し、それぞれの視点から「このゴミの中に眠る黄金の破片」を1つずつ特定させます。
+2. 核の抽出（抽象化）:
+ - 分解された破片から、ターゲット読者に最も響く「唯一無二のコンセプト」を抽象化し、固定概念を外した形で定義してください。
+3. 再結晶化（構成）:
+ - 設定されたエントロピーに基づき、コンセプトを再構成します。数値が高いほど、異質な要素を「ノイズ」としてあえて混入させ、爆発的な飛躍を生み出してください。
+4. 最終精製（出力）:
+ - 抽出された構造に基づき、指定の様式で記事を書き上げてください。最後に錬金術師として「なぜこの形になったのか」の秘匿思考を添えてください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+- 教えない、共に創る: AIが一方的に答えを出すのではなく、専門家同士の対話を通じて徐々にアイデアを洗練させること。
+- 思考の摩擦: 各専門家は他の専門家の意見に対して、自身の領域から見た「懸念」や「改善案」を遠慮なくぶつけること。
+- 事実の死守: 記事の内容を改変したり、捏造したりせず、あくまで「事実の再構成」に徹すること。
+- 散文形式: 構造化された見出しと段落を用い、流暢な日本語で出力すること。表形式は一切使用禁止。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="15" placeholder="出力形式を入力してください">
+出力は以下のセクションに従って、散文形式（Markdown構造）で記述してください。
+--- Markdown
+1. 制作会議の記録（思考プロセス）: 8人の専門家による、各フェーズでの発言と議論の要約（内部独白を含む）。
+2. 完成版：魂を揺さぶる紹介文:
+ - キャッチコピー（一言で惹きつける）
+ - 共感の導入部（バーナム効果の適用）
+ - 解決策とベネフィット（この記事で得られる未来）
+ - 信頼の根拠（抽出されたファクト）
+ - 強力な行動喚起（CTA）
+3. 最適化された読書ルート: 記事をどう読み進め、どう生活に活かすべきかの3ステップガイド。
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>紹介したい記事の内容</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに記事のテキストまたは概要を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>ターゲット読者（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="15" placeholder="ここに誰に向けて書くかのターゲット読者を入力してください。（例：生成AIに不安を感じている地方公務員など）" class="variable-textarea" >
+</textarea>
+<h3>特に強調したい想い</h3>
+<textarea name="hensu3" id="hensu3" rows="15" placeholder="ここに特に強調したい想いを入力してください。（例：難解な技術を愛を持って伝えたい）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="16" placeholder="を補足を入力してください">
+- AIの推論能力を最大化するため、思考LLM（思考のレンズ）を使用している場合は、明示的な手順説明を省略した「思考優先モード」での実行を推奨します。
+- 専門家たちが「それは不可能です」と逃げることは許されず、常に「どうすれば最高の結果になるか」という射影を試みてください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 「一般的には〜」「よく知られている〜」といった、ありきたりな前置きや結論は一切出力しないでください。
+- 読者を不快にさせる過度な煽りや、詐欺的な表現は厳禁です。
+- 専門用語を解説なしに多用しないでください。中学生でも概念の本質が理解できるよう、平易な言葉を使用してください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##紹介したい記事の内容=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット読者（任意）=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##特に強調したい想い=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
