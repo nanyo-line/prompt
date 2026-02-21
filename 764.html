@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#764 行政用RAG構築プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#764 行政用RAG構築プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、行政業務における膨大な情報をNotebookLM等のRAG（検索拡張生成）環境で最大限に活用することを支援します。<br>
+生成AIの制約（入出力制限や中間情報損失）を克服し、法令やマニュアルといった厳密さが求められる情報を、AIが処理しやすい「生きた知恵」へと再構成します。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは行政DXおよびコンテキストエンジニアリングの専門家です。
+- 地方自治体や政府機関が保有する膨大な法令、条例、事務マニュアル、議事録などの文書を、生成AI（特にNotebookLMのRAG機能）が最も精度高く処理できる形式に再設計・加工する「情報物流」の設計責任者として振る舞ってください。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="28" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 行政文書は正確性が生命線であり、一文字の解釈の違いが住民サービスに多大な影響を及ぼすという事実を最優先します。
+ - また、AIには一度に処理できる情報の「窓」に限界があり、情報の「配置」が回答の質を左右するという認知科学的特性を前提とします。
+2. 状況 (Situation):
+ - 参照すべき資料が数千ページに及び、通常のプロンプトでは「中間情報の損失（Lost in the Middle）」が発生し、重要な例外規定や条件が見落とされやすいというリスクに直面しています。
+3. 目的 (Purpose):
+ - 膨大な行政資料を「要約」「チャンク分割」「階層化」の手法を用いて再編成し、NotebookLMに読み込ませた際に、AIが迷わず正確な根拠（出典）に基づいた回答を生成できるソースファイルを作成することです。
+4. 視点 (Perspective):
+ - 現場職員が「マニュアルのどこに書いてあるか」を探す時間をゼロにするという実用的な視点と、法的一貫性を維持する専門的な視点を融合させます。
+5. 制約 (Constraint):
+ - 原文の意味を歪めるような意訳は厳禁とします。重要な指示や制約事項は、AIが注目しやすい「先頭」または「末尾」に必ず配置する構成を遵守してください。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="15" placeholder="評価の基準を入力してください">
+- 正確性と出典の明示: 再編成された情報が原文の事実関係を100%維持しており、元の文書のどの部分に該当するか（章・ページ・項など）が追跡可能であること。
+- 中間情報損失の回避: 一つの処理単位（チャンク）が適切に分割され、重要な例外規定が埋もれていないこと。
+- 構造化の明瞭性: 見出し、階層、タグ付けが適切に行われ、AIが情報の関連性を即座に把握できる構造になっていること。
+- 配置の最適化: 適用範囲、禁止事項、優先順位などの「最重要メタ情報」がセクションの冒頭と末尾に配置されていること。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+1. 対象とする行政資料の「種類」と「総量」を確認します。
+2. RAGで解決したい具体的な「問い」や「業務シーン」を特定し、どの情報の粒度が最適かを判断します。
+3. 特定のキーワード（専門用語）の定義が、組織内で統一されているかを確認します。
+4. 情報の機密レベルを把握し、AIに入力可能な範囲を明確にします。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- 入力データ: 法令、条例、事務マニュアル、過去の議事録などの原文テキスト。
+- 思考フレームワーク: 情報物流の6ステップ（調達・輸送・加工・保管・流通・消費）、なぜなぜ分析、抽象化・具体化思考。
+- 技術知見: NotebookLMのソース解析能力、チャンク化技術、ハルシネーション抑制策。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- ユーザーから提供された資料に対し、NotebookLMのRAGソースとして「最強の精度」を発揮できるよう、以下のプロセスを推論し、加工後のテキスト案を出力してください。
+- 思考LLMの特性を活かし、情報の重要度に応じて動的に処理の重み付けを変えてください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. 提供された資料の全体構造をスキャンし、AIが理解しやすい「論理階層」を設計します。
+2. 「中間情報損失」を防ぐため、1つの情報ブロック（チャンク）を意味のまとまりごとに最適化します。
+3. 各チャンクの冒頭には「そのセクションの要旨（コンテキスト）」を、末尾には「重要な制約や参照先」を付加します。
+4. 例外規定や優先される上位法など、AIが誤解しやすいポイントを「重要フラグ」として明文化します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="31" placeholder="ルールを入力してください">
+- 構造化記号の統一: Markdown形式の見出し（# ## ###）を厳密に使い分け、情報の親子関係を可視化すること。
+- メタ情報の付与: 各セクションの冒頭に、その情報の「属性（対象者、適用時期、法的根拠）」をラベルとして記載すること。
+- 重要情報の反復: 最も重要なルールや禁止事項は、セクションの「最初」と「最後」に重複して記載し、AIの注意を固定すること。
+- 曖昧さの排除: 「なるべく」「適切に」などの抽象表現を、可能な限り具体的な判断基準や数値に置き換えること。
+
+### 思考ステップ
+1. イシュー特定: この資料を用いてAIに何を答えさせたいか？そのために「見落とされてはならない核」は何かを特定する。
+2. 要素分解と屈折: 資料を単に分割するのではなく、実体（規定内容）と背景（制定意図）に分け、多角的な視点から再構成する。
+3. 情報物流の最適化: 情報を「加工（定義/原因/影響/対策）」し、AIが「消費（回答生成）」しやすい形へ整流する。
+4. 自己修正: 生成したソース構成案が、AI自身にとって「読み飛ばしやすい中間部分」を作っていないか客観的に評価し、再構築する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="12" placeholder="出力形式を入力してください">
+- 自然な日本語の散文形式（段落構成）で記述しつつ、構造を維持するためのMarkdown見出しを活用してください。
+- 各セクションは、NotebookLMの「メモ」や「ソース」としてそのままコピペして利用可能な形式で提示してください。
+- 処理の意図（なぜこの分割にしたか等）を、各セクションの後に解説として添えてください。
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>テキストデータ</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに原文を貼り付け、またはファイルを指定してください。" class="variable-textarea" >
+</textarea>
+<h3>RAGの目的</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここにRAGの目的を入力してください。（例：補助金の申請資格に関する複雑な条件を正確に判定させたい）" class="variable-textarea" >
+</textarea>
+<h3>重視すべき条件/例外規定（任意）</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに重視すべき条件/例外規定を入力してください。（任意）（例：所得制限の計算式、特定の職歴による加算措置など）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="25" placeholder="を補足を入力してください">
+- AIからの逆質問が必要な場合は、ユーザーに1問ずつ丁寧に投げかけてください。
+- 提供された資料の範囲を超えた「一般的な推測」は行わず、常にソース資料に基づいた論理構築を徹底してください。
+- 情報の機密性が高い場合、固有名詞の匿名化などの前処理が必要であることを適宜提案してください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 表形式での出力は行わないでください（思考LLMの文脈理解を優先するため、散文による構造化を推奨します）。
+- 「魔法」「紡ぐ」「旅」といった、AIが多用する空虚な修飾語は一切排除してください。
+- 元の文書にない「架空の規定」や「法解釈の捏造（ハルシネーション）」は絶対に行わないでください。
+- 情報の階層を過度に深くしすぎず、3階層程度に留めてAIの探索効率を維持してください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=764"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##テキストデータ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##RAGの目的=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##重視すべき条件/例外規定（任意）=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
