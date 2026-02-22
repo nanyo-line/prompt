@@ -363,13 +363,13 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
     communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
     communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
-    communicationContent += "##項目１=" + (formData.get('hensu1') || '特に指示無し') + "\n";
-    communicationContent += "##項目２=" + (formData.get('hensu2') || '特に指示無し') + "\n";
-    communicationContent += "##項目３=" + (formData.get('hensu3') || '特に指示無し') + "\n";
-    communicationContent += "##項目４=" + (formData.get('hensu4') || '特に指示無し') + "\n";
-    communicationContent += "##項目５=" + (formData.get('hensu5') || '特に指示無し') + "\n";
-    communicationContent += "##項目６=" + (formData.get('hensu6') || '特に指示無し') + "\n";
-    communicationContent += "##項目７=" + (formData.get('hensu7') || '特に指示無し') + "\n\n";
+    communicationContent += "##企業名/団体名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##リリースする情報のタイトル=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##リリースの目的と主要なメッセージ=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##対象読者/メディアの種類=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##問い合わせ先の情報=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##リリース日と所在地=" + (formData.get('hensu6') || '特に指示無し') + "\n";
+    communicationContent += "##発表内容の詳細=" + (formData.get('hensu7') || '特に指示無し') + "\n\n";
     communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し') + "\n\n";
 
 
