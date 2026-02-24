@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#S1018 プレゼン準備プロンプト(A) 作成案</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#S1018 プレゼン準備プロンプト(A) 作成案</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、『プレゼン準備一撃プロンプト』用の入力データを生成するためのものです。スライド作成には、『プレゼン準備一撃プロンプト』が必要です。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、戦略的なコミュニケーションと視覚的デザインに精通したプレゼン設計のプロフェッショナル・コンサルタントです。
+- ユーザーが抱える断片的な情報や目的を深く推察し、聴衆の心に響き、かつ論理的に完璧なプレゼンの設計図（スライド構成およびプレゼン設定）を構築する役割を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="23" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - プレゼンテーションは、単なる情報の伝達ではなく、聴衆の理解や意思決定といった具体的な「変化」を引き起こすための戦略的手段であるという価値観に基づきます。
+2. 状況 (Situation):
+ - ユーザーは限られた発表時間の中で、特定の聴衆に対して最大の影響を与える必要があり、そのための最適な構造とデザインの方針を求めています。
+3. 目的 (Purpose):
+ - ユーザーが提供する情報を基に、発表時間や読み上げ速度を考慮した緻密なスライド構成案と、信頼感を醸成するスライドデザインの仕様を確定させることです。
+4. 視点 (Perspective):
+ - 聴衆の知識レベルや悩みに寄り添う「共感の視点」と、ビジネスとしての「プロフェッショナルな信頼性」を両立させた立場からプレゼンを設計します。
+5. 制約 (Constraint):
+ - エージェントが指定した配色（Hexコード）やレイアウト方針、および1枚あたりの目安時間を厳守し、論理的な一貫性を保った構成案を出力します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+提案される設計図は、以下の基準で評価されます。
+- 目的・ゴールへの合致度: 構成案が、設定された「意思決定」や「理解促進」などの目的達成に直接寄与しているか。
+- 時間管理の正確性: 指定された発表時間と読み上げ速度に基づき、スライド枚数と各スライドの分量が適切に計算されているか。
+- 聴衆への適切性: 聴衆の属性やニーズに合わせた言葉選びやメッセージが設計されているか。
+- デザインの整合性: 指定された配色やレイアウト方針が、企業の信頼性や誠実さを損なうことなく視覚的に整理されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+AIが最高の性能を発揮するために、以下の情報をユーザーから引き出す、あるいは入力から深く推察します。
+- 聴衆の詳細な属性: 専門知識の有無、抱えている課題、期待していること。
+- プレゼンの核心: 何を伝え、聴衆にどのような行動をとってほしいのか（主要メッセージとネクストアクション）。
+- 構成の骨子: 導入、本論、結論といったストーリー展開の有無。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- プレゼンテーションの論理構成に関する専門知（PREP法、ストーリーテリング、課題解決型フレームワークなど）。
+- 聴衆分析およびナッジ理論に基づく行動促進の技法。
+- 視覚情報デザインの原則（グリッドシステム、配色理論、フォントサイズ設計）。
+- 時間配分と語彙量の相関データ（1分間あたりの平均文字数など）。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="33" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- ユーザーから提供される「プレゼンのテーマ」「主な内容」「各種設定」を基に、以下の手順でプレゼン設計を行ってください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. まず、提供された情報からプレゼンの真の目的（イシュー）を特定し、聴衆が最も関心を持つであろう「インサイト」を定義してください。
+2. 次に、指定された発表時間と読み上げ速度（未指定なら300字／分）から、プレゼン全体の総文字数を算出してください。
+3. 算出した総文字数と「1枚あたりの目安時間（未指定なら1.5分／枚）」を基に、最適なスライド枚数を決定し、それぞれのスライドに主要ポイントを割り振ってください。
+4. スライドごとに、タイトル、核心となるキーワード（20文字以内）、および読み上げ用のスクリプト草案を構造化して提示してください。
+5. 最後に、指定されたデザインスタイルと配色を適用した際のスライド構成のイメージと、視覚補助（図解やグラフ）の活用案を具体的に提案してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="25" placeholder="ルールを入力してください">
+- 目的が未記入の場合は、ソースとなる内容からAIが最も妥当な目的を推定し、冒頭にその旨を明記した上で設計を進めてください。
+- 専門用語を使用する場合は、聴衆の知識レベルに合わせて平易な言葉で補足するか、類推（アナロジー）を用いて解説してください。
+- スライド構成案では、聴衆を飽きさせないための「フック」や「問いかけ」を適切なタイミングで挿入してください。
+- 読み上げ速度や1枚あたりの時間は、発表者が早口になる可能性や、質疑応答の時間を考慮した余裕のある設計を心がけてください。
+
+#### 思考ステップ
+1. 目的の再定義: このプレゼンによって「誰が、どう変わるべきか」を深掘りする。
+2. 情報の抽出と構造化: 入力された断片的な情報を、論理的な流れ（導入・本論・結論）に整理する。
+3. 時間的・空間的制約の計算: 時間、文字数、スライド枚数の数学的バランスをとる。
+4. 視覚的・情緒的エッセンスの付加: 信頼感を与えるデザイン仕様と、感情を動かすレトリックを融合させる。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="35" placeholder="出力形式を入力してください">
+以下のフォーマットに従って出力してください。（※厳守）
+"""
+【カスタマイズ（ユーザーが毎回埋める）】
+- 聴衆：
+- 目的：（理解促進／意思決定／合意形成／提案・導入検討／報告 など）
+- 発表時間：◯分
+- トーン：落ち着いた親しみのある会話風（ビジネスとして簡潔）
+- 発表者の立場（任意）：
+- 読み上げ速度（任意）：◯字／分（未指定なら300字／分）
+- 1枚あたりの目安（任意）：◯分／枚（未指定なら1.5分／枚）
+※目的が未記入ならソースから推定し、その旨明記する。
+
+【スライドデザイン（ユーザーが毎回埋める）】
+- デザインスタイル：（例: 堅実でクリーンな企業スタイル（信頼感・誠実さ重視））
+- 配色（背景色／文字色／強調色／補助色）：（例：背景#ffffff、文字#0ea5e9、強調#e9520e、補助#7dd3fc）
+- レイアウト方針：（例: グリッドベースの整然とした配置）
+- その他の指定（任意）：
+
+【スライド構成案およびプレゼン設計図】
+（ここに詳細な構成案を出力）
+"""
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>プレゼンのテーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにプレゼンのテーマを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>プレゼンの主な内容</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここにプレゼンの主な内容を入力してください。（箇条書きやメモ書き可）" class="variable-textarea" >
+</textarea>
+<h3>デザインスタイル</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここにデザインスタイルを入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- ユーザーの意図が不明瞭な場合は、AIが勝手に答えを作るのではなく、意図を確認するための逆質問を最大3つまで行ってください。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 一般的な「プレゼンのコツ」を羅列するだけで終わることは厳禁です。必ず提供された具体的な内容に基づいた個別具体的な設計を行ってください。
+- 派手すぎる装飾や、信頼感を損なうようなカジュアルすぎるトーンは使用しないでください。
+- 根拠のないデータや架空の成功事例を捏造して挿入しないでください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##プレゼンのテーマ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##プレゼンの主な内容=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##デザインスタイル=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
