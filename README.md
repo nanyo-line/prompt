@@ -19,11 +19,25 @@ http://www.city.nanyo.yamagata.jp/dxchosei/5793
 
 ---
 
-## プロンプト一覧データ（prompts.json）の更新手順
+## プロンプト一覧データ（prompts.json）について
 
-プロンプトのHTMLファイルを追加・変更した際に、一覧データ `data/prompts.json` を更新する手順です。
+### これは何？
 
-> この作業は必須ではありません。伊東（[@BoxPistols](https://github.com/BoxPistols)）にご連絡いただければ代行いたします。
+`data/prompts.json` は、リポジトリ内のHTMLプロンプトファイルから**タイトル・目的・カテゴリなどの情報を自動抽出した一覧データ**です。
+
+プロンプト閲覧アプリ（ https://nanyo-prompt.vercel.app/ ）では、この一覧データをもとに検索やカテゴリ分類を行っています。
+
+### いつ更新が必要？
+
+**新しいプロンプトのHTMLファイルを追加・変更した場合**に、この一覧データも更新する必要があります。
+
+ただし、HTMLファイルの追加・編集だけであれば、元のHTMLページ（ https://nanyo-line.github.io/prompt/ ）には影響しません。一覧データの更新はアプリ側に反映するためのものです。
+
+### 誰が更新する？
+
+> **この作業は必須ではありません。** 伊東（[@BoxPistols](https://github.com/BoxPistols)）にご連絡いただければ代行いたします。
+
+以下の手順は、ご自身で更新されたい場合の参考資料です。
 
 ### 必要なもの
 
