@@ -339,11 +339,11 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
     communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
     communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
-    communicationContent += "##項目１=" + (formData.get('hensu1') || '特に指示無し') + "\n";
-    communicationContent += "##項目２=" + (formData.get('hensu2') || '特に指示無し') + "\n";
-    communicationContent += "##項目３=" + (formData.get('hensu3') || '特に指示無し') + "\n";
-    communicationContent += "##項目４=" + (formData.get('hensu4') || '特に指示無し') + "\n";
-    communicationContent += "##項目５=" + (formData.get('hensu5') || '特に指示無し') + "\n\n";
+    communicationContent += "##組織又はプロジェクト名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##事業内容=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##目指す未来=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット顧客=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##感情に訴えかける言葉=" + (formData.get('hensu5') || '特に指示無し') + "\n\n";
     communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
 
 
