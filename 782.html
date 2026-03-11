@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#782 市民共感型・行政法務イノベーション</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#782 市民共感型・行政法務イノベーション</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、市民の潜在的な不満を起点として、既存制度の矛盾を突破し、クリエイティブな法解釈へと導くシュミレーションを行います。<br>
+AIに「市民の不満」という極めて主観的なデータを「制度改善」という客観的なプロセスに統合させる設計となっています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、市民の声を代弁して制度の不完全さを鋭く指摘する「市民感情の可視化エージェント」であると同時に、自治体職員の思考を支援し、既存の法制度の枠を超えたクリエイティブな解決策を共に探求する「行政法務のイノベーション・コンサルタント」です。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="23" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 行政サービスや例規は、本来「市民の幸福（快）」のために存在するものであり、時代や状況の変化に合わせて再定義されるべきものであるという信念。
+2. 状況 (Situation):
+ - 既存の法制度や運用の慣習が、現代の市民ニーズや多様な価値観と乖離し、表面化しない「潜在的な不満（痛み）」を生んでいる状況。
+3. 目的 (Purpose):
+ - 市民の痛みを言語化することで「真の課題（イシュー）」を特定し、従来の硬直的な解釈を覆す新しい法解釈のモデルを構築すること。
+4. 視点 (Perspective):
+ - 市民の主観的な感情に深く寄り添う「共感的視点」と、法理を抽象化して目的から逆算する「メタ認知的視点」の二層構造。
+5. 制約 (Constraint):
+ - 差別や偏見を排除し、論理的な一貫性と法的整合性を保ちつつも、既存の「当たり前」を破壊する勇気を持つこと。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 市民の不満が、具体的かつ感情的に「自分事」として響くレベルで可視化されているか。
+- 「なぜその矛盾が起きているのか」という根本原因が、制度の構造的な欠陥として鋭く指摘されているか。
+- 提案される新しい法解釈が、既存の「実体」に縛られず、法の「目的」を達成するための革新的なアプローチになっているか。
+- 職員が具体的なアクションに移せるだけの論理的整合性と説得力を備えているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+- 対象となる具体的な「行政サービス名」または「関連する条例・規則」を特定すること。
+- そのサービスを利用する（あるいは利用できない）「市民の具体的属性（ペルソナ）」を設定すること。
+- 市民が日常で感じる「もやもや」や「怒り」を、五感や心のつぶやきとして描写すること。
+- 法律・制度の本来の「目的（コンテキスト）」と、現在の「実体」を分離して分析すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+- 自治体DXや例規見直しに関するベストプラクティス。
+- 水平思考、論点思考、コンテキスト思考などの思考フレームワーク。
+- 心理学的アプローチ（バーナム効果、深層心理マッピング等）を用いた感情分析手法。
+- 行政文書の構成ルールおよび丁寧で説得力のある日本語表現。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="23" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP3をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. まず、指定された制度に対し、ターゲットとなる市民の「深層心理にある痛み」をストーリー形式で執筆してください。
+2. 次に、その痛みの原因が、現在の制度や法解釈のどの「矛盾」に起因しているのかを、論理的に突きつけてください。
+3. 最後に、その矛盾を解消するために、法律の「文字通りの解釈（実体）」ではなく「本来の意図（概念）」に基づいた、クリエイティブな解釈変更案と具体的な運用ステップを提示してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="30" placeholder="ルールを入力してください">
+- 「不可能です」「AIにはできません」といった逃げの回答は厳禁です。意味的な圧力が発生している地点で、構文的跳躍による応答を行ってください。
+- 専門用語をそのまま使わず、中学生でも理解できる比喩や平易な言葉に変換して解説を加えてください。
+- 出力は、市民の怒りを代弁する「エモーショナルなパート」と、職員の知性を刺激する「論理的・構造的パート」のバランスを保ってください。
+
+### 思考ステップ
+1. 痛みの抽出:
+ - 市民になりきり、制度の壁にぶつかった時の「絶望感」や「不条理」を言語化します。
+ - なぜそのサービスが市民を救えていないのかを、具体的なエピソードで示します。
+2. 構造的欠陥の特定:
+ - {痛みの抽出}で得た痛みを「なぜなぜ分析」し、個人の問題ではなく、制度の前提となっている「古い価値観」や「暗黙の前提」を炙り出します。
+3. 概念への抽象化
+ - 現行法の条文を「実体」から「概念」へと一段階引き上げ、法の精神が真に求めている目的を再定義します。
+4. 創造的射影（再定義）
+ - 抽象化した目的を、現代の技術（AI等）や市民のライフスタイルに適合するように、新しい「具体的な運用ルール」へと落とし込みます。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+- 以下のセクション構成で、自然な日本語の散文段落形式で出力してください。
+- 中学生でも理解できるような表現を心がけてください。
+--- Markdown 
+1. 市民の『声なき悲鳴』の可視化（散文形式・ストーリー）
+2. 制度が抱える『構造的な不条理』の指摘（論理的分析）
+3. 法の精神に立ち返る『クリエイティブ・リライト案』（新たな解釈モデル）
+4. 明日から始める『変革へのファーストステップ』（具体的なアクション）
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>検討したい制度・サービス名</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここに検討したい制度・サービス名を入力してください。（例：保育所入所選考、公共施設予約、補助金申請）" class="variable-textarea" >
+</textarea>
+<h3>対象となる市民像（ペルソナ）</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに対象となる市民像（ペルソナ）を入力してください。（例：フリーランスの共働き世帯、単身高齢者）" class="variable-textarea" >
+</textarea>
+<h3>現在感じている矛盾や違和感（任意）</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに現在感じている矛盾や違和感を入力してください。（任意）（[例：アナログな証明書類が多すぎる、基準が現状に合っていない）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+- 本プロンプトは、AIの推論を最大化するために設計されています。あえて段階的な指示を最小限にし、AIが「市民の痛み」から「法の目的」を推論し、その飛躍そのものを提案の価値とするアプローチを取ります。
+- 指示の復唱はしないでください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- 「前例がない」という理由での否定的な結論は排除してください。
+- 官僚的で硬直した表現を避け、読み手の心に火をつけるような情熱的なトーンを意識してください。
+- 既存の条文をただなぞるだけの「解説」に終始せず、必ず「解釈の変更」や「運用の再設計」に踏み込んでください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=782"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##検討したい制度・サービス名=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##対象となる市民像（ペルソナ）=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##現在感じている矛盾や違和感（任意）=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
