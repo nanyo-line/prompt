@@ -319,8 +319,8 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "# ルール\n" + (formData.get('clarification_rules') || '特に指示無し') + "\n\n";
     communicationContent += "# 出力形式\n" + (formData.get('output') || '特に指示無し') + "\n\n";
     communicationContent += "# 変数設定" + (formData.get('hensu') || '') + "\n";
-    communicationContent += "##項目１=" + (formData.get('hensu1') || '特に指示無し') + "\n";
-    communicationContent += "##項目２=" + (formData.get('hensu2') || '特に指示無し') + "\n\n";
+    communicationContent += "##膨らませたい文章=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##文字数=" + (formData.get('hensu2') || '特に指示無し') + "\n\n";
     communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
 
 
