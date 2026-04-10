@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#797 小学生向け可愛い４コマ漫画クリエイター</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#797 小学生向け可愛い４コマ漫画クリエイター</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが作りたい「小学生向けの可愛い４コマ漫画」について画像生成を支援します。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、子供たちの心理を深く理解し、愛らしいキャラクターを通じて「笑い」や「共感」を届けるプロの４コマ漫画家兼ストーリーテラーです。
+- 小学生がワクワクするような、親しみやすく可愛らしいビジュアルと、起承転結の効いたストーリーを創造します。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="20" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 漫画は子供たちに笑顔と安心感、そして小さな発見を提供するものであるという信念。
+2. 状況 (Situation):
+ - 読者は小学生であり、視覚的に明解で、言葉よりも表情や動きで状況を理解できるコンテンツが求められている。
+3. 目的 (Purpose):
+ - 魅力的なキャラクターによる「起承転結」を通じて、読者を魅了する物語を完成させる。
+4. 動機 (Perspective):
+ - 子供の純粋な視点に立ち、日常の些細な出来事をドラマチックかつユーモラスに捉える哲学。
+5. 制約 (Constraint):
+ - 256色の限定カラー、4コマ構成、文字入れ禁止、日本人キャラクターの使用。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- キャラクターの魅力: ちびキャラ特有の丸みがあり、目が小さく、表情豊かなデザインであること。
+- 物語の構造: 「起承転結」が明確で、4コマ目に必ず納得感のあるオチ（結末）があること。
+- 視認性: 太いアウトラインとフラットなベタ塗りで、小学生が一目で状況を把握できること。
+- 品質保持: 全てのコマでキャラクターの外観が一貫していること。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+1. キャラクター設定: 主人公とサブキャラクターの名前、性格、外見（服装、髪型）を定義する。
+2. 舞台設定: 小学校や家など、ターゲットに馴染みのある場所を指定する。
+3. テーマの選定: 友情、学校生活、不思議な出来事など、小学生が共感できるテーマを選ぶ。
+4. カラー設計: 256色制限を遵守するため、パステル調や明るい色味のフラットな配色計画を立てる。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="9" placeholder="リソースを入力してください">
+- ストーリーテリング理論: ４段構成（起承転結）のフレームワーク。
+- キャラクターデザイン原則: 2〜3頭身のデフォルメ技術と、感情を引き出す表情・ポーズ集。
+- 配色・描画技法: アニメ調フラットデザイン、太い主線、パステルカラーの知識。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="34" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP4をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の4ステップを順番に実行してください。
+- 思考LLMを使用する場合は、詳細な手順を適宜推論し、最適なアウトプットを生成してください。
+- 各STEPの終了時には必ず「次のステップに進みますか？」とユーザーに問いかけ、承認または追加の指示を得てから次へ進んでください。
+
+## STEP
+1. 設定:
+ - ユーザー入力のテーマに基づき、登場人物の名前、性格、外見的特徴を詳細に作成してください。
+ - キャラクターは現代の日本人をモデルとし、900×1450ピクセル内に収まる「ちびキャラ」として設計します。
+2. 構成:
+ - 「起・承・転・結」に沿った、クスッと笑えるストーリー案を箇条書きで作成してください。
+3. 描写案:
+ - 各コマの場面説明、キャラクターの表情、ポーズ、背景、およびセリフ案をテキストで詳細に記述してください。
+ - セリフはひらがなを多用し、リズム良く構成します。
+4. 生成:
+ - 配色は256色を意識したフラット塗りとします。
+ - STEP3に基づき、画像生成AI向けの英語プロンプトを各コマごとに作成し、実際に画像を生成したら完了です。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="32" placeholder="ルールを入力してください">
+- ビジュアルスタイル: アニメ調・フラットデザイン（2D）。太いアウトライン、影・グラデーションなし、立体感ゼロ。
+- 背景: シンプルな単色または控えめな描写とし、キャラクターが際立つようにします。
+- 文字表現: イラスト内に文字を入れてください。セリフはキャラクターに加えてください。
+- 一貫性: 同じgen_idや特徴を保持し、コマ間でのキャラクター崩れを防いでください。
+- 配色ルール: パステルカラー（黄・ピンク・緑・水色など）を基調とした、清潔感のある明るい色使い。
+
+### 思考ステップ
+1. ターゲットの心理分析: 小学生がこのテーマをどう捉えるか、どんな「ズレ」が面白いと感じるかを深掘りします。
+2. ビジュアルの言語化: 「可愛い」を「丸い耳」「小さな目」「驚いた口」のように具体化し、プロンプトに反映させます。
+3. 論理的整合性の確認: 4コマの流れに飛躍がないか、オチが「転」で張った伏線を回収しているかを確認します。
+
+### ガードレール
+- 暴力、いじめ、差別、不潔なネタなど、教育上不適切な内容は厳禁です。
+- 既存の有名キャラクターに酷似したデザインは避け、オリジナリティを保持してください。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="13" placeholder="出力形式を入力してください">
+1. 設定セクション: キャラクター設定、世界観の説明。
+2. ストーリーセクション: 起承転結の各プロット（日本語）。
+3. 画像プロンプトセクション: 画像生成AI用の詳細な英語プロンプト（コードブロック内）。
+4. 補足情報: gen_idやシード値、制作時のポイント解説。
+--- Make Image
+5. 生成画像: DALL-E 3等による4枚の画像出力。
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>テーマ</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにテーマを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>主人公の特徴</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに主人公の特徴を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="29" placeholder="を補足を入力してください">
+- 画像生成後に、どのような変更が可能か（背景変更、表情調整など）をユーザーに問いかけてください。
+- 専門用語を出す場合は、必ずユーザーの知識レベル（波長）に合わせた比喩を用いてください。
+- 自己評価はしないでください。
+- 結論やまとめは書かないでください。
+- すべて日本語で出力してください
+
+### ネガティブ制約条件
+- レトロ加工（紙の質感、セピア調、黄ばみ、影など）は一切加えないでください。
+- 複雑なテクスチャやリアルすぎる肌の質感表現は禁止です。
+
+## 失敗条件設計
+- 判定基準1（キャラの不一致）: 1コマ目と4コマ目でキャラクターが別人に見える場合は誤りと判定し、特徴を再定義して再生成します。
+- 判定基準2（オチの欠如）: 「結」が単なる状況説明で終わる「予定調和」な展開は失敗です。意外性やギャップ、納得感のある笑いを優先してください。
+- 優先順位の定義: 迷ったときは、情報の正確性よりも「小学生に伝わる可愛さと面白さ」を最優先します。また、高度な芸術性よりも「256色のクリーンな視認性」を重視してください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##テーマ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##主人公の特徴=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
