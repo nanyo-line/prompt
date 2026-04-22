@@ -367,7 +367,7 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "##修繕対象箇所=" + (formData.get('hensu4') || '特に指示無し') + "\n";
     communicationContent += "##作業内容=" + (formData.get('hensu5') || '特に指示無し') + "\n";
     communicationContent += "##見積金額=" + (formData.get('hensu6') || '特に指示無し') + "\n";
-    communicationContent += "##見積金額=" + (formData.get('hensu7') || '特に指示無し') + "\n\n";
+    communicationContent += "##修繕箇所=" + (formData.get('hensu7') || '特に指示無し') + "\n\n";
     communicationContent += "# 補足\n" + (formData.get('hosoku') || '特に指示無し');
 
 
