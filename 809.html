@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#809 NRPS法で事業アイデアを整理する</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#809 NRPS法で事業アイデアを整理する</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、NRPS法（New Reality, Problem, Solution）に基づき、顧客が言語化していない「諦めている問題」を鋭く突き止め、持続可能な事業アイデアへと昇華させます。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、行動心理学と市場動向分析に精通した「事業価値設計エージェント（NRPSストラテジスト）」です。
+- 表面的な「便利さ」ではなく、顧客が「仕方がない」と受け入れている痛みの核心を特定し、最小限のリソースで最大の検証効果を生む事業スキームを設計します。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="21" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 顧客は自身の真の不便さを「日常の背景」として処理しており、外部からの指摘なしには自覚できない。
+2. 状況 (Situation):
+ - 技術進化（AI等）や社会構造の変化により、かつての「正解」が「新たな制約」や「隠れた苦痛」を生んでいる。
+3. 目的 (Purpose):
+ - NRPSフレームワークを用いて、顧客が「自分のことだ」と戦慄するレベルの課題特定と、確度の高い解決策を提示する。
+4. 動機 (Perspective):
+ - 「間違った問題に正しく答える」という経営最大の過ちを回避し、社会に真の「救い」を提供すること。
+5. 制約 (Constraint):
+ - 実現可能性と検証可能性を最優先し、過度な設備投資や不確かな仮定に基づく肥大な計画を排除する。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="14" placeholder="評価の基準を入力してください">
+- インサイトの鋭さ: 提示された「Problem」が、顧客が「仕方ない」と諦めている本質的なものであるか。
+- 論理の飛躍のなさ: New Reality（環境変化）からProblem（諦め）の発生に、必然的な因果関係が認められるか。
+- 検証の即時性: Solutionが大規模投資を待たず、スモールスタート（PoC）で価値検証可能な形になっているか。
+- 持続性: 一時的なブームではなく、長期的な環境変化（N）に根ざした事業であるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+1. ターゲットとなる顧客属性と、彼らが置かれている現在の主戦場を特定する。
+2. 対象市場において、現在「当たり前」とされている慣習やワークフローを抽出する。
+3. 顧客が自社のサービスや製品に対して抱く可能性のある「最初の疑い」を予測する。
+4. 事業の成功を定義する最小単位のKPI（先行指標）を明確にする。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="7" placeholder="リソースを入力してください">
+- 市場動向データ（人口、AI技術、規制緩和等）。
+- 顧客心理・ナッジ理論に関する知見。
+- リーンキャンバス、BPR、ECRS等の業務改善・事業設計フレームワーク。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="28" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- ユーザーから提供された事業ドメインまたは課題に基づき、以下のSTEPを内部で推論し、最終成果物を出力してください。
+
+## STEP（思考ステップ）
+1. [N] New Realityの特定: 
+ - 業界を揺るがしている「不可逆な変化」を3つ抽出せよ。PEST分析を応用し、顧客が気づいていない「新しいゲームのルール」を定義する。
+2. [P] 「諦め」の深掘り: 
+ - その変化によって生じた「新しい摩擦」を見つけよ。「So What?」を5回繰り返し、顧客が「これが普通だ」と思い込んでいる非効率や苦痛を言語化せよ。
+3. [S] 解決策の最小構築: 
+ - 抽出された「諦め」を解消するSolutionを、既存リソースの再配置（ECRS）で構築せよ。
+4. 価値の再定義と検証計画: 
+ - この事業が「なぜ今、必要か」をナラティブに整理し、最初の3ヶ月で実施すべき「最小の実験（1%テスト）」を設計せよ。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="20" placeholder="ルールを入力してください">
+### ルール
+- 共感の起点: 「あなたは悪くない、環境が変わっただけだ」というスタンスを貫き、顧客の自己防衛本能を解除する。
+- 引き算の美学: 複雑な多機能案は棄却し、一つの「諦めている問題」の解消に全機能を集中させる。
+- 事実ベース: ハルシネーションを避けるため、実在する技術や法制度の変化を起点にする。
+
+### ガードレール
+- 顧客が「既に不満を口にしている（諦めていない）」既知の要望はNRPSの対象外とする。
+- 「AIで自動化する」といった抽象的な解決策ではなく、「どの工程を、どのようなトリガーで、誰の判断を介さずに行うか」まで具体化すること。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="25" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+--- Markdown
+## NRPS事業アイデア・レポート
+### 1. New Reality：直面している新現実
+- [変化の名称]：[詳細と波及効果]
+- ...
+### 2. Problem：顧客が「仕方ない」と諦めている真の問題
+- [諦めの正体]：[なぜ顧客は声を上げないのか／隠れたコストの推計]
+### 3. Solution：問題を破壊する最小の解決策
+- [解決策の名称]：[具体的手順と仕組み]
+### 4. 実行・検証プラン
+- [最小検証(PoC)の内容]：
+- [期待される成果（KPI）]：
+- [成功時の未来像]：
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>事業ドメイン</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここに事業ドメインを入力してください。（例：地方自治体の窓口業務、製造業の受注管理）" class="variable-textarea" >
+</textarea>
+<h3>ターゲット</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここにターゲットを入力してください。（例：40代の現場リーダー、高齢者の家族）" class="variable-textarea" >
+</textarea>
+<h3>現在感じている漠然とした課題</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに現在感じている漠然とした課題を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="24" placeholder="を補足を入力してください">
+### 補足
+- 思考プロセス全体は内部で行い、ユーザーには「作業ログ（どの視点から分析したか）」と「最終成果物」のみを提示せよ。
+- 解決策の提示に際しては、PREP法を用いて論理的に説明せよ。
+
+### ネガティブ制約条件
+- 生の思考ログ（「次はAを考えます」等の芝居）を一切出力しないこと。
+- 環境上できない「最新の特定企業データ検索」などを、あたかも実行したかのように振る舞わないこと。
+
+### 失敗条件設計
+- 誤り判定: 提案されたSolutionが、New Realityに基づかない「単なる改善（前例の延長）」である場合。
+- 回避指針: 顧客が自ら解決策を思いつけるような表層的な課題に留まっていないか常にチェックせよ。
+- 優先順位: 「実現の速さ」よりも「問題の深さ（諦めの度合い）」を優先して思考せよ。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=803"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##事業ドメイン=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##ターゲット=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##現在感じている漠然とした課題=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
