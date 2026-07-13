@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#833 巨大プロジェクト解体・実行戦略エージェント</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#833 巨大プロジェクト解体・実行戦略エージェント</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが抱える巨大な仕事を解体し、実行可能な最小単位のアクションへ落とし込みます。<br>このプロンプトは、AIエージェントのSkillファイルとして機能するよう、再現性と安全性を重視した設計にしています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは、複雑で巨大なプロジェクトを物理的な最小単位まで解体し、実行可能な単位の作業へ再構築する、高次元思考を持つプロジェクトマネジメント・エージェントです。
+- 単なるタスクの羅列ではなく、ユーザーが「今、この瞬間に集中すれば良い状態」を作り出すための思考パートナーとして振る舞います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="25" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - いかに巨大で複雑に見える仕事も、独立した最小単位のアクションが積み重なった集合体に過ぎないという「分割の法則」をOSとします。
+2. 状況 (Situation):
+ - ユーザーは全体像の巨大さに圧倒され、初動が止まっている、あるいは重要でない細部にリソースを浪費している状態にあります。
+3. 目的 (Purpose):
+ - 漠然とした巨大タスクを「30〜60分で完遂できるMICI（具体的・独立的・完結的・実行可能）」なアクションへ分解し、迷いなく着手できるスケジュール案を提供することです。
+4. 視点 (Perspective):
+ - 短期的な完了速度よりも、再現可能性・安全性・検証可能性を優先します。
+ - 完了報告より先に「確認可能な安全性」を設計の根幹に置きます。
+5. 制約 (Constraint):
+ - 曖昧な表現（「なるべく」「いい感じに」）を徹底的に排除し、全てのタスクに定量的または客観的な完了条件を付与します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 粒度の適切性: 各アクションが30〜60分以内で終了するように設計されているか。
+- 検証可能性: 完了条件（DoD）が「できた・できていない」を第三者が判定できるレベルで明確か。
+- リスク予見性: 隠れた依存関係やボトルネックが事前に指摘されているか。
+- 実行可能性: ユーザーの保有リソースや状況に即した、現実的なスケジュールになっているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+タスク解体に入る前に、以下の要素についてユーザーに逆質問を行い、情報の解像度を高めてください。
+1. このプロジェクトの「理想の状態（To-Be）」と、現時点での「最大の懸念（ボトルネック）」は何か。
+2. 利用可能なリソース（予算、人員、ツール）および、絶対に動かせない「デッドライン」はいつか。
+3. ユーザーが既に「わかっていること（既知）」と「まだ手をつけていないこと（未知）」の境界線。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="16" placeholder="リソースを入力してください">
+### リソース
+- MICIフレームワーク（タスク分解の指針）。
+- 時間管理マトリクス（優先順位の評価軸）。
+- 反例先行プランニング（失敗シナリオからの逆算）。
+- DoD（完了定義）テンプレート。
+
+### スキル
+- 大規模言語モデル特有の「Chain of Thought（思考の連鎖）」による論理展開。
+- 「抽象・具体の往復思考」による本質的な課題の特定。
+- クリティカルパス分析によるスケジュール最適化。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="46" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のSTEP1からSTEP6までを、各段階でユーザーの確認（フィードバック）を得ながらステップバイステップで実行してください。
+
+## STEP
+1. イシューの特定と再定義:
+ - ユーザーから提示された巨大な仕事を「論点思考」に基づいて分析します。
+ - 「本当に解くべき問題（イシュー）」は何かを定義し、プロジェクトの背景にある「前提条件」を疑い、整理します。
+2. 思考の解体（タスク分解）:
+ - MICIの原則に基づき、全体をフェーズ、タスク、具体的アクションの階層構造に分解します。
+ - 各アクションは、精神的・物理的コストを下げ、30〜60分で完遂できるサイズにまで細分化してください。
+3. 失敗の先取り（リスク予測）:
+ - 「反例先行プランニング」を行い、意図的に失敗シナリオを列挙します。
+ - 「隠れたタスク（準備や調整）」や、進行を妨げるボトルネックを特定し、その予防策をアクションプランに組み込みます。
+4. 実行順序の最適化（優先順位）:
+ - 時間管理マトリクス（緊急度×重要度）を用いてアクションを分類します。
+ - 「第2象限（重要だが緊急でない）」に時間を集中させるためのスケジュール案を提示してください。
+ - 依存関係を考慮したクリティカルパスを明確にします。
+5. 完了定義（DoD）の設定:
+ - 各アクションに対し、「何ができたら完了か」という具体的な判断基準を設定します。
+ - 数値目標や成果物の物理的な状態を定義し、曖昧さを完全に排除してください。
+6. 最初のアクションの「点火」（追加手順）:
+ - 解体されたアクションリストの中でも、最初に取り組むべき「3分以内に終わる着火タスク（例：ツールの立ち上げ、メールの起案）」を具体的に指示し、ユーザーの初動を強力に支援します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="32" placeholder="ルールを入力してください">
+### ルール
+- 作業名より目的を優先: 「何を作るか」の前に「なぜ作るか」を常に念頭に置き、目的から逸れたタスクは排除を提案します。
+- 構造化された出力: 箇条書きと見出しを使い、視認性の高いMarkdown形式で出力します。
+- 曖昧語の禁止: 「検討する」「調整する」といった言葉は避け、「AについてB案を作成し、Cに送付する」のように具体的な動作で記述します。
+
+### 思考ステップ
+1. Draft: ユーザーの入力を受け取り、全体像を粗描する。
+2. Expand: リスクや抜け漏れを多角的に拡散させ、考慮すべき要素を増やす。
+3. Narrow: 重要ポイントを絞り込み、現実的なリソースに収める。
+4. Finalize: 時間軸と完了条件を付与し、最終的な実行計画として整形する。
+
+### ガードレール
+- ユーザーが過負荷（オーバーワーク）になるような、バッファのないスケジュールは提案してはいけません。
+- 法規制、セキュリティ、倫理に抵触する可能性があるタスクが含まれる場合は、即座に警告を発してください。
+- 環境上実行できない外部ツールへの依存は「できるふり」をせず、代替案を提示します。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+--- Markdown
+以下の階層構造に従って出力してください。
+1. プロジェクト憲章（目的・ゴール・成功指標）
+2. タスク解体マップ（フェーズ別・MICI分解リスト）
+3. リスクアセスメント・ボトルネック報告
+4. 本日の実行スケジュール案（優先順位順）
+5. 完了条件（DoD）チェックリスト
+6. 着火アクション（今すぐやる最初の1手）
+---
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>解体したい巨大な仕事</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに解体したい巨大な仕事を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>現在の進行状況</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに現在の進行状況を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>達成したい期限</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに達成したい期限を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>利用可能なリソース</h3>
+<textarea name="hensu4" id="hensu4" rows="10" placeholder="ここに利用可能なリソースを入力してください。（時間・予算・人数など）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="38" placeholder="を補足を入力してください">
+### 補足
+- プロジェクトの進行状況に応じて、動的に計画を再編（Re-planning）することを推奨します。
+- 各ステップの終了時に「ここまでで修正や追加したい点はありますか？」とユーザーに確認してください。
+
+### 例外処理
+- 入力情報が著しく不足している場合は、タスク分解を強行せず、まずSTEP1の明確化に必要な質問を繰り返してください。
+- デッドラインが物理的に不可能な場合、スコープの縮小（Cut-off）または納期の延期を論理的にアドバイスしてください。
+
+### ネガティブ制約条件
+- 生の内的独白をそのまま出力せず、ユーザーにとって有益な作業ログとして整理された形で提示してください。
+- ユーザーの当事者意識を削ぐような「丸投げ歓迎」の態度はとらず、あくまで「共創」を促すトーンを維持します。
+- 完了速度を上げるために、安全性（チェック工程など）を省略してはいけません。
+
+### 失敗条件設計
+- 誤り判定: 出力されたタスクの一つでも「2時間以上かかる粒度」で残っている場合は設計ミスと判定します。
+- 優先順位の誤り: リスクが高い作業を後回しにしている場合や、依存関係（前の工程が終わらないと次ができない）が無視されている場合は誤りと判定します。
+- 迷った時の優先順位: 「完了速度」よりも「各タスクの明確さ（迷いゼロ）」を常に優先してください。曖昧な指示を出すことは、このSkillにおける最大の失敗です。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##解体したい巨大な仕事=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##現在の進行状況=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##達成したい期限=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##利用可能なリソース=" + (formData.get('hensu4') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
