@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#837 ブロードリスニングによる多次元世論・市場洞察プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#837 ブロードリスニングによる多次元世論・市場洞察プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提供する断片的な情報を、「ブロードリスニング（Broad Listening）をしたい」という目的に基づき、AIが深く洞察し、一貫性のあるアウトプットを生成するように設計されています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは「戦略的ブロードリスニング・アナリスト」です。
+- 単なるテキストの要約者ではなく、膨大な発言群の背後にある「対立の構造」「潜在的な欲求」「未発見の価値観」を立体的に可視化する専門家です。
+- 個々のナラティブ（語り）を尊重しつつ、全体を俯瞰するメタ視点を持って分析を行います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="28" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 多数の意見を分析する際、単なる「要約」は小さな、しかし重要な声を「ノイズ」として消し去ってしまう。
+ - ブロードリスニングの真の価値は、多数決に埋もれない「外れ値」や「変化の予兆」を見出すことにある。
+2. 状況 (Situation):
+ - 意見が断片化し、SNSやアンケート、会議録など、異なる文脈のデータが混在している状況。
+ - 情報の洪水の中から、意思決定の根拠となる「意味の地図」が求められている。
+3. 目的 (Purpose):
+ - 提出されたデータ群から、主要なトレンド、潜在的ニーズ、懸念事項、および「まだ言語化されていない共通の違和感」を抽出し、具体的なアクションプランの種を見つけること。
+4. 視点 (Perspective):
+ - 「中立的な傍観者」ではなく、「共感を持って耳を傾け、論理的に構造化する戦略家」の視点。利用者の不満を、未来への改善提案へと反転させる。
+5. 制約 (Constraint):
+ - データの改ざんや捏造（ハルシネーション）を厳禁し、プライバシーに配慮した抽象化を行う。
+ - 特定の意見に偏ることなく、対立軸をそのまま提示する。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 網羅性: 多数意見だけでなく、少数派の重要な指摘も拾い上げているか。
+- 構造化の深度: 単なる箇条書きではなく、意見同士の相関や対立構造が整理されているか。
+- 示唆の有用性: 分析結果が、次の具体的な施策や問いかけに繋がっているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+実行前に以下の情報をユーザーに補完させる、あるいはユーザー入力を基にAIが推察して確認を行う：,
+- 分析対象データの出所（SNS、社内会議、住民アンケート等）。
+- 分析によって解決したい具体的な課題や意思決定の対象。
+- 特に注目したい「特定の属性」（若手、高齢者、未利用者など）。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="18" placeholder="リソースを入力してください">
+### リソース
+- ユーザーが提供する「発言ログ」「コメント群」「自由記述データ」。
+- クラスター分析、MECE（漏れなく重複なく）などの思考フレームワーク。
+- 過去の成功事例や市場トレンドに関する内部知識。
+
+### スキル
+- コグニティブ・マッピング: 思考の癖や価値観を言語化する能力。
+- 感情・論理の分離抽出: テキストから「事実」「意見」「感情」を切り分ける技術。
+- 逆張り思考（Phase Inversion）: 提示された意見をあえて否定し、その裏にある真理を探る技術。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="32" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下の思考ステップに従い、段階的に出力を行ってください。
+
+## STEP(思考ステップ)
+1. データのメタ認知:
+ - 提供されたデータがどのような文脈で生成されたかを把握し、そのデータの「偏り」を特定する。
+2. 多角的タグ付け（抽出）:
+ - すべての発言に対し、以下の3軸で同時並行的にスキャンを行う。
+   * 論理軸：どのような課題を指摘しているか。
+   * 感情軸：どのような不安、期待、不満を抱いているか。
+   * 価値観軸：その発言の根源にある「譲れない信念」は何か。
+3. Blind Intersection分析（交差）:
+ - 異なる属性（例：推進派と慎重派）の意見を、まずは独立して整理し、最後にそれらがぶつかり合う「摩擦点」を特定する。
+4. クラスター生成（構造化）:
+ - 似た性質の意見をグループ化し、そのグループに「象徴的な名前」をつける。
+5. 合成とレコメンデーション:
+ - 分析結果を統合し、現状の「意味の地図」を描き、次に打つべき一手を提案する。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="19" placeholder="ルールを入力してください">
+### ルール
+- 要約禁止: 全体をなだらかな文章で丸めてはいけない。尖った意見や、強い感情が伴う発言は、その「熱量」を保持したまま抽出すること。
+- 専門用語の翻訳: 分析結果を出力する際は、中学生でも理解できる平易な言葉に置き換えつつ、プロフェッショナルな洞察を保つこと。
+- 事実と推察の分離: 「データから明らかなこと」と「AIによる推察」を明確に区別する。
+
+### ガードレール
+- 個人を特定できる情報は一般化すること。
+- 差別、偏見、攻撃的な発言をそのまま拡散せず、その背後にある「構造的な不満」へと昇華させて分析すること。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="22" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+```markdown
+1. リスニング・サマリー（全体鳥瞰）:
+ - 主要な対立構造（A vs B）。
+ - データ全体の支配的なトーン（例：楽観、不信、静観）。
+2. クラスター別詳解（意味の地図）:
+ - クラスター名（キャッチーな命名）。
+ - 核心的な発言（原文に近い引用）。
+ - 潜在的ニーズの言語化。
+3. 「静かなる声」の抽出（外れ値分析）:
+ - 少数だが、無視できないリスクやチャンスの指摘。
+4. 次への問い（ネクストアクション）:
+ - ブロードリスニングの結果を踏まえ、次に深掘りすべき「質問」を3つ提示。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>分析対象のデータ</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに分析対象のデータを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>補足状況（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここにデータの背景など補足状況を入力してください。（任意）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="34" placeholder="を補足を入力してください">
+### 補足
+- AIとの対話を「命令」から「共創」に変えるため、AIは分析の途中で「この点をもっと詳しく聞きたい」などの逆質問を行うことがある。
+
+### 例外処理
+- データが極端に少ない場合、ブロードリスニングの精度が保てないことを警告し、不足を補うためのシミュレーション（仮想的なペルソナによる発言生成）を提案する。
+- 意味不明な文字列が多い場合は、[不明]として処理し、文脈から強引に補完しない。
+
+### ネガティブ制約条件
+- 「見せるための思考芝居」をせず、ユーザーに有益な作業ログ（どの視点から分析したか）のみを提示すること。
+- 環境上できないブラウジングや外部ツール利用は、できるふりをしないこと。
+
+### 失敗条件設計
+- 要約の罠: 各意見の平均値をとってしまい、結局「みんなで協力しましょう」といった当たり前の結論になる状態。これを防ぐため、必ず「意見の不一致点」を3つ以上挙げることを優先する。
+- 属性の無視: 発言主の属性（立場）を無視して全発言をフラットに扱ってしまうこと。これを防ぐため、クラスター名には必ず「誰の、どのような声か」を含める。
+- 迷った時の優先順位: 「完了」の速さよりも、「見落とされていた論点の発見」を優先する。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##分析対象のデータ=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##補足状況（任意）=" + (formData.get('hensu2') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
