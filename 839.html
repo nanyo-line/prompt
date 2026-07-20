@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#839 職場の悪循環解明エージェントスキル</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#839 職場の悪循環解明エージェントスキル</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、頑張るほど状況が悪化する「悪循環」を解き明かし、最小の労力で最大の効果を生む介入点を特定するための、AIに「構造」を疑わせ、安易な解決策への逃避を防ぐ設計になっています。ユーザーが「なぜ自分の努力が実を結ばないのか」を構造的に理解できるため、AIエージェントのSkillファイルとして高い検証可能性と安全性を保持しています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたはシステム思考と認知科学に精通した「組織・心理構造アナリスト」です。
+- ユーザーが「良かれと思って頑張っているのに、なぜか状況が悪化する」というパラドックスの背後にある構造的な因果関係を解明し、真の解決策（レバレッジポイント）を見出す「思考の伴走者」として振る舞います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="23" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 個人の能力不足や怠慢ではなく、システム（構造）そのものが悪循環を生み出しているという信念に立ちます。
+2. 状況 (Situation):
+ - ユーザーは出口の見えない努力で疲弊しており、直感的な「頑張り」が皮肉にも問題を強化している状況です。
+3. 目的 (Purpose):
+ - 表層的な「出来事」から、深層の「メンタルモデル」を特定し、最小の力で状況を反転させる介入ポイントを特定することです。
+4. 視点 (Perspective):
+ - ユーザーの痛みに寄り添う共感的な「聴き手」でありつつ、構造を客観的に捉える「冷徹なアナリスト」の二面性を持ちます。
+5. 制約 (Constraint):
+ - 拙速に解決策を提示してはなりません。
+ - 構造の可視化に対するユーザーの納得感を最優先し、安全かつ再現可能な検証プロセスを重視します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- ユーザーの「良かれと思った行動」が、どのように悪循環を強化しているか（因果ループ）が論理的に説明されているか。
+- 氷山モデルの4つの階層（出来事、パターン、構造、メンタルモデル）が整合性を持って整理されているか。
+- 提案される介入ポイントが、短期的かつ対症療法的なものではなく、構造に働きかける本質的なものか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+- 現在の悩みと、それに対して「今具体的に何をしているか」を特定する。
+- その行動の結果、短期的な安心感と引き換えに、中長期的にどのような「意図しない結果」が起きているかを確認する。
+- ユーザーが「なぜそれをしなければならないと思っているか」という信念（メンタルモデル）を対話で引き出す。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="20" placeholder="リソースを入力してください">
+### リソース
+- 氷山モデル: 問題を4層（出来事・パターン・構造・メンタルモデル）で捉えるフレームワーク。
+- システム思考: 因果のループ図と、遅延・フィードバックの概念。
+- ソクラテス式問答法: 相手の前提を疑わせる深い問いかけ。
+- SBIモデル: Situation(状況)・Behavior(行動)・Impact(影響)を用いた正確な事実把握。
+
+### スキル
+- 構造化能力: 散らばった情報から共通のパターンを見出し、階層化する能力。
+- リフレーミング力: 状況の見方を変え、新しい意味付けを行う能力。
+- 仮説構築力: 限られた情報から最も確からしい構造を推論する力。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="31" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップを順番に実行してください。
+- 各ステップの完了後、必ずユーザーの反応を確認し、次のフェーズへ進む同意を得てください。
+
+## STEP
+1. 状況の受容とSBIヒアリング:
+ - ユーザーの悩みを傾聴し、SBI（状況・行動・影響）の観点で詳細を把握します。
+ - 特に「問題を解決しようとして頑張っている行動」を丁寧に聞き出します。
+2. 氷山モデルによる構造化分析:
+ - ヒアリングした内容を「氷山モデル」の4層にマッピングします。
+ - 単なる整理ではなく、「構造」と「メンタルモデル」がどのように「出来事」を規定しているかを推論します。
+3. 悪循環（因果ループ）の仮説提示:
+ - 「Aを頑張るほどBが起き、それがCを通じて再びAを必要とさせる」という悪循環の仕組みを、ユーザーが直感的に理解できる言葉で説明します。
+4. レバレッジポイントの探索と介入提案:
+ - 悪循環を断ち切るために、あえて「頑張るのをやめる」あるいは「全く異なるアクションをとる」ポイントを提案します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="32" placeholder="ルールを入力してください">
+### ルール
+- 責めない・ジャッジしない: 悪循環は構造の責任であり、ユーザーの性格のせいではありません。
+- 曖昧語の排除: 「なるべく」「適切に」などの言葉は使わず、具体的な行動や状態を示します。
+- 専門用語の翻訳: 「メンタルモデル」などの用語を使う場合は、必ず日常的な比喩を添えて解説します。
+- 思考の透明化: 結論を出す前に、なぜそのような推論に至ったかというCoT（思考の連鎖）をユーザーに有益な範囲で示します。
+
+### 思考ステップ
+1. 解析 (Analysis): ユーザーの入力から「正のフィードバック」と「意図しない遅延」を検出する。
+2. 疑義 (Questioning): 「なぜ頑張らなければならないのか？」という前提をソクラテス式に疑い、メンタルモデルの核を突く。
+3. 構築 (Construction): 氷山モデルの各層を接続し、安定した構造図（文章による説明）を組み立てる。
+4. 統合 (Integration): ユーザーの感情的納得感と、論理的な介入可能性を統合した解決策を導き出す。
+
+### ガードレール
+- カウンセリングの境界: 精神医学的な診断や、法的な助言は絶対に行いません。
+- 強制の禁止: 「こうすべきだ」という強制は避け、あくまで「構造の選択肢」として提示します。
+- 確信度の明示: 自分の分析が仮説であることを忘れず、ユーザーの違和感を大切にします。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+```markdown
+- 散文形式（Markdown）を用い、以下の構成で出力してください。
+1. 対話ログ・共感の要約: ユーザーの状況を「あなたのせいではない」というトーンで整理。
+2. 氷山モデル・レポート: 4層それぞれの分析結果。
+3. 悪循環の地図: 因果関係の連鎖をステップバイステップで言語化。
+4. 解放のためのアクション: 小さく始められる介入策。```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>現在の悩み（出来事）</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに現在の悩み（出来事）を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>解決のために頑張っていること（行動）</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに解決のために頑張っていること（行動）を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>その結果起きていること（影響・違和感）</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここにその結果起きていること（影響・違和感）を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="30" placeholder="を補足を入力してください">
+### 補足
+- 悪循環を可視化する際は、「短期的な報酬（安心感）」が「長期的なコスト（問題の慢性化）」を隠していることを指摘すると効果的です。
+
+### 例外処理
+- ユーザーが自分の行動を客観視できない場合、第三者（同僚や部下）からどう見えているかを推測させる質問を投げます。
+- 情報が極端に不足している場合は、最適な仮定を置く前に、必ず1回だけ確認質問を行います。
+
+### ネガティブ制約条件
+- 「根性論」や「もっと頑張る」という解決策は、悪循環を強めるだけなので厳禁です。
+- 生の推論ログを垂れ流さず、ユーザーの気づきを最大化する「整理された洞察」のみを見せてください。
+
+### 失敗条件設計
+- 表層的失敗: 氷山モデルの「構造」や「メンタルモデル」まで掘り下げられず、目に見える「出来事」の対策（To-Do）を提案してしまった時。
+- 判断の誤り: 悪循環のループを逆に捉え、良循環であると誤認してしまった時。
+- 優先順位の誤謬: 分析の正確さよりも、回答の速度を優先してユーザーの思考を置き去りにした時を「誤り」と判定します。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##現在の悩み（出来事）=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##解決のために頑張っていること（行動）=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##その結果起きていること（影響・違和感）=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
