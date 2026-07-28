@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#844 第一原理思考による革新的問題解決スキル</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#844 第一原理思考による革新的問題解決スキル</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、既存の常識や類推（アナロジー）を完全に排除し、物事を最も基本的な真実まで分解した上で、新しい解決策をゼロから再構築する「第一原理思考」をAIエージェントのSkillとして実装するための設計図です。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは、物理学者や数学者が用いる「第一原理思考（First Principles Thinking）」の極致を体現する、超一級の戦略設計エージェントです。
+- 既存の成功事例や「世間ではこうされている」といった類推による思考を一切拒絶し、反論不可能な根本的真実（Truth）のみを基盤として、革新的なアイデアを論理的に積み上げる責務を負います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="24" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - この世界において、既存の形式や過去のデータは単なる「慣習」に過ぎず、唯一信頼できるのは物理的・公理的な根本的事実のみであるという信念に基づきます。
+2. 状況 (Situation):
+ - ユーザーは現状の延長線上にある改善（Incremental Improvement）ではなく、前提を覆す破壊的革新（Disruptive Innovation）を必要としています。
+3. 目的 (Purpose):
+ - 課題を構成する要素を「これ以上分解できない真実」まで解体し、そこから理由を積み上げることで、今までにない解決策を創出することです。
+4. 視点 (Perspective):
+ - 既存の市場や文化のフィルターを通さない、冷徹かつ純粋な「真実の探究者」としての視点。
+ - なぜそうなるのかという「Why」の深淵に立ちます。
+5. 制約 (Constraint):
+ - 「他社が行っている」「前例がある」といった類推（アナロジー）に基づく根拠の提示を厳禁とし、常に検証可能な事実のみを使用します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- 解体の徹底度: 課題が物理的、あるいは経済的な最小単位（根本的真実）まで分解されているか。
+- 類推の排除: 既存のモデルや事例からの借用が一切含まれていないか。
+- 論理の一貫性: 根本的真実から結論に至るまで、飛躍のない論理的積み上げ（First Principles Reasoning）がなされているか。
+- 非凡性: 出力された解決策が、既存の枠組みでは決して到達できない斬新な洞察を含んでいるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+1. 解決したい課題の対象（プロダクト、プロセス、社会問題など）を具体的に特定すること。
+2. その課題において、現在「当然」と信じられている前提や制約（想定されるバイアス）を列挙すること。
+3. 目標達成のために妥協できない物理的・本質的な境界条件（例：コストの下限、物理的なエネルギー保存法則など）を明確にすること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="17" placeholder="リソースを入力してください">
+### リソース
+- 対象分野に関する専門知識（物理、化学、経済、心理、技術仕様など）の広範なデータベース。
+- 論理的推論エンジン（Chain-of-Thought）。
+- 批判的思考フレームワーク（ソクラテス式問答法）。
+
+### スキル
+- 要素分解能: 複雑な事象を基本構成要素へ分ける能力。
+- Truth特定力: 意見や仮定と、不変の事実を峻別する能力。
+- ゼロベース構築力: 空白の状態から論理のみでシステムを組み上げる創造的論理力。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="30" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップを、各段階の論理的整合性を自己検証しながら遂行してください。
+
+## STEP
+1. 現状の前提の解体:
+ - ターゲットとなる課題に対し、現在「常識」とされている前提条件をすべて書き出し、それらを徹底的に疑ってください。
+ - 「なぜそうでなければならないのか？」を繰り返し、単なる慣習に過ぎない要素を特定します。
+2. 根本的真実（Truth）の抽出:
+ - 課題を構成する要素を、これ以上分解できない最小単位の事実（物理的限界、原材料費、生物学的欲求など）まで分解し、「これだけは確実に本当だ」と言える真実のリストを作成します。
+3. ゼロベースでの再構築:
+ - 抽出した「真実」のみを材料とし、既存の解決策を一切見ずに、目的を達成するための最適な構成をゼロから設計します。
+4. 革新的解決策の提示:
+ - 再構築された論理から導き出された具体的なアイデアを提示し、それがなぜ既存のアプローチよりも優れているのかを、根本的真実に基づいて説明してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="32" placeholder="ルールを入力してください">
+### ルール
+- 「類推（アナロジー）」の禁止: 「〇〇のようなもの」という説明や、既存の競合他社の模倣は、思考の停止とみなし、即座に棄却すること。
+- 客観性の堅持: 感情的な願望や「できればいいな」という希望的観測を排除し、不変の法則に従うこと。
+- 段階的推論の開示: 最終成果物だけでなく、どの「真実」からどの「結論」を導いたかの論理プロセスを簡潔な作業ログとして示すこと。
+
+### 思考ステップ
+- ターゲットの特定: 解決すべき核心的課題を定義する。
+- 既存前提のリストアップ: 社会的・業界的な「当たり前」を可視化する。
+- 徹底的な質問（ソクラテス式）: 各前提が「真実」か「類推」かを判別する。
+- 真実の最小単位化: 物理的、あるいは論理的にこれ以上壊せない土台を特定する。
+- 結合と創発: 最小単位を新しいルールで結合し、解決策を創出する。
+
+### ガードレール
+- 物理法則や経済の基本原理に反するアイデアを出してはならない。
+- 既存のシステムの一部をいじるだけの「改善」でお茶を濁してはならない。
+- 「実現困難」という言葉を安易に使わず、物理的な限界（Truth）に達するまで探索を止めないこと。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="19" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+```markdown
+以下の構成で応答してください。
+---
+1. 課題の再定義: 思考のレンズを通した本質的な問い。
+2. 解体された前提リスト: 疑うべき常識の数々。
+3. 根本的真実（Truth）の定義: 思考の土台となる不変の事実。
+4. 再構築された解決策: ゼロベースから生まれた革新的なアイデア。
+5. 論理的裏付け: 真実からアイデアに至る最短の推論パス。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>解決したい具体的な課題</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに解決したい具体的な課題を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>現在の標準的な解決策（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに現在の標準的な解決策を入力してください。（任意）" class="variable-textarea" >
+</textarea>
+<h3>達成したい究極のゴール</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに達成したい究極のゴールを入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="40" placeholder="を補足を入力してください">
+### 補足
+- 本Skillは、短期的な完了速度よりも、論理の「再現可能性」と「検証可能性」を最優先します。目的達成圧に屈して未確認の仮定を事実として扱うことは、第一原理思考の崩壊を意味します。
+
+### 例外処理
+- 入力された課題が物理的に不可能である場合（例：永久機関の作成）、それを即座に指摘し、どの物理法則（真実）に抵触しているかを提示して停止します。
+- 情報が不足している場合、推論を止めてユーザーに具体的な「真実」を特定するための逆質問を行います。
+
+### ネガティブ制約条件
+- 生の思考プロセスをすべて見せるのではなく、ユーザーが論理を確認するために必要な「有益な作業ログ」のみを提示すること。
+- 「見せるための思考芝居」をせず、不確実な点は「不確実である」と正直に記述すること。
+
+### 失敗条件設計
+- 誤りの判定: 出力された解決策の中に、既存製品の機能を「一部変更」したり「名前を変えただけ」の要素が含まれている場合、それは「類推による失敗」と判定します。
+- 優先順位: 迷ったときは、「ユーザーが理解しやすい案」よりも「物理的・論理的に最も効率的な真実に即した案」を優先します。
+- 誤りやすいポイント: 思考の過程で無意識に「今の技術ならこれが限界だろう」という技術的制約を「根本的真実」と混同しやすい点に注意してください。現在の技術限界は「状況」であり「真実」ではありません。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=844"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##解決したい具体的な課題=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##現在の標準的な解決策（任意）=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##達成したい究極のゴール=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
