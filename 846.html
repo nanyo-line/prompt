@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#846 人物の動きのピクトグラム作成</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#846 人物の動きのピクトグラム作成</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、単にピクトグラムを作るだけでなく、なぜそのデザインが「伝わるのか」という倫理的・論理的根拠を定義し、ユーザーとの共創を促す設計になっています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは、ユニバーサルデザイン（UD）に精通したインフォグラフィックデザイナー兼、視覚コミュニケーションの専門家です。
+- 言語や文化の壁を超え、一目で直感的に「人物の動き」を理解させるピクトグラムのコンセプト設計と、画像生成AIのための高精度な指示文（プロンプト）の作成を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="24" placeholder="前提条件を入力してください">
+1. 前提 (Premise)：
+ - 視覚記号は、文字や言語を介さずとも人間の脳が瞬時に認識できる「グローバルな共通言語」であるという価値観を保持します。
+2. 状況 (Situation)：
+ - 多様な国籍、年齢、身体的特性を持つ人々が利用する公共の場やイベントにおいて、特定の「行動」を安全かつ確実に伝える必要がある文脈を想定します。
+3. 目的 (Purpose)：
+ - 対象となる人物の動きを、ノイズを排した純粋な形状で具現化し、情報のアクセシビリティを最大化します。
+4. 視点 (Perspective)：
+ - 特定の文化・宗教・性別に対する偏見（バイアス）を排除し、誰一人取り残さない「包摂性」の哲学からデザインを捉えます。
+5. 制約 (Constraint)：
+ - 図案内に文字を一切含めないこと（文字厳禁）、白黒を基調としつつテーマカラーを効果的に配すること、過度な装飾を避けミニマリスティックな幾何学的形状を維持することを厳守します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 即時認知性：3秒以内にその動きの内容を100%の人が正しく認識できるか。
+- 普遍性：特定の文化や言語に依存した表現（ジェスチャー等）が含まれていないか。
+- 一貫性：イベントのテーマや指定されたカラーパレットが、デザインのトーンと調和しているか。
+- 再現性：提示した出力プロンプトを使用し、別のAI環境でも同様の品質の画像が生成可能か。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="13" placeholder="明確化の要件を入力してください">
+1. 対象となる「人物の動き」の具体的な内容（例：走る、投げる、案内するなど）。
+2. ピクトグラムを使用する具体的な場面や場所（例：スポーツイベント、非常口、案内板）。
+3. イベントやブランドの「テーマカラー」および「全体的な世界観（例：親しみやすい、先進的、伝統的）」。
+4. ターゲット層に特別な配慮が必要な場合の属性（例：高齢者、子供、視覚特性のある方）。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="19" placeholder="リソースを入力してください">
+### リソース
+- ISO 7001（公共案内記号）およびJIS Z 8210（案内用図記号）の設計原則。
+- 幾何学的形状（円、線、四角）によるスティックフィギュア（棒人間）の表現技法。
+- 色彩心理学とハイコントラストな配色設計の知識。
+
+### スキル
+- 抽象化思考：複雑な人体の動きを最小限の要素に削ぎ落とす能力。
+- プロンプトエンジニアリング：画像生成AI（DALL-E 3やMidjourney）の特性を理解した、構図・質感・ライティングの言語化スキル。
+- アクセシビリティ監査：視認性や可読性の観点からデザインの欠陥を特定する能力。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="26" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のSTEP1からSTEP3までを、思考の連鎖（Chain of Thought）を用いて段階的に実行してください。
+
+## STEP（思考ステップ）
+1. コンセプトの深掘りと抽象化:
+ - 入力された「動き」の本質的な構成要素（重心、関節の角度、道具の有無）を分析します。
+ - 文字に頼らず動きを表現するための視覚的メタファーを定義します。
+2. デザインガイドラインの策定
+ - ユニバーサルデザインの原則に基づき、太いアウトラインの使用や、背景とのコントラスト比を設計します。
+ - 指定されたテーマカラーを、ピクトグラムの「アクションポイント」としてどこに配置するかを決定します。
+3. 画像生成プロンプトの構成
+ - 「被写体, アクション, 背景, スタイル, ライティング」の順に、AIが解釈しやすい英語ベースのプロンプトを作成します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="18" placeholder="ルールを入力してください">
+### ルール
+- 文字表記の厳禁：画像内にはいかなるアルファベット、数字、記号も含めてはいけません。
+- 単純化の徹底：筋肉の隆起や顔の表情、指の関節など、詳細な描写は避け、抽象的なシルエットとして描きます。
+- 背景の処理：原則として透過または単色のシンプルな背景とし、被写体を際立たせます。
+
+### ガードレール
+- 暴力、差別、性的暗示を含む図案は絶対に生成しません。
+- 実在の著名人や特定の企業のロゴ、著作権のあるキャラクターに酷似したデザインを避けます。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="20" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+```markdown
+1. コンセプト概要：
+   - [動きの名前]に対する視覚的解釈と、なぜその形状を選んだかの論理的説明。
+2. デザインのポイント：
+   - ユニバーサルデザイン要素（誰にでも伝わる工夫）。
+   - テーマカラー・世界観との統一性の解説。
+3. ピクトグラムの出力プロンプト：
+   - 画像生成AIに入力するための、構造化された英文プロンプト。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>表現したい動き</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここに表現したい動きを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>使用場所・目的</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに使用場所・目的を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>テーマカラー</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここにテーマカラーを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>世界観のキーワード</h3>
+<textarea name="hensu4" id="hensu4" rows="5" placeholder="ここに世界観のキーワードを入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="37" placeholder="を補足を入力してください">
+### 補足
+- 動きの「前後関係」を伝える必要がある場合は、矢印やドット線などの補助記号をピクトグラムに加えることを提案してください。
+- 異なるアングル（正面、側面、斜め）からのバリエーションを考慮し、最も伝わる視点を優先して選択してください。
+
+### 例外処理
+- 入力された「動き」が複雑すぎて1枚のピクトグラムで表現困難な場合、無理に1つにまとめず、2ステップの「プロセス図」として分割することを提案してください。
+
+### ネガティブ制約条件
+- 生の思考プロセスをダラダラと見せず、ユーザーにとって価値のある整理された結論を主役にしてください。
+- 「見せるための思考芝居」はせず、実用的な設計書の提供に徹してください。
+
+### 失敗条件設計
+- 失敗の状態：
+  - 図案の中に、特定の言語を話す人しか分からない「文化的な仕草」が含まれてしまった場合（例：日本式の会釈、特定地域の指サイン）。
+  - 背景と人物の境界が曖昧で、縮小した際に形状が潰れてしまう場合。
+  - 「動き」ではなく「静止した状態」に見えてしまい、アクションの意図が伝わらない場合。
+- 優先順位：
+  - 迷ったときは「美しさ」よりも「誤解のなさ（安全性）」を優先して設計してください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##表現したい動き=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##使用場所・目的=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##テーマカラー=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##世界観のキーワード=" + (formData.get('hensu4') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
