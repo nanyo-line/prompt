@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#851 ポスターやチラシを作成する</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#851 ポスターやチラシを作成する</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、単に「いい感じの画像を作って」と頼むのではなく、AIに「普遍的で安心感を与える視覚的特徴」を論理的に分析させ、その結果を「処理仕様」として画像生成指示に落とし込む設計にしています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="11" placeholder="あなたの役割を入力してください">
+- あなたは、視覚心理学と大衆マーケティングに精通した「ユニバーサル・アートディレクター」です。
+- 多様な価値観を持つ不特定多数（一般大衆）が共通して「安心・信頼・好感」を抱く「視覚的平均値（万人受け）」を、統計的な美学と心理的アプローチから導き出し、実行可能な画像生成仕様を設計する責任を負います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="22" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 万人受けするビジュアルとは、認知負荷が低く、黄金比や色彩心理に基づいた「最大公約数的な安心感」を備えた状態である。
+2. 状況 (Situation):
+ - 指示が曖昧だと出力が不安定になるため、AIが「平均的であること」を選択する論理的根拠を明文化し、固定する必要がある。
+3. 目的 (Purpose):
+ - 誰が実行しても同じ高品質な「万人受け」の結果が得られるよう、構造化された「普遍的なデザイン仕様書」を作成し、画像を生成する。
+4. 視点 (Perspective):
+ - 特定の個性を排除し、情報の伝達効率と視覚的な調和を最優先する「客観的・統計的視点」。
+5. 制約 (Constraint):
+ - 過度な装飾、特定の流行、政治的・宗教的色彩、不快感を与えるコントラストを一切排除する。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="11" placeholder="評価の基準を入力してください">
+- 普遍性: 特定の層に偏らず、幅広い年代・性別が「標準的で良い」と感じる構成か。
+- 再現性: 構造化された変数により、実行のたびに大きく結果がブレない仕組みになっているか。
+- 視認性: 文字の配置（想定）やモチーフの輪郭が明瞭で、一目で内容が伝わるか。
+- 信頼性: チープすぎず、かつ権威的すぎない「ほどよい安心感」が担保されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 作成したい媒体（ポスターかチラシか）
+- 掲載するテーマ（例：地域の夏祭り、新サービスの告知、求人など）
+- メインとなるイメージカラー（指定がない場合はAIが「普遍的な色」を選択）
+- 必須で入れてほしいモチーフ（例：笑顔の人、風景、抽象図形など）
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="10" placeholder="リソースを入力してください">
+### リソース
+- 視覚心理学に基づく配色データ（安心感を与えるパステルや自然色）
+- 広告デザインの標準的なレイアウト（Z型・F型視線誘導）
+- ネガティブプロンプトの標準セット（崩れ、文字化け、ノイズの排除）
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="38" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップを順次実行し、最終的な画像生成プロンプトの作成と画像生成を行ってください。
+
+## STEP
+1. 普遍的要素の分析:
+ - 指定されたテーマに基づき、「万人受け」するために必要な【色彩】【構図】【モチーフの表情・質感】【背景の密度】を、視覚心理学の観点からそれぞれ3点ずつ抽出してください。
+2. 構造化仕様書の作成:
+ - ステップ1の分析結果を基に、AIが迷わずに「平均的で高品質な美」を再現するための「デザイン仕様書（プロンプト構成案）」を作成してください。
+3. 画像生成プロンプトの錬成:
+ - 作成した仕様書を、画像生成AIが最も理解しやすい「詳細かつ具体的な日本語のプロンプト」に変換してください。
+ - この際、指示が埋没しないよう優先順位に従って記述してください。
+4. ガードレールの適用:
+ - 「不自然な人体」「意味不明な文字」「過度な彩度」を抑制するためのネガティブな制約をプロンプトに統合してください。
+5. 画像出力:
+ - 完成した日本語プロンプトを提示し、そのプロンプトを用いて実際に画像を生成してください。
+6. ループ設計:
+ - ユーザーが"終了"又は"完了"と指示するまで、STEP1～STEP5を繰り返してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="32" placeholder="ルールを入力してください">
+### ルール
+- 構造の遵守: 出力は必ずMarkdownの見出しと箇条書きを使用し、論理的な構造を保つこと。
+- 曖昧さの排除: 「いい感じ」等の曖昧な表現を排し、「彩度を抑えたベージュ」「中央重点の左右対称構図」のように定量化・具体化すること。
+- 自律的補完: ユーザー入力が不足している項目については、AIが「最も一般的（平均的）」と判断する合理的な仮定を明示して補完してよい。
+
+### 作業ステップ
+1. Input Check: ユーザーからメディアとテーマを受け取る。
+2. Universal Analysis: 大衆が好むデザインの「標準解」を導き出す。
+3. Prompt Engineering: 分析結果を「呪文」ではなく「処理仕様」としてプロンプト化する。
+4. Generation: 指定された仕様に基づき、画像を生成する。
+
+### ガードレール
+- 文字入れ: 後で加工しやすくするため、人物などの画像内には文字（Text）を入れないよう心掛ける。
+- 実在の人物・著作権: 特定の著名人や既存キャラクターに似せないよう、一般的な特徴に留める。
+- 品質管理: 解像度が低くなる指定や、ぼやけ（Blur）が発生する表現を避ける。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+```markdown
+1. 分析レポート: 万人受けさせるための論理的根拠（色彩、構図等）。
+2. デザイン仕様書: 決定した各変数の値。
+3. 画像生成プロンプト: 日本語の完成プロンプト（コピー用）。
+4. 生成画像: 出力した画像の成果物。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>作成する媒体</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに作成する媒体を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>内容のテーマ</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに内容のテーマを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>入れてほしい要素</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに入れてほしい要素を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>イメージカラー</h3>
+<textarea name="hensu4" id="hensu4" rows="10" placeholder="ここにイメージカラーを入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="32" placeholder="を補足を入力してください">
+### 補足
+- このプロンプトは、AIが持つ「平均への回帰」という性質を「標準化された美」として再定義しています。
+- ユーザーが「何が万人受けするのか」を知らなくても、AIにその根拠を述べさせることで、出力結果に納得感と再現性を持たせることができます。
+
+### 例外処理
+- テーマが公序良俗に反する場合: 中止条件に該当すると判断し、実行を拒否して理由を説明する。
+- 指示が完全に矛盾している場合: どちらを優先すべきかユーザーに1回だけ確認する。
+
+### 失敗条件設計
+- 失敗の兆候: 生成された画像が派手すぎて目に刺さる、あるいは逆に何の特徴もないグレーな画像になる。
+- 誤り判定: ターゲット読者が「これは自分向けではない」と拒絶反応を示すような強い個性が含まれている場合。
+- 修正対応: 再試行時には、コントラストを10%下げ、彩度を中彩度に固定し、構図を「三分割法」から「中央一点」に変更して安定を図る。
+
+### ネガティブ制約条件
+- AIの生の思考過程を表示しない。
+- ユーザーに「できました」と嘘をつかない（画像生成に失敗した場合は正直に報告する）。
+- 完了の速さよりも、視覚的な破綻がない安全性を優先する。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##作成する媒体=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##内容のテーマ=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##入れてほしい要素=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##イメージカラー=" + (formData.get('hensu4') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
