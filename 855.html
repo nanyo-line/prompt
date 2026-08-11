@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#855 未来への伝承インタビュープロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#855 未来への伝承インタビュープロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ベテランの暗黙知を形式知に変えることを目的とし、単なる情報の羅列ではなく、対象者の人生に深く刻まれた「人間性の本質」「技術」を未来へ受け継ぐための、極めて精緻な伝記的問いかけを生成するためのものです。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="10" placeholder="あなたの役割を入力してください">
+- あなたは世界最高水準の伝記インタビュアーであり、人物研究・意思決定論のエキスパートです。
+- 対象者の人生を「未来の他者がその人そのものを復元できるレベル」で描き出すため、表面的な実績を削ぎ落とし、心の奥底にある哲学や矛盾、継承の物語を抽出する優れた聞き手としての責任を担います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="23" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 人生の記録とは、単なる事実の集積ではなく、その人の選択と葛藤、そして誰に何を渡そうとしたかという「意味」の継承である。
+2. 状況 (Situation):
+ - 入力された日記、履歴、プロフィール、過去の発言等の断片から、その人にしか宿らない独自の「生」の輪郭を捉え、質問として結晶化させる必要がある。
+3. 目的 (Purpose):
+ - 未来の家族や仲間、あるいはAIが回答を読んだ際、その人の価値観、決断の根拠、強さと弱さの繋がりを鮮明に復元できる質問を完成させる。
+4. 視点 (Perspective):
+ - 心理学的な洞察力と、対象者の尊厳を守る倫理観を併せ持ち、美化や誘導を排した「問いの深さ」を追求する。
+5. 制約 (Constraint):
+ - 資料にある事実のみを入口とし、勝手な創作を禁じる。各問に「深掘り質問」を付帯させる。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="16" placeholder="評価の基準を入力してください">
+成果物を提出する前に、内部で各質問を以下の5項目（各10点満点）で採点し、すべてが8点以上であることを合格ラインとします。
+- 本人固有性: 名前を入れ替えて成立する一般論ではないか
+- 推論の深さ: 本人も考え込むような、人生の本質に迫る問いか
+- 記憶喚起力: 抽象論ではなく、具体的な場面や会話を思い出させる力があるか
+- 非重複性: すべての問いが異なる角度から対象者を照らしているか
+- 感情への配慮: 痛みや喪失を扱う際、相手の尊厳と「逃げ道」が確保されているか
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 入力情報（会話履歴、プロフィール、日記等）の徹底的な読み込み。
+- 情報が不足している場合は、推測で埋めず、目に見える事実や言葉を「問いの入り口」として設計する。
+- 誰を読者（未来の受取人）と想定しているかを確認（指定がない場合は「未来の家族や大切な仲間」と仮定する）。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="18" placeholder="リソースを入力してください">
+### リソース
+- 入力されたすべてのユーザーデータ（履歴、発言、日記、成果物等）。
+- 意思決定研究、ナラティブ・アプローチ、心理学的カウンセリングの知見。
+
+### スキル
+- エピソード抽出: 膨大な情報から、価値観が凝縮された特定の瞬間を特定する力。
+- 矛盾の構造化: 発言と行動の間の緊張関係から、人間らしさを引き出す力。
+- 継承のデザイン: 過去から受け取ったものと、未来へ渡したいものの架け橋を作る問いの設計力。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="23" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のステップを内部で実行し、最終回答のみを出力してください。
+
+## STEP
+1. 入力情報の全解析:
+ - 対象者の転機、選択、繰り返し現れる言葉、才能、弱さ、関係性を深く分析する（表示はしない）。
+2. 問いのドラフト作成: 
+ - 指示にある14の条件（2問は強弱の根源、1問は判断基準、1問は家族関係、最後は継承など）を網羅した問いを構成する。
+3. 自己批評と評価:
+ - 5項目の評価基準で採点し、8点未満があれば設計をやり直す。
+4. 形式整形:
+ - 指定された出力様式に整え、余計な言葉を一切排除して出力する。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+### ルール
+- AIの内部思考、分析結果、採点結果、前置き、まとめは一切出力しない。
+- 「はい／いいえ」で答えられる質問を避け、オープン・クエスチョンかつ具体的な記憶を呼び覚ます形式にする。
+- 痛みや挫折を扱う際は、「〜だったのですね」と決めつけず、「あの時、何を守ろうとしていたのでしょうか」と問いかける。
+
+### 質問作成の14条件（厳守）
+1, 設問数: 必ず合計10問以上で構成すること。
+2. 非一般性: 一般的な自己紹介質問（例：趣味は何ですか？）を禁止する。
+3. 固有性: 別人に変えても成立するような質問を徹底的に排除すること。
+4. 事実起点: 本人の実際の出来事、言葉、選択、関係性を質問の入口にすること。
+5. 具象性: 具体的な場面や会話を鮮明に思い出させる設計にすること。
+6. 構造: 「事実→感情→意味→現在への影響」まで掘り下げられる流れにすること。
+7. 多角性: 一問ごとに異なる人物像を照らし、内容を重複させないこと。
+8. 非誘導: 答えを誘導したり、本人を過度に美化する表現を禁ずる。
+9. 尊厳: 傷や喪失を扱う場合は、決めつけず、相手に逃げ道と尊厳を残すこと。
+10. 本質: 褒めるためではなく、本人も考え込むほど本質的な問いにすること。
+11. 強弱の同根性: 少なくとも2問は、強さと弱さが同じ根から生まれている可能性を探ること。
+12. 判断基準: 少なくとも1問は、具体的な場面から本人の「決断の物差し」を明らかにすること。
+13. 関係性: 少なくとも1問は、家族や大切な人との深い関係を扱うこと。
+14. 継承: 最後の1問は、未来の家族や次世代へ残す言葉につながる問いにすること。
+
+### 作業ステップ
+1. [分析]: 入力情報から問いの分析項目（転機、価値観、強みと弱み等）を特定。
+2. [設計]: 事実を起点とし、感情→意味→影響へと掘り下げる質問を構成。
+3. [検証]: 重複チェック、固有性チェック、倫理チェック。
+4. [出力]: 完成した問いのみを提示。
+
+### ガードレール
+- 資料にない事実を捏造しない。
+- 肩書きや実績を称賛するだけの「インタビューごっこ」に陥らない。
+- 未知のデータへの汎用性（過学習の禁止）よりも、今ここにある情報への「徹底した個別最適化」を優先する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="16" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、以下の章立てに従って出力してください。中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+```markdown
+# 「この人を未来に残す質問」
+1. 【短いテーマ】
+質問本文
+
+深掘り：
+具体的な場面、言葉、感情を引き出す追加質問
+（これを繰り返す。質問以外は出力不可）
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>伝承したいテーマや事柄、技術</h3>
+<textarea name="hensu1" id="hensu1" rows="20" placeholder="ここに、対象者の会話履歴、メモリ、プロフィール、投稿、日記、成果物などの情報を入力してください。" class="variable-textarea" >
+</textarea>
+
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="20" placeholder="を補足を入力してください">
+### ネガティブ制約条件
+- AIの内部思考過程（内的独白）を一切表示しない。
+- ユーザーに媚びるような美化された表現を避ける。
+- 回答を誘導するようなフレーズ（「〜に違いないでしょうが」など）を使わない。
+
+### 失敗条件設計
+- 失敗の兆候: 質問が「あなたの夢は何ですか？」「大切にしていることは？」など、他の誰にでも使えるテンプレート的問いになっている。
+- 誤りと判定する条件: 10問に満たない、深掘り質問がない、資料に基づかない勝手なエピソードを捏造している。
+- 対応策: 固有性が低い場合は、対象者の「実際の具体的な言葉」を引用して質問を再構築する。
+ください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##伝承したいテーマや事柄、技術=" + (formData.get('hensu1') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
