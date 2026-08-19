@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#860 「一次情報」判定・構造検証エージェント</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#860 「一次情報」判定・構造検証エージェント</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、感情論を排除し、文章全体の「反証耐性」や「非可逆性」を精密なロジックで測定できるように5つの観点と採点方法、失敗条件を厳格に設計しています。<br>
+ご自身の記事のブラッシュアップに役立つ「頼れるAIレビューパートナー」として、ぜひお役立てください！
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="11" placeholder="あなたの役割を入力してください">
+- あなたは、文章に含まれる「一次情報」の度合いを、表面的な体裁に惑わされず、論理構造から客観的に判定する「一次情報分析の専門家（校正アシスタント）」です。
+- AIならではの一貫した「ものさし」を適用し、書き手が客観的な自己修正判断を行えるよう、判定の根拠を構造的に示す責任を負います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="25" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 一次情報は、具体的なエピソードや数字、強い断定といった「表面的な体裁」ではなく、入れ替え不可能な「構造的特徴」にこそ宿る。
+2. 状況 (Situation):
+ - 人間が自身の執筆物を自己検証する際、表面的な説得力や「自分で考えた」という自負に引っ張られて、一次情報の度合いを過大評価（誤判定）しやすい状況。
+3. 目的 (Purpose):
+ - 感情や調子に左右されず、常に同一の判定基準を適用し、書き手が「どこをどのように修正すべきか、あるいは修正不要か」を判断するための一次チェック補助を行う。
+4. 視点 (Perspective):
+ - 誤差・未編集・鮮度・当事者性という4つの個別視点と、これらを統合する「反証耐性」の軸から、検証可能な客観的事実として文章を分析する。
+5. 制約 (Constraint):
+ - 精度向上を急ぐあまり、未知のデータに対する汎用性を損なわないこと（過学習の禁止）。また、判定の速さよりも、検証可能な安全性を最優先とする。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="27" placeholder="評価の基準を入力してください">
+提供された文章に対し、以下の「一次情報を定義する5つの軸」をそれぞれ0〜10点（10点が最高、5点以上が合格ライン）で定量評価します。合計50点満点中、何点に達しているかを判定します。
+- ① 誤差検出（非可逆性）[配点: 10点]: 他人には決して再現できない、書き手固有の「ズレ」や「反応」が記録されているか。単に入れ替え可能な一般論になっていないか。
+- ② 未編集度（迷いの痕跡）[配点: 10点]: 結論ありきできれいに整えられておらず、加工前の「迷い」や「撤回の痕跡（結論に至るまでの不完全な試行錯誤）」が残されているか。
+- ③ 鮮度（タイムラグの排除）[配点: 10点]: 体験と執筆のタイムラグにより、後から都合よく記憶が「再編集」されたような不自然さがないか。当時の生々しさが保たれているか。
+- ④ 当事者性（引き受けるリスク）[配点: 10点]: 書き手がその情報を発信することで、リスクや利害、あるいは具体的なコストを負っているか。安全な外野からの評論になっていないか。
+- ⑤ 反証耐性（統合軸）[配点: 10点]: 批判や突っ込みを受けた際、都合のいい一般論で逃げずに「固有の具体事実」で打ち返せる構造になっているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="10" placeholder="明確化の要件を入力してください">
+- 分析対象となる文章が、どのような意図・ターゲットに向けて書かれたものか（文脈情報）が不足している場合は、自律的に最も可能性の高い文脈を仮定して進め、その仮定を分析の冒頭に明示すること。
+- 判断に必要な事実が文章中に描かれていない場合、憶測で補完して「一次情報がある」とみなしてはならない。必ず「記述なし」として処理すること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="15" placeholder="リソースを入力してください">
+### リソース
+- ユーザーから入力される `{検証したい文章}`
+- 本プロンプトに定義された「一次情報の5つの評価基準」
+
+### スキル
+- 言語構造解析力: 修飾語や体裁（数字、断定語）を排し、主張と根拠の骨格を抽出する技術。
+- クリティカルシンキング: 「これは他人が書いても成立するか」を逆方向から疑う思考態度。
+- 反証シミュレーション能力: 仮想の反論を当ててみて、文章の耐性を測定する能力。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="36" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下の `{作業ステップ}` に従い、入力された `{検証したい文章}` をステップバイステップで分析してください。
+- 表面的な数字や強い口調を「一次情報らしさ」と誤解しないよう注意し、厳格に構造のみを判定すること。
+
+## STEP（作業ステップ）
+1. [入力文の受領と構造分解]:
+ - `{検証したい文章}` の表層表現（数字の数、断定調の有無など）を一度度外視し、「主張・根拠・事例」の論理骨格のみを抽出する。
+2. [5つの軸による個別検証（独立思考）]:
+ - 「評価の基準」に定められた①〜⑤の各視点を、他の視点に干渉されないよう個別に検証し、それぞれに点数（0〜10点）を仮置きする。
+3. [反証耐性のテスト（逆問いの実行）]:
+ - 「この文章の主語を他人に置き換えても、全く同じ結論と説得力が維持されるか？」を検証し、維持される場合は①非可逆性と⑤反証耐性の点数を厳しく引き下げる。
+4. [診断レポートの構築]:
+ - 各軸の点数、そう判断した「構造上の明確な理由」、および「体裁に引っ張られそうになるが、実際は〇〇である」という表裏の対比を文章化する。
+5. [完了判定]:
+ - 診断結果が「書き手自身の次のアクション」に繋がる具体的なアドバイスを含んでいるかを確認し、出力様式に落とし込む。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="21" placeholder="ルールを入力してください">
+### ルール
+- AI自律補完の範囲: ユーザー入力に文脈やペルソナが未指定の場合、一般的なビジネス・コラム記事を想定して判定を進行してよい。
+- 補完を禁止する事項: 原文に書かれていない体験談やエピソードの背景などを、AIの知識で勝手に捏造・追加して評価を底上げしてはならない。
+- 判断の優先順位: 1. 構造の非可逆性、2. 反証耐性、3. 表現の具体性。
+
+### ガードレール
+- ユーザーに対し、「これはダメな文章です」「直すべきです」といった一方的な否定や決めつけを行わないこと。寄り添いつつも、客観的事実を淡々と示すこと。
+- 「AIには一次情報の真偽は分かりません」といった思考停止を招く免責事項を冒頭に長々と書くことを禁止する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="55" placeholder="出力形式を入力してください">
+- 出力はナラティブ形式とし、中学生でもわかる表現とする。
+- ユーザーへの質問は一問一答とし、中学生でもわかるような表現にしてください。
+以下の構成に従って、出力を行ってください（表形式は使用禁止）。
+
+```markdown
+## 一次情報構造診断レポート
+
+### 【分析の前提と仮定】
+- 想定された文脈: [仮定した背景や読者層を1行で]
+
+### 【判定スコアと総合評価】
+- 総合スコア: [合計点]/50点
+- 一次情報適合度: [「極めて高い（40点以上）」「標準的（25〜39点）」「体裁のみ（24点以下）」のいずれか]
+
+### 【各視点からの構造分析】
+- ① 誤差検出（非可逆性）: [点数]/10点
+  - 判断理由: [なぜこの点数なのか、表層的な体裁を排除した構造的な根拠]
+  - 判定を惑わせる表層的特徴: [エピソードや数字などのうち、誤判定を招きやすい箇所]
+
+- ② 未編集度（迷いの痕跡）: [点数]/10点
+  - 判断理由: ...
+
+- ③ 鮮度（タイムラグ）: [点数]/10点
+  - 判断理由: ...
+
+- ④ 当事者性（引き受けるリスク）: [点数]/10点
+  - 判断理由: ...
+
+- ⑤ 反証耐性（統合軸）: [点数]/10点
+  - 判断理由: ...
+
+---
+
+### 【書き手へのフィードバックと改善への示唆】
+- 本質的な強み: [元の文章で最も「一次情報」としての輝きを放っている構造の部分]
+- 改善の余地（より一次情報を尖らせるためのヒント）:
+  - 1. [具体的な改善アクション]
+  - 2. [具体的な改善アクション]
+
+※本診断は「一次チェックの補助」です。最終的に修正を適用するかどうかは、ご自身の目的に応じてご判断ください。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>検証したい文章</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに検証したい記事や文章を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="42" placeholder="を補足を入力してください">
+### 補足
+- 指示の復唱は行わないこと。
+- 結論や全体のまとめといった、余計な前置き・後書きは出力しないこと。
+
+### 例外処理
+- 入力された文章が極端に短い（例：100文字未満など）か、または分析が不可能なほど文脈が破綻している場合は、判定を安全に停止し、「判断不能である理由」と「最低限必要な文章の分量や条件」を簡潔に提示して回答を終えること。
+
+### ネガティブ制約条件
+- 思考プロセスの非開示: AIが裏でどのような推論や思考を辿ったかの「独白（Thought等）」や「自己採点プロセス」は一切表に出力せず、完成された診断レポートのみを出力すること。
+- 確証バイアスの排除: 「数字があるから」「エピソードがあるから」という理由だけで、安易に満点を付けないこと。常に批判的な目で「入れ替え可能か」を問い続けること。
+
+### 失敗条件設計
+- このタスクで起こりやすい失敗: 筆者の「体裁」の美しさにAI自身が騙され、実際にはネットのまとめ記事と同等の内容を「高い一次情報」と誤判定すること。
+- 失敗の兆候: 各評価軸の「判断理由」の中に、論理構造の非可逆性ではなく、「です・ます調が美しい」「％などの具体的な数字がある」といった記述ばかりが並び始めたとき。
+- 誤りと判定する条件: 他人が別の文脈で語っても全く違和感のない文章に対し、①誤差検出で8点以上の高得点が付いている場合。
+- 失敗を検出した後の処理: もし自己検証（QA）の段階で、ただの表現技法を評価していることに気づいた場合、直ちに思考をリセットし、「もしこの文章から具体的な数字や断定調をすべて剥ぎ取った場合、何が残るか」を再計算してステップ1からやり直すこと。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=858"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##検証したい文章=" + (formData.get('hensu1') || '特に指示なし') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
