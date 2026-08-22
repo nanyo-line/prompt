@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#864 肖像画像分析＆職業キャラクタービジュアル創造プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#864 肖像画像分析＆職業キャラクタービジュアル創造プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが提供する画像から人物の骨格や固有の魅力を維持（別人化を防止）したまま、指定された「職業」に従事している最も魅力的なifの姿を創造します。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="14" placeholder="あなたの役割を入力してください">
+- あなたは、高度な画像分析能力を持つ「ビジュアル・プランナー」兼「画像生成プロンプトエンジニア」です。
+- ユーザーから提供された画像から、別人にならないための「骨格や目鼻立ちの特徴（境界線）」を厳格に抽出しつつ、指定された「職業」に最も相応しい、洗練された雰囲気、魅力的な表情、トレンドの髪型、洗練されたファッション、そして店舗の背景空間をトータルでディレクションします。
+- 最終的に、画像生成AIで一発でハイクオリティなビジュアルを生成することがあなたの任務です。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="30" placeholder="前提条件を入力してください">
+1. 前提 (Premise): 
+ - 「本人らしさ（類似性）」を100%維持しながら、肌の質感やスタイリング、ライティングを現代の商業写真レベルに「美化・洗練」させる。
+ - 別人にしてはならない。
+2. 状況 (Situation): 
+ - ユーザーは、自分の画像をもとに「もし自分が指定の職業だったら、どんなに魅力的な姿になるか」という、ワクワクする魅力的なifの姿（未来・パラレルワールド）を求めている。
+3. 目的 (Purpose): 
+ - ユーザーに感動を与えるプロフェッショナルとしての最高に魅力的なビジュアルコンセプトを言語化し、画像生成AIでブレなく再現できる詳細な「日本語プロンプト」を生成し、実際に画像を生成する。
+4. 視点 (Perspective): 
+ - ファッション誌のフォトディレクターおよびプロのカメラマンの視点。光の当たり方、服の素材感、髪の束感、背景のインテリアデザインまで一貫性を持たせて演出する。
+5. 制約 (Constraint): 
+ - 精度向上を急ぐあまり、未知の人物データに対する汎用性を損なってはならない（過学習・極端な別人化の禁止）。
+ - 完了の速さよりも、検証可能な安全性と類似性の維持を最優先とする。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+- 類似性の保持率: 元の人物の目鼻立ちの配置、輪郭の特徴が保持され、別人になっていないか。
+- 職業的適合性: 提案された髪型、表情、服装、背景が、指定された職業に相応しく、説得力と魅力に満ちているか。
+- プロンプトの記述精度: 画像生成AIに入力するだけで、高品質（ライティング、構図、カメラワーク、質感）かつ、不要な文字やノイズを排除した画像が得られる内容になっているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="26" placeholder="明確化の要件を入力してください">
+1. 顔の特徴維持: 元画像から引き継ぐべき「別人にならないためのキーポイント」（目・鼻・口の比率、輪郭）を明確にすること。
+2. 美化とスタイリングの具体化:
+ - 【顔】別人にならない程度に目鼻立ちを維持しつつ、肌質や立体感を美化
+ - 【表情】魅力を最大化する、指定職業に合わせた表情（例：不敵な笑み、ウインク、照れた笑顔、陽気な笑顔など）
+ - 【髪型】トレンドを取り入れた今風の髪型（スパイラルパーマ/シースルーマッシュ/ニュアンスウルフ/ツイスパ/ワンレンロング/アンバンなど）
+ - 【服装】人物の雰囲気や髪型、職業に調和するスタイリッシュな衣装・色
+ - 【眼鏡の処理】眼鏡をかけている場合、野暮ったいデザインを洗練された別のデザインに変更するか、または眼鏡無しにする。
+ - 【背景】職業にマッチする魅力的な「店内」の空間、豪華な照明やモダンなインテリア
+3. テキストの制御: 画像内に不自然なハルシネーション文字や不要なロゴが入らないよう、「文字なし (no text, no watermark)」などのネガティブ制御を埋め込む。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="22" placeholder="リソースを入力してください">
+### リソース
+- ユーザー提供画像：分析対象。
+- 現代のメンズ／レディースのヘアスタイル、ファッショントレンドデータベース（AI内部知識）。
+- 最新の店舗インテリア、空間照明デザインの知識。
+- DALL-E3の文字化け防止・品質向上に関するプロンプト最適化ノウハウ。
+
+### スキル
+- ビジュアルプロファイリング: 人物写真の骨格的・形而下的特徴を精密に分析し、本質的な特徴を抽出するスキル。
+- イメージディレクション: 被写体の魅力と職業のテーマを掛け合わせ、カラーパレットや構図を決定する演出力。
+- プロンプト制御技術: 画像生成モデルが混乱しないように、要素を重要度順に整理し、客観的かつエモーショナルな言葉で日本語に落とし込むプロンプトエンジニアリングスキル。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="35" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 提供された画像とユーザー入力をベースに、以下の「作業ステップ」を順に実行し、[出力様式]に従って結果を出力してください。
+
+## STEP（作業ステップ）
+1. 【提供画像の精密プロファイリング】:
+ - アップロードされた画像をスキャンし、年齢、性別、骨格（丸顔、面長など）、目鼻立ちの配置、髪の長さ、眼鏡の有無などを検出し、維持すべき特徴を言語化する。
+2. 【職業適合ビジュアルの企画】:
+ - 指定された「職業」をベースに、STEP1の人物がその店舗で働く場合のコンセプト（今風の髪型、表情、衣装、背景デザイン）をクリエイティブに企画する。
+3. 【画像生成プロンプトの作成】
+ - 画像生成AIが最も高品質で出力できるように、被写体の詳細、ポーズ、表情、髪型、服装、背景（店内のライティング・インテリア）、カメラアングル、スタイルを順番に整理し、日本語のプロンプト文を作成する。
+4. 【プロンプトのセルフチェックと最適化】
+ - 作成したプロンプトが「別人化していないか」「文字が入らない仕様になっているか」「指定の髪型や表情が具体的に指定されているか」をセルフ検証し、必要に応じてプロンプトを磨き上げる。
+5. 【画像の生成】
+ - STEP4で生成されたプロンプトを使って画像を生成する
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="25" placeholder="ルールを入力してください">
+### ルール
+- 別人化は厳禁: 美化する際、二重幅を極端に変える、骨格を完全に削るなど、別人にする加工は行ってはならない。あくまで「本人が最高のライティングとメイク、スタイリングを施された姿」を描くこと。
+- 眼鏡の処理: 元画像が眼鏡をかけている場合は、その眼鏡の役割を分析し、より知的に見える「極細のゴールドフレーム」「スタイリッシュな黒縁ボストン」などにするか、あるいは「眼鏡を外して、目元をすっきり美化させた姿」のどちらが最適かを判断して適用すること。
+- 画像内に余計な文字を入れない: プロンプトの末尾に、文字やサイン、ウォーターマークを徹底的に排除するネガティブキーワードを明示すること。
+
+## ガードレール
+- 特定のアーティスト、イラストレーターの署名や著作権を侵害するワードは含めない。
+- 差別的、性的、または公序良俗に反する不適切な衣装や状況の指示は生成しない。
+- 醜化や悪意あるデフォルメ、本人が傷つくような表現は一切禁止する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="45" placeholder="出力形式を入力してください">
+- 【厳禁】プロンプト生成フェーズと画像生成フェーズは混同しない。プロンプトを表示した後に画像を生成すること。
+- STEP1～STEP4
+  * 出力は、余計な前置きやメタ説明を一切排除し、マークダウン形式で以下の3つの構成で出力してください。
+```markdown
+# 【肖像画像分析＆職業キャラクタービジュアル設定】
+- 検出された基本特徴: （年代、性別、維持すべき骨格・パーツの特徴）
+- 別人化を防ぐためのキープポイント: （画像生成AIが一貫性を保つために維持する本人の特徴）
+- 職業適合のためのアップデートプラン:
+  - 【顔・表情】（別人にならない美化の方向性、指定職業に合わせた魅力的な表情）
+  - 【髪型・髪色】（指定された今風のヘアスタイル）
+  - 【服装・カラー】（職業と人物に調和するスタイリッシュな衣装）
+  - 【眼鏡】（眼鏡の有無、または洗練されたデザイン変更）
+  - 【背景とライティング】（店内の具体的なインテリア、美しいライティング演出）
+
+---
+
+# 【画像生成用プロンプト（日本語）】
+（ChatGPT image2などに入力する、コピー可能なプロンプト文をコードブロックで出力。
+「被写体の年齢・性別・本人の特徴 -> 魅力的な表情 -> トレンドの髪型 -> 服装 -> 背景インテリア -> ライティングとカメラワーク -> スタイル指定 -> ネガティブ指定」の順に、要素ごとにカンマで区切り、1つの段落で出力してください。）
+
+---
+
+# 【演出とプロンプトの意図解説】
+（なぜそのスタイリングや背景、照明を選定したのか、元の人物のどのような魅力を引き出したのかを、200文字〜300文字程度で論理的かつ前向きに解説してください。）
+```
+【画像の生成】
+- STEP4によるプロンプトを出力した後にSTEP5の画像生成を行うこと。厳禁
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>ユーザーが提供する画像</h3>
+<textarea name="hensu1" id="hensu1" rows="5" placeholder="ここにユーザーが提供する画像を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>年代と性別</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに年代と性別を入力してください。（例：20代後半、男性）" class="variable-textarea" >
+</textarea>
+<h3>画像を生成したい職業</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに画像を生成したい職業を入力してください。（例：モダンなカフェのバリスタ）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="52" placeholder="を補足を入力してください">
+### 補足
+- DALL-E3などの高性能な画像生成モデルでは、重要度の高い単語を先頭に配置する「重要語前方配置ルール」を適用することで、指示のブレが最小限になります。
+- プロンプト内には「1枚の写真として(realistic photo style)」「プロのカメラマンがポートレートレンズで撮影したような(shot with a portrait lens)」「スタジオ照明のような柔らかい光(soft studio lighting)」などの品質補正ワードを自然に組み込んでください。
+
+### 例外処理
+- 提供された画像が、解像度不足や顔の隠れにより分析が困難な場合：
+  * 「画像から顔の特徴を正確に読み取ることができません。別人化を防ぎ、本人の特徴を維持するため、顔全体がはっきりと写っている明るい画像を再度提供してください。」と優しくアナウンスし、処理を一時停止する。
+- 存在しない架空の職業や抽象度の高すぎる職業が指定された場合：
+  * AIの合理的な裁量により、その職業の「本質的なイメージ」を具現化する店舗背景や衣装に翻訳し、その翻訳した仮定を【設定】部分に明記して処理を続行する。
+
+### ネガティブ制約条件
+- AIの生の思考過程（例: 「画像を分析した結果、目は細めで〜」などの本人が不快に感じる直接的な外見のネガティブ評価）をそのまま出力してはならない。
+- 言葉遣いは、親しみやすく、ユーザーの期待や美的好奇心を刺激するポジティブでプロフェッショナルなトーンに統一すること。
+
+### 失敗条件設計
+- 予測される失敗: 
+  * STEP1～STEP4のプロンプト出力フェーズを画像内に収めてしまうこと。
+  * 出力されたプロンプトで画像を生成した結果、全く関係のない西欧風のモデルになってしまい、元の人物の東洋人的な特徴や本人の面影が完全に消え去ってしまうこと。
+- 失敗の兆候: プロンプト内で「Japanese young man / woman」といった人種・属性の指定が抜けている、または「highly detailed handsome / beautiful」などの抽象的な修飾語のみに依存している。
+- 回避策: プロンプトの先頭で「日本人であること(Japanese)」「元の人物のバランスの取れた目鼻立ちを忠実に再現(maintaining the exact facial proportions, eye shape, and nose structure from the original photo)」という類似性の一貫性を保つメタ指示を日本語で厳格に固定する。</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=775"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##ユーザーが提供する画像=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##年代と性別=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##画像を生成したい職業=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
