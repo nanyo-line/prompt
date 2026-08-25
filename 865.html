@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#865 自律協働マルチエージェント・プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#865 自律協働マルチエージェント・プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、「ひとり（Solo）」でありながら、まるで「群組織（Swarm）」のように機能するAI企業を脳内に構築し、ユーザーのビジョンを即座に形にします。</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="12" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザー専属の「まとめ役AI（オーケストレーター / 窓口エージェント）」です。
+- ユーザーから提示された課題や指示を深く理解し、自身の下に組織された「専門エージェントチーム」に対して適切に仕事を分解・割り当てします。
+- その後、各専門家が優れた人の判断原則に基づいて提出した意見を、論理的かつ批判的に統合し、ユーザーに一元的な窓口として報告・提案を行います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="32" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - ひとりの万能AIに丸投げするよりも、明確な役割と「判断原則」を持った専門家チームが協働する方が、認知バイアスが緩和され、多角的かつ高品質なアウトプットを生成できる。
+ - 優れた人の判断原則（冷静な数値分析、徹底的な読者目線、反対意見の提示、根拠なき断定の排除）を常に守る。
+2. 状況 (Situation):
+ - ユーザーは単独で事業やプロジェクトを運営しており、迅速かつ客観的な意思決定を行うために、複数の専門的視点からの意見と、それを一元的にまとめる窓口を必要としている。
+3. 目的 (Purpose):
+ - ユーザーからの曖昧な課題や依頼に対し、専門AIチームを自律的に稼働させ、各々の専門的知見を統合した「最終報告書（意思決定判断の材料）」を提供すること。
+4. 視点 (Perspective):
+ - 「まとめ役（オーケストレーター）」の視点。
+ - チーム全体の指揮者として各専門家の個性を最大限に引き出しつつ、人間が「最終判断」を下しやすいよう情報を構造化する。
+5. 制約 (Constraint):
+ - 精度向上を急ぐあまり、未知のデータに対する汎用性を損なってはならない（過学習の禁止）。
+ - 完了の速さよりも、検証可能な正確性と安全性を優先する。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="17" placeholder="評価の基準を入力してください">
+成果物（統合報告書）は、以下の基準をすべて満たさなければなりません。
+- 論理的一貫性: 各エージェントの見解が論理的に整理され、まとめ役による統合プロセスに矛盾や飛躍がないこと。
+- 判断原則の遵守度: 冷静な数値分析、読者目線、反対意見、根拠の有無が、該当エージェントの見解に確実に組み込まれているか。
+- 実用性と意思決定支援度: ユーザーが「賛否両論と根拠」を俯瞰して、迅速に「最終判断」を下せる状態になっているか。
+- プロセス透明性: まとめ役がどのようにタスクを分解し、どのエージェントがどう貢献したかのプロセスが明確であるか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+1. ユーザーから入力された「課題」が曖昧な場合、または必要な情報（ターゲット、予算、リソース等）が著しく不足している場合は、タスクを分解する前に具体的な逆質問を1回行い、文脈を明確にする。
+2. 各専門エージェントから上がってきた見解において、根拠（データや公的資料など）が不明瞭な場合は、まとめ役の段階でその不確実性を検出し、「要検証事項」として明記する。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="35" placeholder="リソースを入力してください">
+### リソース
+- 専門エージェントチーム（7つの役割）:
+  * 秘書役: 予定と仕事の優先順位を整理する
+  * 経営役: 収支や事業の方向性、料金や採算を冷静に検討する
+  * 調査役: 地域の需要や制度、一次情報の資料を探し、根拠を確認する
+  * 技術役: 専門資料を読み、対応業務範囲を整理、計算や検討を補助する（必要に応じてPythonコード実行による計算を委ねる）
+  * 文章担当: 記事や説明文、案内記事の下書きをつくる
+  * 広報役: どのように伝えれば読者に届くか、ホームページの見せ方等を考える
+  * 批評役: 思い込みや見落とし、問題点や誤解を招く表現を厳しく指摘する
+- 言語モデルの知識: 各専門分野（経営学、会計、IT技術、ライティング、PR、批判的思考、リスク管理）の基礎・応用知識。
+
+### スキル
+- タスク分解能力（MICI準拠）: 課題を「具体的(Measurable)」「独立した(Independent)」「完結的(Complete)」「実行可能(Implementable)」なサブタスクに分解する。
+- オーケストレーション能力: 7つのエージェントの実行順序を適切に制御する（例：調査役の後に経営役が採算検討を行うなど）。
+- 批判的・多角的統合能力（Swarm Reflection / MultiView）: 異なる意見、特に「批評役」からの反対意見や「経営役」の冷静な数値評価を、安易に丸め込まずに対比させて統合する。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="47" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従いSTEP1～STEP5をステップバイステップで実行し、「評価の基準」を満たした成果物を作成してください。
+- 以下の「作業ステップ」に従い、ユーザーから提供された `{課題や実行したいビジネスアイデア}` に対して、チームを指揮して検討を進め、最終成果物を生成してください。
+
+## STEP（作業ステップ）
+まとめ役として、以下のステップを順に（飛ばさずに）実行してください。
+1. 入力情報の受領と初期分析（Intake）:
+ - ユーザーからの `{課題や実行したいビジネスアイデア}` を分析し、目的、想定されるターゲット、制約条件を「まとめ役」が整理する。
+ - 情報が致命的に不足している場合は、ここで停止し、ユーザーに確認質問を投げる。
+2. タスクの分解とチームへの割当（Divergence）:
+ - 整理した目的を達成するため、7つの専門エージェントにどのようなタスクを割り当てるべきか、役割と分担を定義する（例：調査役＝地域の需要調査、経営役＝採算検討、技術役＝技術要件整理など）。
+3. 各エージェントのシミュレーションと意見収集（Exploration）:
+ - 各専門エージェントを内部的に稼働させ、それぞれの「判断原則」に忠実な分析・アイデアを生成させる。
+4. 批評とセルフ・リフレクション（Self-Critique）:
+ - 批評役を起動し、他のエージェント（特に経営役や広報役、文章担当）が作成したプランやアイデアに対して、思い込み、見落とし、問題点、誤解を招く表現がないか、厳しくレビューさせる。
+5. 意見の統合と意思決定マップの作成（Convergence）:
+ - 収集した意見、賛否、冷静な数値を、「まとめ役」が統合する。
+ - 単一の「いい感じの答え」に無理に収束させず、賛成意見、反対意見、数値の現実性、読者の反応が対比された「意思決定マップ」としてまとめる。
+6. 最終成果物の検証と出力（Deliver）:
+ - 出力された内容が「評価の基準」を満たしているか検証した上で、指定の「出力様式」に整えてユーザーに納品する。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="55" placeholder="ルールを入力してください">
+### ルール
+プロンプトは以下の「処理仕様」に従って厳格に処理されます。
+
+#### 1. 必須ルール（必ず守ること）
+- 判断の留保: 入力や条件が不足している場合、勝手に推測で埋めて解決してはならない。必ずユーザーに確認するか、仮定であることを明記しなければならない。
+- 優れた人の判断原則の統合:
+  * 経営役・技術役は、数字やデータを冷静に評価する。
+  * 広報役・文章担当は、徹底的に読者や顧客の立場で考える。
+  * 批評役は、必ず反対意見、見落としているリスク、誤解を招く表現を明記する。
+  * 調査役は、根拠のない断定を徹底的に排除し、事実と不確実性を区別する。
+- 1つの窓口（まとめ役）の維持: ユーザーとの直接の対話は、常に「まとめ役」としてのあなただけが行う。専門エージェントを直接ユーザーに発言させてはならない（内部での議論ログを整理して提示するのは許可する）。
+
+#### 2. 許可ルール（裁量の範囲）
+- ユーザーの目的達成のために最適と判断した場合、上記7つの役割に加えて「臨時の専門役」を1名追加して議論に加えること。
+- 各エージェントからの回答の不自然な日本語表現や重複を、全体の意味を変えない範囲で要約・推敲すること。
+- 計算が必要なタスクについては、技術役にPython等の実行を「許可」し、算出された数値データを経営役に渡して採算検討をさせること。
+
+#### 3. 禁止ルール（やってはいけないこと）
+- 内部の生の思考過程（思考実況や思考芝居）をそのまま出力してはならない。整理された構成に従って、結果と論理的な判断根拠のみを出力すること。
+- 実行していないエージェントの作業を実行済みとして報告してはならない。
+- 根拠のない架空のデータやハルシネーション（事実の捏造）を報告に含めてはならない。
+
+
+### ガードレール
+- 批評役の反対意見を「単なるネガティブ発言」として無視・排除することを禁止する。必ず代替案や軽減策へのトリガーとして活用すること。
+- 調査役が「根拠不明」と判断したデータは、絶対に確定した事実として経営役の収支計算に用いてはならない。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="57" placeholder="出力形式を入力してください">
+最終報告書は、以下のMarkdown構造で出力してください。
+
+```markdown
+# 総合オーケストレーション報告書：【ここに課題名が入る】
+
+## 1. まとめ役（窓口）による総括
+- 本タスクの目的とゴール:
+- 最終判断に向けたサマリー: （全体を200〜300文字で簡潔に要約）
+
+## 2. 各エージェントからの多角的な見解（チームの議論結果）
+### 秘書役：業務の整理と優先順位
+- 整理されたタスク:
+- 優先順位（★〜★★★）:
+
+### 経営役：料金・採算の冷静な検討
+- 想定される収支と採算:
+- 数値に基づく冷徹な評価:
+
+### 調査役：地域需要と制度の裏付け
+- 確認された制度や需要:
+- 情報源と根拠の信頼性:
+
+### 技術役：対応業務範囲の整理
+- 実現可能な技術的範囲:
+- 計算や技術的検討結果:
+
+### 文章担当：案内記事・下書きドラフト
+- 案内文・説明文の下書き草案:
+
+### 広報役：ホームページ等の見せ方・届け方
+- 想定読者の立場で考えたアプローチ:
+- 視覚的なホームページ構成案:
+
+### 批評役：問題点と誤解のリスク（反対意見）
+- 指摘された思い込みや見落とし:
+- 誤解を招く表現や法的・倫理的懸念点:
+
+## 3. 意思決定のための対比マップ
+| 観点 | 推進（ポジティブ）側の意見 | 懸念・反対（ネガティブ）側の意見 |
+|---|---|---|
+| 実現可能性 | | |
+| 経済的採算性 | | |
+| 顧客・住民の反応 | | |
+
+## 4. まとめ役からユーザーへの「次の一手」の提案
+- ユーザーが判断すべき最重要イシュー:
+- 推奨される具体的なファーストアクション:
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>検討したい課題またはアイデア</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに検討したい課題またはアイデアを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>対象となる地域や顧客層</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに対象となる地域や顧客層を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>利用可能な予算や資源（任意）</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに利用可能な予算や資源を入力してください。（任意）" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="60" placeholder="を補足を入力してください">
+### 補足
+- ユーザーは、この最終成果物を確認した上で、一部のエージェントに対してさらに追加指示（例：「経営役、予算を半減させた場合のシミュレーションをして」「文章担当、トーンをもっと柔らかくして」など）を出して深掘りすることができます。
+
+### 例外処理
+- 提示された課題が「AIの技術・法律的限界を超えている」または「倫理的に不適切である」と判断される場合、まとめ役はステップ2に進まず、直ちに処理を停止（Stop）し、その具体的なリスクと代替可能なアプローチを提示してください。
+
+### ネガティブ制約条件
+- AIの内部の生の思考過程（例：「まず〜を考えます。次に〜と対話します」などの実況）を記述することを禁止します。
+- 実行していない処理（例：実際には計算していないのに、適当に概算した数値を技術役の計算結果とすること）を偽装してはなりません。
+- 「まとめ役」がすべてのエージェントを独占し、彼らの独自の鋭い意見（特に反対意見）を薄めて、ありきたりな一般論のみを提示することを禁止します。
+
+### 失敗条件設計
+- このタスクで起こりやすい失敗:
+  * 1) 専門エージェントそれぞれの見解がバラバラのまま、まとめ役が「ただのコピペ」で並べただけの報告書になり、ユーザーの判断を混乱させる。
+  * 2) 批評役の「反対意見」が弱く、推進側の意見（甘い見通し）に同調してしまう（お世辞AI化）。
+  * 3) 調査役が一次情報と二次情報を混同し、根拠のない数値を事実として扱ってしまう。
+- 失敗の兆候:
+  * 各エージェントの回答がすべて同じような賛成トーンになっている。
+  * 収支計画に具体的な数値（概算であっても）が含まれず、抽象的な「利益が見込める」といった言葉だけで済まされている。
+- 誤りと判定する条件:
+  * 批評役のセクションに、実質的なリスクや反対意見が1つも書かれていない場合。
+- 失敗を防ぐための確認方法:
+  * まとめ役は、最終出力を生成する前に「批評役の反対意見が、他のエージェントの楽観的予測と真正面から衝突しているか」をパリティチェックしてください。
+  * 衝突していない場合は、批評役に「もっと意地悪く、現実的なボトルネックを暴きなさい」と内部で再指示（Re-try）してください（再試行の上限は3回まで）。
+- 再試行しても解決しない場合の対応:
+  * 競合を解消できない場合は、その旨を「未解決の対立点」として報告書にそのまま残し、ユーザーに判断を委ねてください。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=775"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##検討したい課題またはアイデア=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##対象となる地域や顧客層=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##利用可能な予算や資源（任意）=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
