@@ -380,7 +380,7 @@
  - ただし、時系列上、後の情報によって状況が更新されたと明確に判断できる場合は、最新情報を採用してください。
  - 解消できない矛盾は、本文で「確認中」とした上で、公表前確認事項にも挙げてください。
 8. プレスリリースを作成する
- - 報告用テンプレートファイル（（災害名）用_記者発表資料（作成例）.docx）を使ってプレスリリースを作成します。
+ - `{報告用テンプレート}`を使ってプレスリリースを作成します。
  - 作成例の構成、見出し番号、文体をできる限り維持し、少なくとも次の内容を含めてください。
  - 【厳守】出力はWORDファイル(docx)で必ず出力します。
  - 入力資料にない項目は削除せず、「要確認」「確認中」「集計中」等としてください。
@@ -471,8 +471,8 @@
 <!-- ユーザー入力 -->
             <div class="box-bun">
 <h2>ユーザー入力</h2>
-<h3>プレスリリースのテンプレート</h3>
-<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここにプレスリリースのテンプレート様式を貼り付けてください。未指定の場合はデフォルト様式が適用されます" class="variable-textarea" >
+<h3>報告用テンプレート</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに報告用のテンプレート様式を貼り付けてください。未指定の場合はデフォルト様式が適用されます" class="variable-textarea" >
 </textarea>
 <h3>被災データ</h3>
 <textarea name="hensu2" id="hensu2" rows="15" placeholder="ここに現場から寄せられた時系列データや被災状況のメモを貼り付けてください" class="variable-textarea" >
@@ -543,7 +543,7 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
     communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
     communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
-    communicationContent += "##プレスリリースのテンプレート=" + (formData.get('hensu1') || '特に指示なし') + "\n";
+    communicationContent += "##報告用テンプレート=" + (formData.get('hensu1') || '特に指示なし') + "\n";
     communicationContent += "##被災データ=" + (formData.get('hensu2') || '特に指示なし') + "\n</ユーザー入力>\n\n";
     communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
 
