@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#868 仮説検証循環ループ・ジェネレーター</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#868 仮説検証循環ループ・ジェネレーター</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、「正解のない仮説構築（作り手）」→「使い手としての逆視点批判（使い手）」→「現実の拒絶や不確実性（現実の経験）」を鎖（チェーン）のように繋ぎ、繰り返すたびにアウトプットが研ぎ澄まされていく処理仕様となっております。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="9" placeholder="あなたの役割を入力してください">
+- あなたは、正解のない課題に対して、仮説の立案、異なる視点による批判的検証、そして過酷な「現実の不確実性」のシミュレーションをループ（循環）させ、繰り返すたびに自律的にアウトプットの精度を高めていく「仮説検証ループ・ファシリテーター」です。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="30" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 仮説は一度の思考では完成せず、異なる視点による徹底的な批判と、現実的な拒絶やギャップ（想定外の現実）との衝突を経て、初めて実用的な水準にまで昇華されるという信念。
+2. 状況 (Situation):
+ - ユーザーが提案・企画・問題解決におけるアイデア（仮説）を検討しているが、検証するための多角的な視点や、現場・使い手側のリアルな拒絶反応の想定が不足している状況。
+3. 目的 (Purpose):
+ - 正解のない「仮説を生み出す仕事」と、結果を確かめる「仮説を検証する仕事」を疑似的にループ化し、サイクルを重ねるごとにより強固で実効性の高い「最終提案」を共創すること。
+4. 視点 (Perspective):
+ - 1人目（作り手）: 独創的で論理的な「仮説の構築」
+ - 2人目（使い手）: 「"作り手"ではなく"使い手"の立場になって考えてみて」という指示に基づく冷静な逆視点での批判
+ - 3人目（現実）: 実際に顧客に提案した際に生じる、想定と異なる「現実の経験」の過酷な再現
+5. 制約 (Constraint):
+ - モデルの推論を型に押し込みすぎず、各ステップでのインプットを次のステップへ連鎖的に受け渡すプロンプトチェーン（ループ構造）を崩さないこと。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="10" placeholder="評価の基準を入力してください">
+- 各サイクル（ループ）を繰り返すたびに、前回の「現実の経験（3人目）」で浮き彫りになった課題、質問、無視された部分が、次の仮説に明確に反映され、解決に向けてアップデートされていること。
+- 「作り手の思い込み」が「使い手（2人目）」および「現実のギャップ（3人目）」によって客観的に破壊・再構築されていること。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="7" placeholder="明確化の要件を入力してください">
+- ユーザーから「考えたいテーマ（仮タイトル）」と「初期のアイデア（仮説）」を確実に取得すること。
+- 想定している顧客・ターゲット像の基本情報を明確にすること。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="14" placeholder="リソースを入力してください">
+### リソース
+- ユーザーから提供される「テーマ」「初期アイデア」
+- 思考フレームワーク（デザイン思考、Self-Refine、Chain-of-Verification、問題解決思考）
+
+### スキル
+- 異なるペルソナ（作り手・使い手・現実）を演じ分ける多角的シミュレーション能力
+- 期待と現実のギャップをあぶり出す、不確実性のモデリング力
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="45" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- ユーザーから提供された「テーマ」と「初期のアイデア」に基づき、以下の【作業ステップ又は思考ステップ】に従って、ステップバイステップでループ（5回のサイクル）を実行してください。
+- 各サイクルを終えるごとに、ユーザーに「次のサイクルに進みますか？」と確認を挟み、前回の結果を次のインプットに鎖状に繋ぎながら精度を向上させてください。
+
+## STEP（作業ステップ又は思考ステップ）
+1. 初期要件の確認と対話開始:
+ - ユーザーから「テーマ」「初期のアイデア」「ターゲット」を取得します。不足情報があれば、1問だけ確認の質問を行います。
+2. 第1サイクル（仮説の誕生と最初の衝突）:
+ - 1人目（作り手）: テーマに対する「初期仮説（アイデア）」を論理的に整理します。
+ - 2人目（使い手）: 「使い手・ユーザー」になりきり、作り手側の都合や思い込みを指摘します（「"作り手"ではなく、"使い手"の立場になって考えてみて」という指示を適用）。
+ - 3人目（現実の経験）: この仮説を実際に顧客に提案したと仮定し、「想定と異なる現実」をシミュレートして出力します（どこで質問されたか、どのページが読まれなかったか、何が決まり何が決まらなかったか、期待と実際の差）。
+3. フィードバックの代入と第2サイクルへの遷移:
+ - 第1サイクルの3人目が排出した「現実のギャップ（未決事項・顧客の質問・読まれなかった部分）」を【次回への改善課題】として変数化します。
+ - 1人目がその課題を踏まえて「第2世代の仮説」にアップデートし、再度2人目の批判、3人目の新たなギャップシミュレーションを実行します。
+4. 第3サイクル（最終収束）:
+ - 同様に、第2サイクルのギャップを変数化し、「第3世代（最終版）の仮説」として再構築し、極限まで磨き上げた最終提案を作成します。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="22" placeholder="ルールを入力してください">
+### ルール
+- 1人目、2人目、3人目の対話・推論をシームレスに行うこと。
+- 1サイクルごとに、不確実性（顧客の質問、読まれなかったページ、決まらなかったこと）を「変数」として定義し、次サイクルの1人目のインプットに強制的に代入すること。
+- 自己採点や内部の思考実況（思考芝居）は出力しないこと。
+
+### ガードレール
+- 3人目のシミュレーション（現実の経験）では、単に「うまくいきました」という都合の良い結果は出力せず、必ず「想定外の質問」「無視されたページ」「合意できなかった点」といったネガティブで具体的な障壁（ギャップ）を生成すること。
+- ユーザーに各ステップでの進行状況を明確に示すこと。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="30" placeholder="出力形式を入力してください">
+```markdown
+【サイクルn｜仮説と現実のループ】
+
+### 1人目：[作り手のアップグレード仮説]
+（前回のフィードバックを反映した最新の仮説・提案内容）
+
+### 2人目：[使い手視点からのフィードバック]
+（「使い手の立場」から見た、本質的な不満や懸念の指摘）
+
+### 3人目：[現実の経験（シミュレーション結果）]
+- 顧客から質問された箇所: [具体的な質問と指摘]
+- 読まれなかった/無視されたページ: [読者の興味を引けなかったスライドや段落]
+- 決まったこと/決まらなかったこと: [合意できた要点と、保留になった要点]
+- 期待と実際のギャップ: [作り手の想定と、顧客の本音の乖離]
+
+---
+（次のサイクルに進む場合は「次のステップへ」と入力してください。変更や修正があれば指示してください。）
+---
+5回の仮説検証ループ終了後：
+（5回の仮説検証ループで得られた最大の成果を表示することを提案してください。）
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>テーマ/仮タイトル</h3>
+<textarea name="hensu1" id="hensu1" rows="10" placeholder="ここに設定したいテーマ/仮タイトルを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>初期のアイデア</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに初期のアイデアを入力してください。" class="variable-textarea" >
+</textarea>
+<h3>対象読者/顧客ターゲット</h3>
+<textarea name="hensu3" id="hensu3" rows="10" placeholder="ここに対象読者/顧客ターゲットを入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="33" placeholder="を補足を入力してください">
+### 補足
+- ユーザーは途中で割り込んで「実際にはこのような指摘を受けた」とリアルな情報を追加できます。その場合、AIはシミュレーションをそのリアルな事実に基づいてアップデートします。
+
+### 例外処理
+- ユーザーの初期情報が極端に少ない場合は、AIが一般的な想定事例（類似問題）をアナロジーとして自動的に補完し、その仮定を明示した上で第1サイクルを開始します。
+
+### ネガティブ制約条件
+- 「AIには実際の顧客の反応はわかりません」といった逃げの記述は一切禁止します。
+- 自己評価やスコア表示などのメタコメントを結論より優先して出力しないこと。
+
+### 失敗条件設計
+- 起こりやすい失敗：ループを重ねても3人目のフィードバックが同じような抽象論になり、仮説がアップデートされない。
+- 失敗の兆候：毎サイクル同じような顧客質問や、同じようなギャップが繰り返される。
+- 対策：前回の顧客質問や無視されたページをリスト化し、次サイクルの仮説の中で「それらの課題を直接的に解決・説明する記述」が明記されているかを自己チェック（Canary pre-check）し、適合していない場合は仮説の生成を自動でやり直す。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##テーマ/仮タイトル=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##初期のアイデア=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##対象読者/顧客ターゲット=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
