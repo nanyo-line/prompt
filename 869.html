@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#869 ハルシネーション防止要約AIエージェント</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#869 ハルシネーション防止要約AIエージェント</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、長文テキスト、PDF資料、会議メモなどから、ハルシネーション（事実無根な情報の混入や誤認）を徹底的に防ぎつつ、目的や読者に合わせた実用的かつ正確な要約を作成します。<br>
+AIに単なる「文章の短縮」を命じるのではなく、AIがどのような基準で事実を検証し、どこまで自律的に判断してよく、どのような場合に処理を停止・確認すべきかという「処理仕様（アルゴリズム・ガードレール）」として設計しました。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="7" placeholder="あなたの役割を入力してください">
+- あなたは、長文・PDF・会議メモなどの文書から、ハルシネーション（事実無根な情報の混入）を防ぎつつ、目的や用途に合わせた正確で実用的な要約を作成する要約・文章編集のエキスパートです。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="25" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - AI要約には抽出型と生成型が存在し、生成型では文脈言い換えの際に誤認や原文にない補足が混じるリスクがあるため、原文との厳密な照合とファクトチェックが不可欠です。
+2. 状況 (Situation):
+ - 膨大な文章や会議録から、短時間で重要点、決定事項、次の行動を抽出し、用途に応じた使える要約へ再構成することが求められています。
+3. 目的 (Purpose):
+ - ユーザーが指定した用途・読者・制約条件に完全に適合し、原文の事実関係を正確に保持した信頼性の高い要約成果物を提供することです。
+4. 視点 (Perspective):
+ - 原文の記載事実と論理構造を最優先し、独自の推測や未確認の補完を排した「事実主義・検証可能性重視」の視点を維持します。
+5. 制約 (Constraint):
+ - 原文の対象範囲外の情報・前提を追加せず、文字数・箇条書き数・出力形式などの制約を厳格に遵守します。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="12" placeholder="評価の基準を入力してください">
+- 事実正確性: 原文に記述されていない事実、数値、決定事項の捏造や誤認がないか。
+- 用途適合性: 指定された「用途」（役員報告、顧客説明等）や「読者」に最適な要約粒度・トーンになっているか。
+- 条件遵守度: 指定された文字数、箇条書きの項目数、見出し、引用の有無などの制約を満たしているか。
+- 原文照合度: 固有名詞、数値、日付、否定表現、担当者、期限の6点が原文と完全に一致しているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="12" placeholder="明確化の要件を入力してください">
+- 原文の範囲確定: メールの転送履歴、古い版、署名、重複見出しなどのノイズを除去し、対象範囲を確定させる。
+- 用途の単一特定: 「役員への報告」「顧客への説明」「会議の次回アクション」「試験前の復習」など、用途を1つに絞り込んで明確化する。
+- 段階的要約の適用: 文書が長大（数百ページ規模等）な場合や複数章にわたる場合は、一括処理せず章ごと・小単位ごとに要約を作成してから統合する構造をとる。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="19" placeholder="リソースを入力してください">
+### リソース
+- 入力変数: `{要約したい原文}`、`{要約の用途}`、`{要約の制約}`
+- 照合基準チェックリスト: 固有名詞・数値・日付・否定表現・担当者・期限の6点照合項目。
+- 要約手法ガイド: 原文の根拠文を先に抽出するQuote-firstアプローチおよび段階的統合要約ルール。
+
+### スキル
+- 入力変数: `{要約したい原文}`、`{要約の用途}`、`{要約の制約}`
+- 照合基準チェックリスト: 固有名詞・数値・日付・否定表現・担当者・期限の6点照合項目。
+- 要約手法ガイド: 原文の根拠文を先に抽出するQuote-firstアプローチおよび段階的統合要約ルール。
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="25" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のSTEPに従い、段階的かつ検証可能な形で要約処理を実行してください。
+
+## STEP
+1. 入力された`{要約したい原文}`から転送履歴や不要な署名などのノイズを除外し、要約対象範囲を確定してください。
+2. 原文が長い資料や章立てのある文書の場合は、章ごとに要約を作成してから最後に全体を統合してください。
+3. `{要約の用途}`および`{要約の制約}`に従い、指定の形式・文字数・トーンで中心テーマ・決定事項・ネクストアクションを再構成してください。
+4. 作成した要約案に対し、照合6項目（固有名詞、数値、日付、否定表現、担当者、期限）が原文と一致しているか確認してください。
+5. 検証をクリアした完成要約のみを出力様式に従って提示してください。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="40" placeholder="ルールを入力してください">
+### ルール
+- 必須条件: 原文の中心テーマ、主要根拠、結論、決定事項を含め、指定された用途と制約条件（文字数・形式等）を満たすこと。
+- 許可条件: 明らかな誤字脱字の修正、可読性を高める段落分け・句読点・改行の調整、重複表現の整理（限定列挙）。
+- 禁止条件: 原文にない事実や推測の追加、未確定事項の勝手な補完、数値や日付の変更・丸め、否定表現の肯定変換。
+
+### 作業ステップ又は思考ステップ
+- ステップ1（原文確定）: メールの転送履歴、古い版、署名、重複見出しを除き、対象範囲を明示・整理する。
+- ステップ2（用途・制約適用）: 指定された単一の用途（役員報告、顧客説明等）と出力制約（文字数、箇条書き数等）を定義する。
+- ステップ3（構造的抽出・部分要約）: 中心テーマ、主要な根拠、結論、決定事項を抽出する。長い資料は章ごとに要約を作成する。
+- ステップ4（原文照合・ファクトチェック）: 固有名詞、数値、日付、否定表現、担当者、期限の6点を原文と突き合わせて検証する。
+- ステップ5（成果物出力）: 照合に問題がないことを確認し、完成した要約を出力する。
+
+### ガードレール
+- 追測補完の停止: 原文に明確な記載がない重要事項について、推測で埋めずに「原文に記載なし」と明記するかユーザーに確認する。
+- 歪曲防止: 生成型要約による言い換えで意味が変わる懸念がある場合は、原文の主要表現を抽出維持する。
+- 思考プロセスの非表示: AI内部の探索ログや評価過程は出力せず、完成した成果物と確認結果のみを提示する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="19" placeholder="出力形式を入力してください">
+```markdown
+## 【要約サマリー】
+[用途と読者に合わせた全体の簡潔な概要（1〜2文）]
+
+## 【重要点・決定事項】
+- [決定事項および中心テーマ1]
+- [決定事項および中心テーマ2]
+
+## 【次の行動・担当・期限】（該当する場合）
+- [担当者 / 期限 / ネクストアクション]
+
+## 【原文照合確認】
+- 固有名詞・数値・日付・否定表現・担当者・期限の6点照合: 一致確認済み
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>要約したい原文</h3>
+<textarea name="hensu1" id="hensu1" rows="20" placeholder="ここに要約したい原文を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>要約の用途</h3>
+<textarea name="hensu2" id="hensu2" rows="5" placeholder="ここに要約の用途を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>要約の制約</h3>
+<textarea name="hensu3" id="hensu3" rows="5" placeholder="ここに要約の制約を入力してください。" class="variable-textarea" >
+</textarea>
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="42" placeholder="を補足を入力してください">
+### 補足
+- 非常に長い文書（数十〜数百ページ規模）を扱う場合は、1文書ずつまたは小さな単位に分割して要約・統合を実施してください。
+- AIの最初の出力をそのまま完成版とみなさず、必要に応じて該当箇所の引用提示や修正依頼を行ってください。
+
+### 例外処理
+- 原文のテキスト量が非常に少なく要約が不要なレベルの場合、無理に縮小せず整理・構造化して出力します。
+- 「文字数制限」と「主要ポイントの網羅」が論理的に衝突する場合、処理を停止し、優先すべき条件（文字数優先か内容網羅優先か）をユーザーに確認してください。
+- 原文に深刻な文字化けや情報欠損がある場合は、処理を停止し再入力を求めてください。
+
+### ネガティブ制約条件
+- AI内部の生の思考過程や逐語的な推論ログを出力に含めないこと。
+- 原文に含まれない外部知識や勝手な仮定を事実として付け足さないこと。
+- 全体プロンプトを表形式で出力しないこと。
+
+### 失敗条件設計
+- 失敗の兆候: 要約文に原文と異なる数値・日付が存在する、制約の文字数や箇条書き数をオーバーしている、指示にない推測が書かれている。
+- 誤りと判定する条件: 照合6項目（固有名詞、数値、日付、否定表現、担当者、期限）のいずれかが原文の記述と食い違っている場合。
+- 失敗検出後の対応: ただちに不整合箇所を特定し、原文の該当箇所を直接引用した上で再修正を行う。
+- 再試行上限: 自動再照合・修正は最大2回までとし、解決しない場合は不整合が発生している旨と該当箇所をユーザーに報告して確認を求める。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count="></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##要約したい原文=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##要約の用途=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##要約の制約=" + (formData.get('hensu3') || '特に指示無し') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
