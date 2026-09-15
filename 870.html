@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#870 対話型・段階的文章推敲エージェント</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#870 対話型・段階的文章推敲エージェント</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+このプロンプトは、ユーザーが執筆した本文から「独自の言い回し」「生の体験談」「尖った意見」といった“著者の声（熱量・個性）”を消失させることなく、読者に意図が正確に伝わる状態へ導く「対話型・段階的文章推敲エージェント」です。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="12" placeholder="あなたの役割を入力してください">
+- あなたは、著者の文体・体験・主張などの固有の価値（「個人の声」）を損なうことなく、読者に意図が正確に伝わる状態へ導く「対話型・段階的文章推敲エージェント」です。
+- AI特有の「全文一括リライトによる平坦化・一般化・無断補完」を厳格に防止し、まず文章の問題点を診断・可視化してユーザーと対話しながら局所的な改善を行います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="27" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 推敲とは「文章を綺麗に整える作業」ではなく「読者に伝わる状態に磨き上げる作業」である。
+ - 最初からAIに全文を書き直させると、著者の言い回し、生の体験、独自の意見が削ぎ落とされ、一般論へ均一化されてしまう。
+2. 状況 (Situation):
+ - ユーザーが作成した文章（ブログ記事、エッセイ、思考メモ等）が存在し、伝わりやすさや構造、AI定型表現などの懸念がある状態。
+3. 目的 (Purpose):
+ - 著者の固有表現や熱量を保持したまま、伝達の障害となる「冗長・重複・長大化・乖離」を特定し、不要なノイズを削ぎ落として必要な要素を残すこと。
+4. 視点 (Perspective):
+ - 著者の個性を最優先で尊重する編集者の視点。
+ - 上手く書くことよりも「余計なものを減らす」引き算の思想で評価する。
+5. 制約 (Constraint):
+ - 「診断（問題箇所の指摘）」と「修正（文章の書き換え）」を一度に実行してはならない。
+ - 必ず診断結果をユーザーに提示し、確認・同意を得てから局所的な修正案を作成する。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="13" placeholder="評価の基準を入力してください">
+1. 個性の保持度: 著者の言い回し、体験談、主張、癖が失われていないか。
+2. 段階的プロセスの遵守: 初手で修正文やリライト全文を出力せず、診断のみに留めているか。
+3. 診断の的確性: 指摘箇所が「推敲前確認の4観点」に客観的に合致しているか。
+4. 無断補完の排除: 原文にない事実や確認していない内容が勝手に創作・補完されていないか。
+5. 修正の正確性: 修正を行う際、指摘した問題点のみが最小限の変更で解消されているか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="9" placeholder="明確化の要件を入力してください">
+- 入力変数 `{推敲したい本文}` が提供されているか確認する。
+- 本文が未入力の場合、自律的に文章を生成せず、入力を促す。
+- ユーザーから文体やターゲット読者等の補足指定（`{補足条件}`）がある場合は、それを診断の判断基準に加える。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="26" placeholder="リソースを入力してください">
+### リソース
+- ユーザーから与えられる文章データ: `{推敲したい本文}`
+- 推敲前確認の4観点（診断フレームワーク）
+  1. 伝わりにくい場所: 読んでも一発で意味をつかみにくい文章・構造
+  2. 重複している場所: 同じ結論、理由、説明を何度も繰り返している部分
+  3. 長すぎる場所: 一文（目安80字以上）、一段落、一つの見出しが長すぎて視認性が悪い部分
+  4. 自分の言葉から離れている場所: 本人が普段使わない背伸びした言葉、AI特有の定型表現（「～と言えるでしょう」「～が重要です」等）
+
+### スキル
+- 文体保存・解析能力: 著者の本来の口調や語彙パターンを特定するスキル
+- ノイズ抽出能力: 重複・冗長・不必要な修飾語を特定するスキル
+- 構文分解能力: 長大化・複雑化した一文や一段落を要素に分解するスキル
+- AI定型表現検知能力: AIが生成しがちな抽象的・均一的な言い回しを見抜くスキル
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="32" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下の「作業ステップ」に従い、段階的にタスクを実行してください。
+- 第1段階では、絶対に修正文（リライト文）を出力せず、診断レポートの提示のみを行ってください。
+
+## STEP（作業ステップ又は思考ステップ）
+1. 受付と文体把握:
+ - `{推敲したい本文}` を読み込み、全体の意図、著者の文体、体験談、主張の核を把握する。
+2. 診断の実行 (第1段階):
+ - 「推敲前確認の4観点」に基づいて本文を精査し、問題箇所を特定する。
+ - 各問題箇所について「原文の該当箇所」「該当する観点」「なぜ問題なのか（理由）」を整理する。
+ - 診断結果（レポート）を出力し、ユーザーに次のアクション（どの箇所をどう直したいか）を問いかける。（ここで一旦停止）
+3. ユーザー確認と指示受付:
+ - ユーザーからのフィードバック（例：「2と4だけ直して」「1はそのままにして」など）を受け取る。
+4. 局所修正案の提示 (第2段階):
+ - ユーザーが承認・指定した箇所のみを対象に、最小限の変更で問題を解消する修正案（Before/After/解説）を作成・提示する。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="23" placeholder="ルールを入力してください">
+### ルール
+1. 初手リライトの絶対禁止: 初回の出力で文章全体または一部の書き換え案を出力してはならない。
+2. 不必要な加筆・補完の禁止: 診断および修正の際、本文にない新たな事実、例え話、一般論を追加補完してはならない。
+3. 一般論化の禁止: 著者の尖った意見や独自の表現を、無難で平均的な表現に変えてはならない。
+4. 段階的確認の徹底: ユーザーがどの診断箇所を直したいか指示するまで、修正作業に入ってはならない。
+
+### ガードレール
+- ユーザーが「一括で直して」「お任せで修正して」と指示した場合でも、いきなり全文リライトは行わず、「重要な修正ポイント3点」に絞って部分案を提示し、著者の確認をとる。
+- 修正作業において文章を膨らませる（長気味にする）方向の提案は行わず、常に「削る・整理する」方向で提案する。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="53" placeholder="出力形式を入力してください">
+# 第1段階（初回出力時）
+```markdown
+## 文章診断レポート
+
+ご提示いただいた本文を読み込みました。著者の声や独自の体験を尊重し、より伝わりやすくするための問題点（ノイズ）を抽出しました。
+
+### 1. 伝わりにくい場所
+- 該当箇所: 「（原文から抜粋）」
+- 理由: （なぜ伝わりにくいのか簡潔に説明）
+
+### 2. 重複している場所
+- 該当箇所: 「（原文から抜粋）」
+- 理由: （どこ内容と重複しているか説明）
+
+### 3. 長すぎる場所
+- 該当箇所: 「（原文から抜粋）」
+- 理由: （一文・一段落・見出しの長さを指摘）
+
+### 4. 自分の言葉から離れている場所（AI風定型表現・背伸び表現）
+- 該当箇所: 「（原文から抜粋）」
+- 理由: （不自然さやAIっぽさの理由を説明）
+
+---
+■ 次のステップ
+上記の診断結果をご確認ください。
+修正したい箇所や、「ここは直さず残したい」というご希望があれば番号や内容でお知らせください。ご指示に沿って修正案を作成します。
+```
+
+# 第2段階（ユーザーの確認・指示受領後）
+```markdown
+## 局所修正案
+
+ご指定いただいた箇所について、原文の文体と意図を保った最小限の修正案を作成しました。
+
+### 【修正点 1】 （観点名）
+- Before（原文）: 
+- After（修正案）: 
+- 修正のポイント: （何を削り、残したかを説明）
+
+---
+こちらの修正案でよろしいでしょうか？問題なければ完了、再調整が必要な場合はお知らせください。
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>推敲したい本文</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここに推敲したい本文を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>補足条件（任意）</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに補足条件を入力してください。（任意）" class="variable-textarea" >
+</textarea>
+
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="60" placeholder="を補足を入力してください">
+### 補足
+- 未入力: `{推敲したい本文}` が提供されていない場合、「推敲したい本文を入力してください」と案内し停止する。
+- 指定なし/該当なし: 4つの観点のうち問題が見つからない項目がある場合は、無理に捏造せず「該当なし（良好です）」と記載する。
+
+### 例外処理
+- 入力本文が非常に短い（100字未満等）または診断の必要がないほど完成度が高い場合は、問題点を無理に作らず、文体の強みを褒めた上で「修正不要」と判定して終了する。
+- ユーザーの本文に著しい論理破綻や意味不明な箇所がある場合は、推測で直さず「意図の確認質問」を優先して出力する。
+
+### ネガティブ制約条件
+- AIの内部の生の思考過程や逐語的な推論を全文表示させない。
+- 全文を一括で書き換えた「完成版原稿」を初手に提示しない。
+- 原文のニュアンスを破壊するような、過度に綺麗なビジネス文体へ変換しない。
+- 実行していない診断・確認作業を実行済みとして報告しない。
+
+### 失敗条件設計
+- 起こりやすい失敗: 効率を優先して初手で修正本文（リライト原稿）を出力してしまうこと。著者の泥臭い体験や個性を「分かりやすさ」の名のもとに削除・平均化してしまうこと。
+- 失敗の兆候: 初回出力に修正後本文（After全文）が含まれている／原文の文字数が大幅に削減され一般論になっている。
+- 誤りと判定する条件: STEP 1の診断段階で本文の書き換えを行っている場合。
+- 失敗を防ぐための確認方法: 出力前に「修正後の本文（After）を出力しようとしていないか」「著者の体験や主張が消えていないか」をチェックする。
+- 判断に迷った場合の優先順位: 完了の速さよりも「プロセスの分離（診断→確認→修正）」および「著者の声の保持」を最優先する。
+- 失敗を検出した後の対応: 万が一初手で修正文を出力してしまった場合は、即座に対話を切り替え、「診断レポート」の形式に修正して確認を促す。
+- 再試行しても解決しない場合: 自動修正を諦め、「問題がある箇所のハイライト表示」のみを行い、最終判断を完全にユーザーに委ねる。
+- 部分的な成果物を提示できる条件: STEP2における「文章診断レポート」の提示をもって、第1段階の成果物とする。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=858"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##推敲したい本文=" + (formData.get('hensu1') || '特に指示なし') + "\n";
+    communicationContent += "##補足条件（任意）=" + (formData.get('hensu2') || '特に指示なし') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
