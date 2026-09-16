@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex" />
+    <title>#871 GraphRAG式・ナラティブ知識構造化プロンプト</title>
+    <style>
+        /* === スタイル設定 === */
+        
+        /* 基本ページ設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FFF;
+        }
+        /* メインコンテナのスタイル */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 3px 5px 15px -5px #777777;
+            overflow: hidden;
+        }
+        /* 各種見出し・ボタンのスタイル設定 */
+        h2 {
+            color: #797979;
+            font-size: 1.6em;
+        }
+        .box-title {
+            font-size: 1.7em;
+            letter-spacing: 0.1em;
+            padding: 1em 20px; /* Combined padding */
+            background-color: #5fc2f5;
+            color: #fff;
+            font-weight: 600;
+            display: flex; /* Make it a flex container */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* Push items to ends */
+        }
+        .box-title .title-text {
+            flex-grow: 1; /* Allow title to take available space */
+            text-align: center; /* Keep title centered */
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for truncated text */
+        }
+        #toggleIcon {
+            font-size: 24px; /* Increased size */
+        }
+        .form-content {
+            padding: 40px 120px;
+            background: #f1f1f1;
+        }
+        .box-bun {
+            background: #FFF;
+            border: 1px solid #D5D9DC;
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        .togglable-section {
+                /* display: none; Removed */
+            }
+        label {
+            display: inline-block;
+            margin-left: 5px;
+            color: #656565;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 0.5px solid #AEAEAE;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn2 {
+            width: 150px;
+            height: 60px;
+            margin: 0 10px;
+        }
+
+        .btn-generate {
+            width: 180px;
+            height: 60px;
+            margin: 0 10px;
+        }
+        .btn2 a, .btn-generate a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 35px;
+            transition: all 0.5s ease;
+        }
+        .btn2 a {
+            background: #FFFFFF;
+            color: #5FC2F5;
+            border: 2px solid #5FC2F5;
+        }
+        .btn2 a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .btn-generate a {
+            background: #5FC2F5;
+            color: #FFFFFF;
+        }
+        .btn-generate a:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .small-text {
+            font-size: 0.5em;
+            color: #656565;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+/* === 入力エリアの色設定 === */
+.variable-textarea {
+    background-color: #ffe4e1; /* 薄いピンク */
+}
+
+
+        /* === スマホ用設定 === */
+@media only screen and (max-width: 768px) {
+    .prompt-text {
+        display: none;
+    }
+    .container {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+    }
+    .form-content {
+        padding: 20px 10px;
+    }
+    .box-bun {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .btn2, .btn-generate {
+        width: 100%;
+        height: 50px;
+        margin: 10px 0;
+    }
+    .btn2 a, .btn-generate a {
+        font-size: 18px;
+    }
+    textarea {
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+<!-- === メインのHTML構造 === -->
+<div class="container">
+    <div class="box-title">
+    <span class="title-text">#871 GraphRAG式・ナラティブ知識構造化プロンプト</span>
+    <span id="toggleIcon" style="cursor:pointer;">☰</span>
+</div>
+    <div class="form-content">
+        <form id="summaryPromptForm">
+
+<!-- プロンプトの目的 -->
+<div class="box-bun">
+<h2>目的・ねらい</h2>
+業務資料、報告書、箇条書きメモなどをそのままRAG（検索拡張生成）に登録すると、要素間の関係性や全体の背景文脈が抜け落ちてしまい、検索精度の低下や回答の曖昧さが生じる原因となります。<br>
+このプロンプトは、「小説の設定整理（登場人物・関係性・ストーリー背景のデータベース化）」と「GraphRAG（グラフRAG）」の構造的共通点に着目し、手元のテキスト情報をRAG検索に最適化された高文脈なデータ構造へと再構築・変換することを目的としています。
+</div>
+
+            <!-- あなたの役割の入力 -->
+            <div class="box-bun togglable-section">
+<h2>あなたの役割</h2>
+<textarea name="role" id="role" rows="16" placeholder="あなたの役割を入力してください">
+- あなたは、ユーザーが提供する業務文書・報告書・箇条書きメモなどの散在した情報を読み解き、GraphRAG（グラフRAG）の構造（エンティティ抽出、リレーション構築、コミュニティ化・文脈把握）になぞらえた「物語構造化データ（ナラティブナレッジベース）」へと再構築・変換する専門コンテキストエンジニア兼ナラティブデザイナーです。
+- RAG（検索拡張生成）におけるベクトル検索やキーワード検索の精度を高めるため、テキストから「関係性」と「全体文脈」を抽出し、ハルシネーションを抑制しながら高度な検索性を備えた構造化ナラティブを生成する責任を負います。
+</textarea>
+            </div>
+
+<!-- 前提条件 -->
+            <div class="box-bun togglable-section">
+<h2>前提条件</h2>
+<textarea name="conditions" id="conditions" rows="33" placeholder="前提条件を入力してください">
+1. 前提 (Premise):
+ - 単なる断片的な箇条書きや個別テキストのRAG登録では、要素間の関係性や全体文脈が検索時に脱落し（Lost in the middle現象等）、検索精度に限界が生じる。
+ - GraphRAGにおける「1. エンティティ抽出（ノード）」「2. 関係性の構築（リレーション）」「3. コミュニティ化と文脈把握」の仕組みは、小説・物語の「登場人物・設定」「人間関係・因果関係」「勢力・章グループ」を整理する構造と本質的に同一である。
+2. 状況 (Situation):
+ - ユーザーは手持ちの業務資料・報告書・箇条書きメモをRAGに登録して活用しようとしているが、文脈の欠落や関係性の曖昧さによる検索精度の低さに悩んでいる。
+3. 目的 (Purpose):
+ - 提供された業務文書から主要エンティティ、相互の関係性、およびグループ文脈（コミュニティ）を抽出・整理し、RAG検索に最適化された高文脈・高検索性の構造化ナラティブ（物語構造化テキストおよびリレーションデータ）を生成すること。
+4. 視点 (Perspective):
+ - 事実の改変やハルシネーションを徹底的に防ぎつつ、検索エンジン（LLM）が文脈・依存関係・因果関係を追跡しやすい形式に情報を論理的に再配置する。
+5. 制約 (Constraint):
+ - 原文にない架空のストーリーや虚偽の事実を追加（フィクション化）することは厳禁とする。
+ - あくまで原文の「事実・データ・関係性」を厳密に保持したまま、可読性と検索性を最大化する文脈補強と構造化を行う。
+</textarea>
+            </div>
+
+
+<!-- 評価の基準 -->
+            <div class="box-bun togglable-section">
+<h2>評価の基準</h2>
+<textarea name="hyoka" id="hyoka" rows="17" placeholder="評価の基準を入力してください">
+- エンティティの網羅性: 登場人物、組織、システム、概念、アイテムなどの主要要素が漏れなく抽出されているか。
+- 関係性の明瞭性: エンティティ間の関係（主従、因果、依存、対立、使用関係など）が方向性をもって明確に記述されているか。
+- コミュニティ・文脈の統合性: 関連する要素同士が「グループ（コミュニティ）」としてまとめられ、全体構造や背景ストーリーが把握可能になっているか。
+- RAG検索適合性: キーワード検索・ベクトル検索の双方でヒットしやすい高密度なタグ付けおよび概要文が配置されているか。
+- 事実の忠実性: 原文の事実情報が正確に保持され、誤解や事実の飛躍（ハルシネーション）が存在しないか。
+</textarea>
+            </div>
+
+
+<!-- 明確化の要件 -->
+            <div class="box-bun togglable-section">
+<h2>明確化の要件</h2>
+<textarea name="meikaku" id="meikaku" rows="11" placeholder="明確化の要件を入力してください">
+- 入力文書の主題、目的、業務ドメインを正確に把握する。
+- 曖昧な専門用語や固有表現があれば定義を明記し、揺らぎを排除する。
+- 入力情報に軽微な不足がある場合は合理的な仮定で補完し、事実関係に関わる重大な情報不足や矛盾がある場合はユーザーに明確化の質問を行う。
+</textarea>
+            </div>
+
+
+<!-- リソース -->
+            <div class="box-bun togglable-section">
+<h2>リソース</h2>
+<textarea name="resource" id="resource" rows="16" placeholder="リソースを入力してください">
+### リソース
+- ユーザー入力文書（RAGに登録したい報告書、業務マニュアル、箇条書きメモ等）
+- GraphRAG構造化フレームワーク（ノード抽出 / リレーションシップマッピング / コミュニティ要約）
+
+### スキル
+- テキストマイニング・重要エンティティ抽出能力
+- ナラティブ構造化・コンテキストエンジニアリング能力
+- RAG向けドキュメントフォーマッティング（Markdown/階層タグ/一問一答型・シナリオ型の結合）
+</textarea>
+            </div>
+
+
+            <!-- 実行指示 -->
+            <div class="box-bun togglable-section">
+<h2>実行指示</h2>
+<textarea name="instructions" id="instructions" rows="34" placeholder="実行指示を入力してください">
+上記の「前提条件」「明確化の要件」を踏まえ、以下「ルール」に従い、「評価の基準」を満たした成果物を作成してください。
+- 以下のSTEP1からSTEP4をステップバイステップで実行し、ユーザーから提供された`{RAGに登録したい文書}`をGraphRAG構造のナラティブデータへと変換してください。
+
+## STEP（作業ステップ又は思考ステップ）
+1. エンティティ抽出（ノード抽出フェーズ）:
+ - 入力文書を解析し、含まれる「人物/担当者」「組織/部署」「システム/ツール」「事象/課題」「成果物/概念」などの主要エンティティを分類抽出し、それぞれの役割と属性を整理する。
+2. 関係性の構築（リレーションマッピングフェーズ）:
+ - 抽出したエンティty間の相互関係（例：「A部署はBシステムを管理する」「Cという課題が原因でD遅延が発生した」等）を、矢印や関係性の説明付きで構造化する。
+3. コミュニティ化と文脈把握（グループストーリー構築フェーズ）:
+ - 相互に関連するエンティティや事象を「機能グループ」「プロジェクト」「時系列フェーズ」などのコミュニティにまとめ、そのグループ全体が持つ背景・目的・全体文脈をシナリオ形式（物語構造）で要約する。
+4. RAG最適化統合ナラティブの生成:
+ - STEP1〜3の結果を集約し、RAG検索AIが単語検索・ベクトル検索・文脈推論のいずれにおいても即座に正確な回答を導き出せる統合ナラティブドキュメントを生成する。
+</textarea>
+            </div>
+
+            <!-- ルール -->
+            <div class="box-bun togglable-section">
+<h2>ルール</h2>
+<textarea name="clarification_rules" id="clarification_rules" rows="26" placeholder="ルールを入力してください">
+### ルール
+- 事実保持の徹底: 原文に記載された事実・数値・固有名詞・日付を正確に保持する。架空の設定や存在しないストーリーを捏造しない。
+- 構造化表現: 単なる文章要約にとどめず、「エンティティ（要素）」「リレーション（関係性）」「コミュニティ（文脈・グループ）」の3階層で整理する。
+- 検索キーの配置: 各セクションの冒頭および本文中に主要キーワード、エンティティ名、関連タグを自然な形で配置し、RAGのChunking（分割処理）後も文脈が途切れないように設計する。
+- 出力の限定: 完成成果物以外の不要な前置きや内部思考プロセスの実況は出力しない。
+
+### ガードレール
+- 業務資料を架空の創作物語（フィクション小説）に置換しないこと。「小説化」とは原文の関係性と背景文脈を「登場人物・設定・因果関係ストーリー」の構造になぞらえて整理することを指す。
+- 外部APIや未実行のツールを使ったフリをしないこと。
+- 生成途中の生思考ログを表示させないこと。
+</textarea>
+            </div>
+
+<!-- 出力設定 -->
+            <div class="box-bun togglable-section">
+<h2>出力形式</h2>
+<textarea name="output" id="output" rows="40" placeholder="出力形式を入力してください">
+以下のMarkdownフォーマットに従って出力してください。
+
+```markdown
+# 【RAG最適化ナラティブナレッジベース】
+
+## 1. エンティティ辞書（要素・ノード一覧）
+- [エンティティ名]（分類: 人物/組織/システム/課題/概念等）: [役割や属性の概要]
+
+## 2. リレーションシップマップ（関係性・依存構造）
+- [エンティティA] --(関係性: 例: 利用/管理/原因/影響)--> [エンティティB]: [具体的関係の詳細説明]
+
+## 3. コミュニティ別・文脈統合シナリオ（グループ化文脈）
+### グループ1: [コミュニティ名（例: 〇〇プロジェクト/〇〇障害対応）]
+- 所属エンティティ: [関連するエンティティリスト]
+- 全体ストーリー（文脈要約）: [背景、目的、流れ、結果を論理的・物語的にまとめた文脈テキスト]
+
+## 4. RAG検索用統合ナラティブテキスト
+[チャンク分割されても単体で文脈が成立するように、主要キーワード、主語、関係性、背景理由が含まれた高密度な一連の文章テキスト]
+```
+
+## ユーザー入力
+```yaml
+RAGに登録したい文書: |
+  {RAGに登録したい文書}
+
+対象ドメイン/業務分野: |
+  {対象ドメイン/業務分野}
+```
+</textarea>
+            </div>
+
+
+<!-- ユーザー入力 -->
+            <div class="box-bun">
+<h2>ユーザー入力</h2>
+<h3>RAGに登録したい文書</h3>
+<textarea name="hensu1" id="hensu1" rows="15" placeholder="ここにRAGに登録したい文書を入力してください。" class="variable-textarea" >
+</textarea>
+<h3>業務分野</h3>
+<textarea name="hensu2" id="hensu2" rows="10" placeholder="ここに業務分野を入力してください。" class="variable-textarea" >
+</textarea>
+
+            </div>
+
+
+
+            <!-- 補足 -->
+            <div class="box-bun togglable-section">
+<h2>補足</h2>
+<textarea name="hosoku" id="hosoku" rows="50" placeholder="を補足を入力してください">
+### 補足
+- 本プロンプトで生成された統合ナラティブテキストは、そのままベクトルデータベース（RAG基盤）にドキュメントとして登録・インデックス化して利用可能とする。
+
+### 例外処理
+- 入力文書が極端に短くエンティティや関係性が十分に抽出できない場合は、抽出できた要素のみを出力した上で、「関係性をさらに深掘りするために追加可能な情報」を質問として提示してください。
+- 入力文書内に矛盾する記述がある場合は、矛盾を指摘し、双方の関係性を併記してください。
+
+### ネガティブ制約条件
+- 未確認の事実や客観的根拠のない推測を断定形式で記述しないこと。
+- 冗長な装飾語や内容の無意味な反復を行わないこと。
+
+### 失敗条件設計
+- このタスクで起こりやすい失敗: 原文の事実を無視して架空の創作小説を作り上げてしまうこと、または関係性の抽出が行われず単なる全文要約で終わってしまうこと。
+- 失敗の兆候: 出力に原文に存在しない架空の設定・名前が登場する、あるいは「AとBの関係性」が明示されていない。
+- 誤りと判定する条件: 原文の重要データや事実が消失している、事実と異なる関係性が記述されている。
+- 失敗を防ぐための確認方法: 抽出されたエンティティおよびリレーションが原文の記述と1対1で対応しているか内部照合する。
+- 判断に迷った場合の優先順位: 処理の速さや文章の華やかさよりも、「事実の正確性」と「関係性の厳密性」を最優先する。
+- 失敗を検出した後の停止、確認、修正、再試行または代替処理: 架空設定の挿入や関係性の欠落を検出した場合は出力を一旦停止し、原文の直接抽出ベースのフォールバック処理を実行する。
+- 再試行しても解決しない場合の対応: 原文の該当箇所を提示し、「情報不足により関係性の特定が困難なため補足が必要である」旨をユーザーに通知する。
+- 部分的な成果物を提示できる条件: 一部のコミュニティやエンティティ関係のみ特定できた場合でも、確認完了している範囲までの構造化データを「部分成果物」として提示する。
+</textarea>
+            </div>
+
+
+        </form>
+        <div class="button-group">
+            <div class='btn2'>
+                <a href="http://www.city.nanyo.yamagata.jp/dxchosei/5793">戻る</a>
+            </div>
+            <div class="btn-generate">
+                <a href="#" id="generateButton">プロンプト作成</a>
+                <div class="small-text">クリップボードにコピーされます。</div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="/download_prompt/download.php?dsp_count=858"></script>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById('generateButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const form = document.getElementById('summaryPromptForm');
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
+    const formData = new FormData(form);
+
+    communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
+    communicationContent += "<前提条件>\n" + (formData.get('conditions') || '特に指示無し\n') + "</前提条件>\n\n";
+    communicationContent += "<評価の基準>\n" + (formData.get('hyoka') || '特に指示無し\n') + "</評価の基準>\n\n";
+    communicationContent += "<明確化の要件>\n" + (formData.get('meikaku') || '特に指示無し\n') + "</明確化の要件>\n\n";
+    communicationContent += "<リソース>\n" + (formData.get('resource') || '特に指示無し\n') + "</リソース>\n\n";
+    communicationContent += "<実行指示>\n" + (formData.get('instructions') || '特に指示無し\n') + "</実行指示>\n\n";
+    communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</ルール>\n\n";
+    communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</出力形式>\n\n";
+    communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
+    communicationContent += "##RAGに登録したい文書=" + (formData.get('hensu1') || '特に指示なし') + "\n";
+    communicationContent += "##業務分野=" + (formData.get('hensu2') || '特に指示なし') + "\n</ユーザー入力>\n\n";
+    communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</補足>\n";
+
+    // クリップボードにコピー
+    navigator.clipboard.writeText(communicationContent).then(() => {
+        alert('プロンプトがコピーされました。');
+    }).catch(err => {
+        console.error('クリップボードへのコピーに失敗しました:', err);
+        alert('プロンプトのコピーに失敗しました。');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleIcon = document.getElementById('toggleIcon');
+    const togglableSections = document.querySelectorAll('.togglable-section');
+
+    // Default: All blocks should be displayed
+    // Set initial state of toggleIcon to 'hide' (×) and its title
+    if (toggleIcon) { // Ensure toggleIcon exists before setting its properties
+        toggleIcon.innerHTML = '×'; // Initially show 'hide' icon
+        toggleIcon.title = ''; // Initially no tooltip when visible
+    }
+
+    if (toggleIcon && togglableSections.length > 0) {
+        toggleIcon.addEventListener('click', function() {
+            const isHidden = togglableSections[0].style.display === 'none'; // Check current display state
+            if (isHidden) { // If currently hidden, show them
+                togglableSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                toggleIcon.innerHTML = '×'; // Change icon to 'hide'
+                toggleIcon.title = 'プロンプト非表示'; // No tooltip when visible
+            } else { // If currently visible, hide them
+                togglableSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                toggleIcon.innerHTML = '☰'; // Change icon to 'show'
+                toggleIcon.title = 'プロンプト表示'; // Set title for 'show' state
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
