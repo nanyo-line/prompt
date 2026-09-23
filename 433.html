@@ -303,7 +303,7 @@
 <h3>特に含めてほしいポイント（任意）</h3>
 <textarea name="hensu5" id="hensu5" rows="5" placeholder="インタビュー内容の中から特に強調したい、記事に必ず含めてほしい情報の箇条書き" class="variable-textarea" >
 </textarea>
-<h3>特に含めてほしいポイント（任意）</h3>
+<h3>省略しても構わない情報（任意）</h3>
 <textarea name="hensu6" id="hensu6" rows="5" placeholder="インタビュー内容の中から、記事に含めなくてもよい情報の箇条書き" class="variable-textarea" >
 </textarea>
 <h3>想定される長さ（任意）</h3>
@@ -362,7 +362,7 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "##記事のトーン=" + (formData.get('hensu3') || '特に指示無し') + "\n";
     communicationContent += "##記事の目的=" + (formData.get('hensu4') || '特に指示無し') + "\n";
     communicationContent += "##特に含めてほしいポイント（任意）=" + (formData.get('hensu5') || '特に指示無し') + "\n";
-    communicationContent += "##特に含めてほしいポイント（任意）=" + (formData.get('hensu6') || '特に指示無し') + "\n";
+    communicationContent += "##省略しても構わない情報（任意）=" + (formData.get('hensu6') || '特に指示無し') + "\n";
     communicationContent += "##想定される長さ（任意）=" + (formData.get('hensu7') || '特に指示無し') + "</>\n\n";
     communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
 
