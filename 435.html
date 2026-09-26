@@ -423,16 +423,16 @@ document.getElementById('generateButton').addEventListener('click', function(e) 
     communicationContent += "<ルール>\n" + (formData.get('clarification_rules') || '特に指示無し\n') + "</>\n\n";
     communicationContent += "<出力形式>\n" + (formData.get('output') || '特に指示無し\n') + "</>\n\n";
     communicationContent += "<ユーザー入力>" + (formData.get('hensu') || '') + "\n";
-    communicationContent += "##項目１=" + (formData.get('hensu1') || '特に指示無し') + "\n";
-    communicationContent += "##項目２=" + (formData.get('hensu2') || '特に指示無し') + "\n";
-    communicationContent += "##項目３=" + (formData.get('hensu3') || '特に指示無し') + "\n";
-    communicationContent += "##項目４=" + (formData.get('hensu4') || '特に指示無し') + "\n";
-    communicationContent += "##項目５=" + (formData.get('hensu5') || '特に指示無し') + "\n";
-    communicationContent += "##項目６=" + (formData.get('hensu6') || '特に指示無し') + "\n";
-    communicationContent += "##項目７=" + (formData.get('hensu7') || '特に指示無し') + "\n";
-    communicationContent += "##項目８=" + (formData.get('hensu8') || '特に指示無し') + "\n";
-    communicationContent += "##項目９=" + (formData.get('hensu9') || '特に指示無し') + "\n";
-    communicationContent += "##項目１０=" + (formData.get('hensu10') || '特に指示無し') + "</>\n\n";
+    communicationContent += "##クレーム発生日=" + (formData.get('hensu1') || '特に指示無し') + "\n";
+    communicationContent += "##顧客の氏名=" + (formData.get('hensu2') || '特に指示無し') + "\n";
+    communicationContent += "##クレーム内容の要約=" + (formData.get('hensu3') || '特に指示無し') + "\n";
+    communicationContent += "##クレーム発生の原因=" + (formData.get('hensu4') || '特に指示無し') + "\n";
+    communicationContent += "##該当する部署名、サービス名、または施設名=" + (formData.get('hensu5') || '特に指示無し') + "\n";
+    communicationContent += "##現在の対応状況（初期対応含む）=" + (formData.get('hensu6') || '特に指示無し') + "\n";
+    communicationContent += "##再発防止策の概要=" + (formData.get('hensu7') || '特に指示無し') + "\n";
+    communicationContent += "##書き手情報（所属部署名＋担当者名）=" + (formData.get('hensu8') || '特に指示無し') + "\n";
+    communicationContent += "##読み手（住民）の追加ペルソナ情報=" + (formData.get('hensu9') || '特に指示無し') + "\n";
+    communicationContent += "##謝罪文に含めたい補足事項=" + (formData.get('hensu10') || '特に指示無し') + "</>\n\n";
     communicationContent += "<補足>\n" + (formData.get('hosoku') || '特に指示無し\n') + "</>\n";
 
 
