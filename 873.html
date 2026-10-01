@@ -422,7 +422,7 @@
 document.getElementById('generateButton').addEventListener('click', function(e) {
     e.preventDefault();
     const form = document.getElementById('summaryPromptForm');
-    let communicationContent = "以下のプロンプトはシステムプロンプトとして機能してください。\n\n";
+    let communicationContent = "以下はあなたへの指示の内容です。\n\n";
     const formData = new FormData(form);
 
     communicationContent += "<あなたの役割>\n" + (formData.get('role') || '特に指示無し\n') + "</あなたの役割>\n\n";
